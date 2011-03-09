@@ -3,11 +3,11 @@
 
 
 
-int ngi_window_create(ngi_window* win) {
+int ngi_window_init(ngi_application* app, ngi_window* win) {
     
     
     #ifdef NGI_WINDOW_XLIB
-    return ngi_window_create_xlib(win);
+    return ngi_window_init_xlib(app, win);
     #endif
     
     

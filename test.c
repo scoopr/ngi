@@ -7,6 +7,7 @@
 int main() {
 
     
+    ngi_application app;
     ngi_window win;
     int succ;
 
@@ -27,13 +28,18 @@ int main() {
 
 
 
-
-    succ = ngi_window_create(&win);
+    ngi_application_init(&app);
+    
+    succ = ngi_window_init(&app, &win);
     
     printf("[NGI TEST] ngi_window_create: %d\n", succ);
 
+
+    ngi_application_run(&app);
     
     printf("[NGI TEST] end\n");
     
+    ngi_application_deinit(&app);
+
     return 0;
 }

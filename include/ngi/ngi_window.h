@@ -3,6 +3,7 @@
 
 
 #include "ngi/ngi_config.h"
+#include "ngi/ngi_application.h"
 
 #ifdef NGI_WINDOW_XLIB
 #include "ngi/ngi_window_xlib.h"
@@ -31,7 +32,7 @@ typedef struct {
 
 
 
-int ngi_window_create(ngi_window* win);
+int ngi_window_init(ngi_application* app, ngi_window* win);
 
 
 
