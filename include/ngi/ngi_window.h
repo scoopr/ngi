@@ -9,6 +9,13 @@
 #include "ngi/ngi_window_xlib.h"
 #endif
 
+#ifdef NGI_WINDOW_WIN32
+#include "ngi/ngi_window_win32.h"
+#endif
+
+#ifdef NGI_WINDOW_COCOA
+#include "ngi/ngi_window_cocoa.h"
+#endif
 
 
 typedef enum {
@@ -24,6 +31,9 @@ typedef struct {
     union {
         #ifdef NGI_WINDOW_XLIB
         ngi_window_xlib xlib;
+        #endif
+        #ifdef NGI_WINDOW_WIN32
+        ngi_window_win32 win32;
         #endif
         
         int dummy;

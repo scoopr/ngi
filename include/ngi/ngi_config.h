@@ -15,7 +15,7 @@
     #ifdef _WIN32
         #define NGI_WINDOW_WIN32
     #endif
-
+    
 
 #endif
 

@@ -16,6 +16,11 @@ void ngi_application_init(ngi_application* app) {
     
     #endif
     
+    
+    #ifdef NGI_WINDOW_COCOA
+    ngi_application_init_cocoa();
+    #endif
+    
 
     (void)app;
 }
@@ -47,4 +52,13 @@ void ngi_application_run(ngi_application* app) {
         }
     }
     #endif
+
+    #ifdef NGI_WINDOW_WIN32
+        int done=0;
+        while(!done) {
+            ngi_application_win32_runloop_iteration(app);
+        }
+
+    #endif
+
 }

@@ -61,8 +61,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\ngi_application.c" />
     <ClCompile Include="..\src\ngi_window.c" />
+    <ClCompile Include="..\src\ngi_window_win32.c" />
+    <ClCompile Include="..\src\ngi_window_xlib.c" />
     <ClCompile Include="..\test.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\ngi\ngi_application.h" />
+    <ClInclude Include="..\include\ngi\ngi_config.h" />
+    <ClInclude Include="..\include\ngi\ngi_window.h" />
+    <ClInclude Include="..\include\ngi\ngi_window_win32.h" />
+    <ClInclude Include="..\include\ngi\ngi_window_xlib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

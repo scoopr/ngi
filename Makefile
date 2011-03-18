@@ -1,9 +1,15 @@
 
 
-XLIB=1
+XLIB=0
+COCOA=1
 
-SRC=$(wildcard src/*.c)
-OBJ=$(SRC:.c=.o)
+SRC_C=$(wildcard src/*.c)
+SRC_M=$(wildcard src/*.m)
+
+OBJ=$(SRC_C:.c=.o)
+ifeq ($(COCOA),1)
+OBJ+=  $(SRC_M:.m=.o)
+endif
 
 SRC_TEST=test.c
 OBJ_TEST=$(SRC_TEST:.c=.o)
@@ -12,6 +18,9 @@ CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic -std=c99
 
 ifeq ($(XLIB),1)
 LDFLAGS+= -lX11
+endif
+ifeq ($(COCOA),1)
+LDFLAGS+= -framework Cocoa
 endif
 
 run: test
