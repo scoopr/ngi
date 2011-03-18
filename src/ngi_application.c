@@ -36,7 +36,7 @@ void ngi_application_deinit(ngi_application* app) {
     
     #endif
     
-    
+    (void)app;
 }
 
 
@@ -61,4 +61,13 @@ void ngi_application_run(ngi_application* app) {
 
     #endif
 
+    #ifdef NGI_WINDOW_COCOA
+        int done=0;
+        while(!done) {
+            ngi_application_cocoa_runloop_iteration(app);
+        }
+
+    #endif
+
+    (void)app;
 }

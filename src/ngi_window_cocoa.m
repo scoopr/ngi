@@ -18,6 +18,7 @@
 }
 @end
 
+
 void ngi_application_init_cocoa() {
     
 
@@ -41,8 +42,61 @@ void ngi_application_init_cocoa() {
     [pool drain];
 }
 
-int ngi_window_init_cocoa(ngi_application *app, void* win) {
-    return 0;
+
+@interface NGIWindow : NSWindow
+@end
+
+@implementation NGIWindow
+- (BOOL)canBecomeKeyWindow { return YES; }
+- (BOOL)canBecomeMainWindow { return YES; }
+@end
+
+
+int ngi_window_init_cocoa(ngi_application *app, void* winptr) {
+
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    
+    ngi_window_cocoa* win = (ngi_window_cocoa*)winptr;
+
+    win->app = app;
+    win->win = [[NGIWindow alloc] init];
+
+
+    if(!win->win) {
+        [pool drain];
+        return 0;
+    }
+
+
+    NGIWindow* window = win->win;
+    
+    [window makeMainWindow];
+    [window makeKeyAndOrderFront:nil];
+    
+    [pool drain];
+    return 1;
+}
+
+
+void ngi_application_cocoa_runloop_iteration(ngi_application* app) {
+
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+
+    int blocking=1;
+    NSDate* limitDate;
+    if(blocking) limitDate = [NSDate distantFuture];
+    else limitDate = [NSDate distantPast];
+
+    NSEvent* event = [NSApp nextEventMatchingMask: NSAnyEventMask
+                           untilDate: limitDate
+                           inMode: NSDefaultRunLoopMode
+                           dequeue: YES];
+
+
+    if(event.type == NSKeyDown && [event.characters length]>0 && [event.characters characterAtIndex:0] == 27) exit(1);
+
+    [pool drain];
+
 }
 
 

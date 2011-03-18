@@ -21,7 +21,6 @@ typedef struct {
 
 
 int ngi_window_init_win32(ngi_application *app, void* win);
-void ngi_application_win32_runloop_iteration(ngi_application* app);
 
 
 

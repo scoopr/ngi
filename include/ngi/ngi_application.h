@@ -16,7 +16,10 @@ void ngi_application_deinit(ngi_application* app);
 void ngi_application_run(ngi_application* app);
 
 
+void ngi_application_init_cocoa();
+void ngi_application_cocoa_runloop_iteration(ngi_application* app);
 
+void ngi_application_win32_runloop_iteration(ngi_application* app);
 
 
 

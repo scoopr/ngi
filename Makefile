@@ -14,7 +14,9 @@ endif
 SRC_TEST=test.c
 OBJ_TEST=$(SRC_TEST:.c=.o)
 
-CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic -std=c99
+CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic
+%.c.%.o: CPPFLAGS+=-std=c99
+
 
 ifeq ($(XLIB),1)
 LDFLAGS+= -lX11
