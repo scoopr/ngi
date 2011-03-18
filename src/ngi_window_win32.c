@@ -5,94 +5,94 @@
 
 #include "ngi/ngi_window_win32.h"
 
-LRESULT CALLBACK WndProc(	HWND	hWnd,					// Handle For This Window
-				UINT	uMsg,					// Message For This Window
-				WPARAM	wParam,					// Additional Message Information
-				LPARAM	lParam)					// Additional Message Information
+LRESULT CALLBACK WndProc(   HWND    hWnd,
+                UINT    uMsg,
+                WPARAM  wParam,
+                LPARAM  lParam)
 {
-	return DefWindowProc(hWnd,uMsg,wParam,lParam);
+    return DefWindowProc(hWnd,uMsg,wParam,lParam);
 }
 
 
 int ngi_window_init_win32(ngi_application* app, void* winptr) {
 
-	HWND hWnd;
+    HWND hWnd;
 
-	const char* wndClassName="ngi";
-	const char* title = "ngi window";
+    const char* wndClassName="ngi";
+    const char* title = "ngi window";
 
-	DWORD dwExStyle=WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
+    DWORD dwExStyle=WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
     DWORD dwStyle=WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 
-	int width = 100;
-	int height = 100;
-	HINSTANCE hInstance = GetModuleHandle(NULL);
+    int width = 100;
+    int height = 100;
+    HINSTANCE hInstance = GetModuleHandle(NULL);
 
-	WNDCLASS	wc;
+    WNDCLASS    wc;
 
-	ngi_window_win32* win = (ngi_window_win32*)winptr;
-	win->app = app;
-
-
-	wc.style		= CS_HREDRAW | CS_VREDRAW | CS_OWNDC;		// Redraw On Move, And Own DC For Window
-	wc.lpfnWndProc		= (WNDPROC) WndProc;				// WndProc Handles Messages
-	wc.cbClsExtra		= 0;						// No Extra Window Data
-	wc.cbWndExtra		= 0;						// No Extra Window Data
-	wc.hInstance		= hInstance;					// Set The Instance
-	wc.hIcon		= LoadIcon(NULL, IDI_WINLOGO);			// Load The Default Icon
-	wc.hCursor		= LoadCursor(NULL, IDC_ARROW);			// Load The Arrow Pointer
-	wc.hbrBackground	= NULL;						// No Background Required For GL
-	wc.lpszMenuName		= NULL;						// We Don't Want A Menu
-	wc.lpszClassName	= wndClassName;					// Set The Class Name
+    ngi_window_win32* win = (ngi_window_win32*)winptr;
+    win->app = app;
 
 
-	if (!RegisterClass(&wc))						// Attempt To Register The Window Class
-	{
-		return 0;
-	}
-
-	hWnd=CreateWindowEx(dwExStyle,
-					    wndClassName,
-					    title,
-						dwStyle,
-					    0, 0,
-					    width, height,
-						NULL,			  // parent window
-						NULL,			  // menu
-						hInstance,		  // instance
-						NULL);
+    wc.style        = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+    wc.lpfnWndProc      = (WNDPROC) WndProc;
+    wc.cbClsExtra       = 0;
+    wc.cbWndExtra       = 0;
+    wc.hInstance        = hInstance;
+    wc.hIcon        = LoadIcon(NULL, IDI_WINLOGO);
+    wc.hCursor      = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground    = NULL;
+    wc.lpszMenuName     = NULL;
+    wc.lpszClassName    = wndClassName;
 
 
-	if(!hWnd) {
-		win->hwnd = 0;
-		return 0;
-	}
+    if (!RegisterClass(&wc))
+    {
+        return 0;
+    }
 
-	win->hwnd = hWnd;
+    hWnd=CreateWindowEx(dwExStyle,
+                        wndClassName,
+                        title,
+                        dwStyle,
+                        0, 0,
+                        width, height,
+                        NULL,
+                        NULL,
+                        hInstance,
+                        NULL);
 
-	ShowWindow(hWnd,SW_SHOW);						// Show The Window
-	SetForegroundWindow(hWnd);						// Slightly Higher Priority
-	SetFocus(hWnd);		
 
-	return 1;
+    if(!hWnd) {
+        win->hwnd = 0;
+        return 0;
+    }
+
+    win->hwnd = hWnd;
+
+    ShowWindow(hWnd,SW_SHOW);
+    SetForegroundWindow(hWnd);
+    SetFocus(hWnd);
+
+    return 1;
 }
 
 
 void ngi_application_win32_runloop_iteration(ngi_application* app) {
-	MSG msg;
-	if (GetMessage(&msg,NULL,0,0))			// Is There A Message Waiting?
-	{
+    MSG msg;
+    if (GetMessage(&msg,NULL,0,0))
+    {
 
-		if (msg.message==WM_QUIT)				// Have We Received A Quit Message?
-		{
+        if (msg.message==WM_QUIT)
+        {
 
-		} else							// If Not, Deal With Window Messages
-		{
+        } else
+        {
 
-			TranslateMessage(&msg);				// Translate The Message
-			DispatchMessage(&msg);				// Dispatch The Message
-		}
-	}
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+    }
 
 }
 

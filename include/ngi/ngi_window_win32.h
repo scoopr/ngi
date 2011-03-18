@@ -15,7 +15,7 @@
 
 typedef struct {
     ngi_application *app;
-	HWND hwnd;
+    HWND hwnd;
 } ngi_window_win32;
 
 
