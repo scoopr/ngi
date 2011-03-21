@@ -5,6 +5,8 @@
 
 #include "ngi/ngi_window_win32.h"
 
+const char* NGI_WINDOW_CLASS_NAME="ngi";
+
 LRESULT CALLBACK WndProc(   HWND    hWnd,
                 UINT    uMsg,
                 WPARAM  wParam,
@@ -18,7 +20,6 @@ int ngi_window_init_win32(ngi_application* app, void* winptr) {
 
     HWND hWnd;
 
-    const char* wndClassName="ngi";
     const char* title = "ngi window";
 
     DWORD dwExStyle=WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
@@ -28,31 +29,14 @@ int ngi_window_init_win32(ngi_application* app, void* winptr) {
     int height = 100;
     HINSTANCE hInstance = GetModuleHandle(NULL);
 
-    WNDCLASS    wc;
 
     ngi_window_win32* win = (ngi_window_win32*)winptr;
     win->app = app;
 
 
-    wc.style        = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-    wc.lpfnWndProc      = (WNDPROC) WndProc;
-    wc.cbClsExtra       = 0;
-    wc.cbWndExtra       = 0;
-    wc.hInstance        = hInstance;
-    wc.hIcon        = LoadIcon(NULL, IDI_WINLOGO);
-    wc.hCursor      = LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground    = NULL;
-    wc.lpszMenuName     = NULL;
-    wc.lpszClassName    = wndClassName;
-
-
-    if (!RegisterClass(&wc))
-    {
-        return 0;
-    }
 
     hWnd=CreateWindowEx(dwExStyle,
-                        wndClassName,
+                        NGI_WINDOW_CLASS_NAME,
                         title,
                         dwStyle,
                         0, 0,
@@ -77,6 +61,27 @@ int ngi_window_init_win32(ngi_application* app, void* winptr) {
     return 1;
 }
 
+void ngi_application_init_win32(ngi_application* app) {
+    WNDCLASS    wc;
+    HINSTANCE hInstance = GetModuleHandle(NULL);
+
+	wc.style        = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+    wc.lpfnWndProc      = (WNDPROC) WndProc;
+    wc.cbClsExtra       = 0;
+    wc.cbWndExtra       = 0;
+    wc.hInstance        = hInstance;
+    wc.hIcon        = LoadIcon(NULL, IDI_WINLOGO);
+    wc.hCursor      = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground    = NULL;
+    wc.lpszMenuName     = NULL;
+    wc.lpszClassName    = NGI_WINDOW_CLASS_NAME;
+
+
+    if (!RegisterClass(&wc))
+    {
+//        return 0;
+    }
+}
 
 void ngi_application_win32_runloop_iteration(ngi_application* app) {
     MSG msg;

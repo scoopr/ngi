@@ -20,6 +20,10 @@ void ngi_application_init(ngi_application* app) {
     #ifdef NGI_WINDOW_COCOA
     ngi_application_init_cocoa();
     #endif
+
+	#ifdef NGI_WINDOW_WIN32
+	ngi_application_init_win32();
+	#endif
     
 
     (void)app;
