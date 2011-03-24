@@ -4,7 +4,15 @@
 
 #ifdef NGI_WINDOW_WIN32
 
-#include "ngi/ngi_window_win32.h"
+
+
+#define VC_EXTRALEAN
+#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
+
+
+#include "ngi/ngi_window.h"
 
 const char* NGI_WINDOW_CLASS_NAME="ngi";
 

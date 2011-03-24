@@ -1,7 +1,7 @@
 
 
-XLIB=0
-COCOA=1
+XLIB=1
+COCOA=0
 
 SRC_C=$(wildcard src/*.c)
 SRC_M=$(wildcard src/*.m)

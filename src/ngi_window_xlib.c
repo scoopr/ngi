@@ -8,9 +8,8 @@
 #include <X11/Xlib.h>
 #include <string.h>
 
-int ngi_window_init_xlib(ngi_application *app, void* winptr) {
+int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
     
-    ngi_window *win = (ngi_window*)winptr;
     XWindowAttributes winattr;
     Window xwin;
     XSetWindowAttributes attrs;
@@ -23,7 +22,7 @@ int ngi_window_init_xlib(ngi_application *app, void* winptr) {
 
     XGetWindowAttributes(app->xlib_dpy, DefaultRootWindow(app->xlib_dpy), &winattr);
  
-    win->platform.xlib.win = XCreateSimpleWindow(app->xlib_dpy,
+    win->platform.iwnd = XCreateSimpleWindow(app->xlib_dpy,
                                       DefaultRootWindow(app->xlib_dpy),
                                       0,
                                       0,
@@ -34,7 +33,7 @@ int ngi_window_init_xlib(ngi_application *app, void* winptr) {
                                       0
                                       ); 
     
-    xwin = win->platform.xlib.win;
+    xwin = win->platform.iwnd;
     #if 0
     XWindowChanges xwc;
     memset(&xwc,0,sizeof(XWindowChanges));

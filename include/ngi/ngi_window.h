@@ -5,18 +5,6 @@
 #include "ngi/ngi_config.h"
 #include "ngi/ngi_application.h"
 
-#ifdef NGI_WINDOW_XLIB
-#include "ngi/ngi_window_xlib.h"
-#endif
-
-#ifdef NGI_WINDOW_WIN32
-#include "ngi/ngi_window_win32.h"
-#endif
-
-#ifdef NGI_WINDOW_COCOA
-#include "ngi/ngi_window_cocoa.h"
-#endif
-
 
 typedef enum {
     ngi_window_type_xlib,
@@ -29,14 +17,8 @@ typedef enum {
 typedef struct {
     ngi_window_type type;
     union {
-        #ifdef NGI_WINDOW_XLIB
-        ngi_window_xlib xlib;
-        #endif
-        #ifdef NGI_WINDOW_WIN32
-        ngi_window_win32 win32;
-        #endif
-        
-        int dummy;
+        int iwnd;
+        void* pwnd;
     } platform;
 } ngi_window;
 
@@ -45,5 +27,11 @@ typedef struct {
 int ngi_window_init(ngi_application* app, ngi_window* win);
 
 
+int ngi_window_init_win32(ngi_application *app, ngi_window* win);
+int ngi_window_init_xlib(ngi_application *app, ngi_window* win);
+int ngi_window_init_cocoa(ngi_application *app, ngi_window* win);
+
+
 
 #endif
+
