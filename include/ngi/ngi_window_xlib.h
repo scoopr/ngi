@@ -20,3 +20,4 @@ int ngi_window_init_xlib(ngi_application *app, void* win);
 
 
 #endif
+

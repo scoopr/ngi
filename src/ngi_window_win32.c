@@ -1,6 +1,7 @@
 
 #include "ngi/ngi_config.h"
 
+
 #ifdef NGI_WINDOW_WIN32
 
 #include "ngi/ngi_window_win32.h"
@@ -79,7 +80,7 @@ void ngi_application_init_win32(ngi_application* app) {
 
     if (!RegisterClass(&wc))
     {
-//        return 0;
+
     }
 }
 
@@ -104,5 +105,7 @@ void ngi_application_win32_runloop_iteration(ngi_application* app) {
 
 
 #endif
+
+static inline void dummy() {}
 
 

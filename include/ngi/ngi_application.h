@@ -4,8 +4,6 @@
 
 typedef struct {
     
-    
-    // xlib
     void *xlib_dpy;
     
 } ngi_application;
