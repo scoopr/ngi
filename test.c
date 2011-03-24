@@ -3,6 +3,12 @@
 
 #include "ngi/ngi_window.h"
 
+#include "ngi/ngi_context_egl.h"
+
+
+#include <GLES2/gl2.h>
+
+
 
 int main() {
 
@@ -32,8 +38,16 @@ int main() {
     
     succ = ngi_window_init(&app, &win);
     
-    printf("[NGI TEST] ngi_window_create: %d\n", succ);
+    printf("[NGI TEST] ngi_window_init: %d\n", succ);
 
+    ngi_context_egl ctx;
+    succ = ngi_context_egl_init(&ctx, &win);
+
+    printf("[NGI TEST] ngi_context_egl_init: %d\n", succ);
+
+    glClearColor(1.0f, 0,0,0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    ngi_context_egl_swap(&ctx);
 
     ngi_application_run(&app);
     

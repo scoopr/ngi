@@ -5,6 +5,7 @@
 
 int ngi_window_init(ngi_application* app, ngi_window* win) {
     
+    win->app = app;
     
     #ifdef NGI_WINDOW_XLIB
     return ngi_window_init_xlib(app, win);

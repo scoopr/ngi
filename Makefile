@@ -19,7 +19,7 @@ CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic
 
 
 ifeq ($(XLIB),1)
-LDFLAGS+= -lX11
+LDFLAGS+= -lX11 -lEGL -lGLESv2
 endif
 ifeq ($(COCOA),1)
 LDFLAGS+= -framework Cocoa

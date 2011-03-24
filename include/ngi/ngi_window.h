@@ -14,8 +14,9 @@ typedef enum {
 
 
 
-typedef struct {
+typedef struct ngi_window_tag {
     ngi_window_type type;
+    ngi_application* app;
     union {
         int iwnd;
         void* pwnd;
