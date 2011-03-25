@@ -9,9 +9,11 @@
 #import <Cocoa/Cocoa.h>
 
 @interface NGIApplication : NSApplication
+
 @end
 
 @implementation NGIApplication
+
 -(void)setRunning {
     /* This is the same hack used in cocoa-glut to *actually* mark the application as running */
     _running = 1;
@@ -43,10 +45,40 @@ void ngi_application_init_cocoa() {
 }
 
 
-@interface NGIWindow : NSWindow
+@interface NGIWindow : NSWindow {
+    NSView* view;
+    NSOpenGLContext* oglContext;
+}
+@property (assign) NSView* view;
+@property (assign) NSOpenGLContext* oglContext;
 @end
 
 @implementation NGIWindow
+@synthesize view;
+@synthesize oglContext;
+
+- (id)initWithRect:(NSRect)rect
+{
+    NSUInteger windowStyle =  NSTitledWindowMask | NSClosableWindowMask | NSResizableWindowMask;
+    if((self = [super initWithContentRect:rect styleMask:windowStyle backing:NSBackingStoreBuffered defer:NO]))
+    {
+        view = [[NSView alloc] init];
+        [self setContentView:view];
+
+        oglContext = nil;
+    }
+    return self;
+}
+
+-(void)update {
+    [oglContext update];
+}
+
+-(void)dealloc {
+    [view release];
+    [super release];
+}
+
 - (BOOL)canBecomeKeyWindow { return YES; }
 - (BOOL)canBecomeMainWindow { return YES; }
 @end
@@ -57,7 +89,8 @@ int ngi_window_init_cocoa(ngi_application *app, ngi_window* win) {
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
     (void)app;
     
-    win->platform.pwnd = [[NGIWindow alloc] init];
+    NSRect rect = { { 100, 100, }, { 200, 200} };
+    win->platform.pwnd = [[NGIWindow alloc] initWithRect:rect];
 
 
     if(!win->platform.pwnd) {
@@ -70,6 +103,7 @@ int ngi_window_init_cocoa(ngi_application *app, ngi_window* win) {
     
     [window makeMainWindow];
     [window makeKeyAndOrderFront:nil];
+    [window center]; /* maybe not.. */
     
     [pool drain];
     return 1;
@@ -103,6 +137,7 @@ int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win) {
     (void)win;
     NSOpenGLPixelFormatAttribute attribs[] = {
         NSOpenGLPFADoubleBuffer,
+        NSOpenGLPFAFullScreen,1,
         NSOpenGLPFADepthSize, 32,
         0
     };
@@ -111,7 +146,12 @@ int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win) {
     NSOpenGLPixelFormat* pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
     NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pixelFormat shareContext:nil];
 
+    NGIWindow *w = win->platform.pwnd;
+    w.oglContext = context;
     [context makeCurrentContext];
+    [context setView:w.view];
+//    [context setFullScreen];
+    [context update];
     ctx->platform.cocoa.ctx = context;
     [pool drain];
     return 1;
