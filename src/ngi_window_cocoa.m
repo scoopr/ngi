@@ -3,8 +3,8 @@
 
 #ifdef NGI_WINDOW_COCOA
 
-#include "ngi/ngi_application.h"
-#include "ngi/ngi_window_cocoa.h"
+#include "ngi/ngi_window.h"
+#include "ngi/ngi_context.h"
 
 #import <Cocoa/Cocoa.h>
 
@@ -52,23 +52,21 @@ void ngi_application_init_cocoa() {
 @end
 
 
-int ngi_window_init_cocoa(ngi_application *app, void* winptr) {
+int ngi_window_init_cocoa(ngi_application *app, ngi_window* win) {
 
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    (void)app;
     
-    ngi_window_cocoa* win = (ngi_window_cocoa*)winptr;
-
-    win->app = app;
-    win->win = [[NGIWindow alloc] init];
+    win->platform.pwnd = [[NGIWindow alloc] init];
 
 
-    if(!win->win) {
+    if(!win->platform.pwnd) {
         [pool drain];
         return 0;
     }
 
 
-    NGIWindow* window = win->win;
+    NGIWindow* window = win->platform.pwnd;
     
     [window makeMainWindow];
     [window makeKeyAndOrderFront:nil];
@@ -79,6 +77,7 @@ int ngi_window_init_cocoa(ngi_application *app, void* winptr) {
 
 
 void ngi_application_cocoa_runloop_iteration(ngi_application* app) {
+    (void)app;
 
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
 
@@ -97,6 +96,32 @@ void ngi_application_cocoa_runloop_iteration(ngi_application* app) {
 
     [pool drain];
 
+}
+
+
+int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win) {
+    (void)win;
+    NSOpenGLPixelFormatAttribute attribs[] = {
+        NSOpenGLPFADoubleBuffer,
+        NSOpenGLPFADepthSize, 32,
+        0
+    };
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+
+    NSOpenGLPixelFormat* pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
+    NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pixelFormat shareContext:nil];
+
+    [context makeCurrentContext];
+    ctx->platform.cocoa.ctx = context;
+    [pool drain];
+    return 1;
+}
+
+int ngi_context_cocoa_swap(ngi_context* ctx) {
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    [(NSOpenGLContext*)ctx->platform.cocoa.ctx flushBuffer];
+    [pool drain];
+    return 1;
 }
 
 

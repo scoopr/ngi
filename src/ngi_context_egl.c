@@ -1,3 +1,7 @@
+
+#include "ngi/ngi_config.h"
+
+#ifdef NGI_CONTEXT_EGL
 #include "ngi/ngi_context_egl.h"
 #include "ngi/ngi_window.h"
 
@@ -76,6 +80,4 @@ int ngi_context_egl_swap(ngi_context_egl* ctx) {
 }
 
 
-
-
-
+#endif

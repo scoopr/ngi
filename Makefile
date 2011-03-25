@@ -1,7 +1,14 @@
 
+ifeq ($(shell uname -s),Darwin)
+COCOA=1
+endif
 
+ifeq ($(shell uname -s),Linux)
 XLIB=1
-COCOA=0
+EGL=1
+GLES2=1
+endif
+
 
 SRC_C=$(wildcard src/*.c)
 SRC_M=$(wildcard src/*.m)
@@ -19,10 +26,18 @@ CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic
 
 
 ifeq ($(XLIB),1)
-LDFLAGS+= -lX11 -lEGL -lGLESv2
+LDFLAGS+= -lX11 -lEGL
 endif
+ifeq ($(EGL),1)
+LDFLAGS+= -lEGL
+CPPFLAGS+= -DNGI_CONTEXT_EGL
+endif
+ifeq ($(GLES2),1)
+LDFLAGS+= -lGLESv2
+endif
+
 ifeq ($(COCOA),1)
-LDFLAGS+= -framework Cocoa
+LDFLAGS+= -framework Cocoa -framework OpenGL
 endif
 
 run: test

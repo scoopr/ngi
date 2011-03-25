@@ -45,6 +45,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;opengl32.lib;gdi32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -58,10 +59,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>kernel32.lib;user32.lib;opengl32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ngi_application.c" />
+    <ClCompile Include="..\src\ngi_context_egl.c" />
     <ClCompile Include="..\src\ngi_window.c" />
     <ClCompile Include="..\src\ngi_window_win32.c" />
     <ClCompile Include="..\src\ngi_window_xlib.c" />
@@ -70,9 +73,8 @@
   <ItemGroup>
     <ClInclude Include="..\include\ngi\ngi_application.h" />
     <ClInclude Include="..\include\ngi\ngi_config.h" />
+    <ClInclude Include="..\include\ngi\ngi_context.h" />
     <ClInclude Include="..\include\ngi\ngi_window.h" />
-    <ClInclude Include="..\include\ngi\ngi_window_win32.h" />
-    <ClInclude Include="..\include\ngi\ngi_window_xlib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
