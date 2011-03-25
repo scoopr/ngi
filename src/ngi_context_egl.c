@@ -2,7 +2,7 @@
 #include "ngi/ngi_config.h"
 
 #ifdef NGI_CONTEXT_EGL
-#include "ngi/ngi_context_egl.h"
+#include "ngi/ngi_context.h"
 #include "ngi/ngi_window.h"
 
 
@@ -21,12 +21,12 @@ void checkEGL() {
 }
 
 
-int ngi_context_egl_init(ngi_context_egl* ctx, ngi_window* win) {
+int ngi_context_egl_init(ngi_context* ctx, ngi_window* win) {
 
     EGLNativeDisplayType ndpy = (EGLNativeDisplayType)win->app->xlib_dpy;
     EGLNativeWindowType nwnd = (EGLNativeWindowType)win->platform.iwnd;
 
-    EGLDisplay edpy = ctx->edpy = eglGetDisplay( ndpy );
+    EGLDisplay edpy = ctx->platform.egl.edpy = eglGetDisplay( ndpy );
     EGLint majorVersion, minorVersion;
     int succ;
 
@@ -57,7 +57,7 @@ int ngi_context_egl_init(ngi_context_egl* ctx, ngi_window* win) {
 
     checkEGL();
 
-    esfc = ctx->esfc = eglCreateWindowSurface(edpy, ecfg, nwnd, NULL);
+    esfc = ctx->platform.egl.esfc = eglCreateWindowSurface(edpy, ecfg, nwnd, NULL);
     if(esfc == EGL_NO_SURFACE) {
         printf("Unable to create EGL surface (%x)\n", eglGetError());
         return 0;
@@ -75,8 +75,8 @@ int ngi_context_egl_init(ngi_context_egl* ctx, ngi_window* win) {
     return 1;
 }
 
-int ngi_context_egl_swap(ngi_context_egl* ctx) {
-    return eglSwapBuffers(ctx->edpy, ctx->esfc);
+int ngi_context_egl_swap(ngi_context* ctx) {
+    return eglSwapBuffers(ctx->platform.egl.edpy, ctx->platform.egl.esfc);
 }
 
 

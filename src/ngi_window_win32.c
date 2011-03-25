@@ -114,7 +114,6 @@ int ngi_context_wgl_init(ngi_context* ctx, ngi_window* win) {
     HGLRC hRC=NULL;
     HDC hDC=NULL;
 
-//    int bits=32;
     HWND hWnd = (HWND)win->platform.iwnd;
     unsigned int PixelFormat;
 
