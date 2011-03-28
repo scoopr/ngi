@@ -22,7 +22,7 @@ SRC_TEST=test.c
 OBJ_TEST=$(SRC_TEST:.c=.o)
 
 CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic
-
+CFLAGS+=-std=c99
 
 ifeq ($(XLIB),1)
 LDFLAGS+= -lX11 -lEGL

@@ -8,7 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NGIApplication : NSApplication
+@interface NGIApplication : NSApplication {
+    int dummy;
+}
 
 @end
 
@@ -76,7 +78,7 @@ void ngi_application_init_cocoa() {
 
 -(void)dealloc {
     [view release];
-    [super release];
+    [super dealloc];
 }
 
 - (BOOL)canBecomeKeyWindow { return YES; }
@@ -116,11 +118,12 @@ void ngi_application_cocoa_runloop_iteration(ngi_application* app) {
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
 
     int blocking=1;
-    NSDate* limitDate;
+    NSDate* limitDate = nil;
     if(blocking) limitDate = [NSDate distantFuture];
     else limitDate = [NSDate distantPast];
 
-    NSEvent* event = [NSApp nextEventMatchingMask: NSAnyEventMask
+    NSUInteger mask = UINT_MAX; //NSAnyEventMask;
+    NSEvent* event = [NSApp nextEventMatchingMask: mask
                            untilDate: limitDate
                            inMode: NSDefaultRunLoopMode
                            dequeue: YES];
@@ -137,7 +140,6 @@ int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win) {
     (void)win;
     NSOpenGLPixelFormatAttribute attribs[] = {
         NSOpenGLPFADoubleBuffer,
-        NSOpenGLPFAFullScreen,1,
         NSOpenGLPFADepthSize, 32,
         0
     };
