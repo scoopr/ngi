@@ -1,24 +1,39 @@
 
 #include <stdio.h>
 
-#include "ngi/ngi_window.h"
+#include "ngi/ngi.h"
 
-#include "ngi/ngi_context.h"
 
 #ifdef NGI_WINDOW_COCOA
 #include <OpenGL/gl.h>
 #endif
 
 #ifdef NGI_CONTEXT_EGL
-#include <GLES2/gl2.h>
+//#include <GLES2/gl2.h>
+#endif
+
+#ifdef NGI_CONTEXT_GLX
+#include <GL/gl.h>
 #endif
 
 #ifdef NGI_WINDOW_WIN32
 #define VC_EXTRALEAN
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#include <GL/GL.h>
+#include <GL/gl.h>
 #endif
+
+
+void check_(int succ, const char* str) {
+    if(succ) {
+        printf("[ngi] %s OK\n", str);
+    } else {
+        printf("[ngi] %s FAIL\n", str);
+        exit(1);
+    }
+}
+
+#define check(x) check_( (x), #x)
 
 int main() {
 
@@ -27,6 +42,14 @@ int main() {
     ngi_window win;
     ngi_context ctx;
     int succ;
+    
+    
+    ngi_config config;
+    ngi_config_init(&config);
+    ngi_config_set_string(&config, ngi_config_wm_api, ngi_wm_api_cocoa);
+    
+
+    
 
     printf("[NGI TEST] start\n");
 
@@ -47,7 +70,7 @@ int main() {
 
     ngi_application_init(&app);
     
-    succ = ngi_window_init(&app, &win);
+    check( ngi_window_init(&app, &win, &config) );
     
     printf("[NGI TEST] ngi_window_init: %d\n", succ);
 

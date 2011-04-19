@@ -25,7 +25,7 @@ CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic
 CFLAGS+=-std=c99
 
 ifeq ($(XLIB),1)
-LDFLAGS+= -lX11 -lEGL
+LDFLAGS+= -lX11 -lEGL -lGL
 endif
 ifeq ($(EGL),1)
 LDFLAGS+= -lEGL

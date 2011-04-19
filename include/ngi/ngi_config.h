@@ -6,6 +6,8 @@
 
     #ifdef __linux
         #define NGI_WINDOW_XLIB
+        #define NGI_CONTEXT_EGL
+        #define NGI_CONTEXT_GLX
     #endif
 
     #ifdef __APPLE__

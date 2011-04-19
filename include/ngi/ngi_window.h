@@ -2,10 +2,6 @@
 #define NGI_WINDOW_H
 
 
-#include "ngi/ngi_config.h"
-#include "ngi/ngi_application.h"
-
-
 typedef enum {
     ngi_window_type_xlib,
     ngi_window_type_cocoa,
@@ -25,7 +21,7 @@ typedef struct ngi_window_tag {
 
 
 
-int ngi_window_init(ngi_application* app, ngi_window* win);
+int ngi_window_init(ngi_application* app, ngi_window* win, ngi_config* config);
 
 
 int ngi_window_init_win32(ngi_application *app, ngi_window* win);

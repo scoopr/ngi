@@ -1,6 +1,5 @@
 
-#include "ngi/ngi_config.h"
-#include "ngi/ngi_application.h"
+#include "ngi/ngi.h"
 
 #ifdef NGI_WINDOW_XLIB
 #include <X11/Xlib.h>
@@ -21,9 +20,9 @@ void ngi_application_init(ngi_application* app) {
     ngi_application_init_cocoa();
     #endif
 
-	#ifdef NGI_WINDOW_WIN32
-	ngi_application_init_win32();
-	#endif
+    #ifdef NGI_WINDOW_WIN32
+    ngi_application_init_win32();
+    #endif
     
 
     (void)app;

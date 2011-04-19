@@ -3,8 +3,7 @@
 
 #ifdef NGI_WINDOW_COCOA
 
-#include "ngi/ngi_window.h"
-#include "ngi/ngi_context.h"
+#include "ngi/ngi.h"
 
 #import <Cocoa/Cocoa.h>
 
