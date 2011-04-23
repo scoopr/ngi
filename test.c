@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "ngi/ngi.h"
 
@@ -9,11 +10,11 @@
 #endif
 
 #ifdef NGI_CONTEXT_EGL
-//#include <GLES2/gl2.h>
+#include <GLES2/gl2.h>
 #endif
 
 #ifdef NGI_CONTEXT_GLX
-#include <GL/gl.h>
+//#include <GL/gl.h>
 #endif
 
 #ifdef NGI_WINDOW_WIN32
@@ -46,7 +47,7 @@ int main() {
     
     ngi_config config;
     ngi_config_init(&config);
-    ngi_config_set_string(&config, ngi_config_wm_api, ngi_wm_api_cocoa);
+//    ngi_config_set_string(&config, ngi_config_wm_api, ngi_wm_api_cocoa);
     
 
     
@@ -69,25 +70,29 @@ int main() {
 
 
     ngi_application_init(&app);
+
+    printf("Using wm api: %s\n", app.type);
     
     check( ngi_window_init(&app, &win, &config) );
     
-    printf("[NGI TEST] ngi_window_init: %d\n", succ);
+//    printf("[NGI TEST] ngi_window_init: %d\n", succ);
 
 
 
     #ifdef NGI_CONTEXT_EGL
-    succ = ngi_context_egl_init(&ctx, &win);
+    if(app.type == ngi_wm_api_xlib)
+        check( ngi_context_egl_init(&ctx, &win) );
     #endif
 
     #ifdef NGI_CONTEXT_COCOA
-    succ = ngi_context_cocoa_init(&ctx, &win);
+    if(app.type == ngi_wm_api_cocoa)
+        check( ngi_context_cocoa_init(&ctx, &win) );
     #endif
-	#ifdef NGI_CONTEXT_WGL
-	succ = ngi_context_wgl_init(&ctx, &win);
-	#endif
+    #ifdef NGI_CONTEXT_WGL
+    check( ngi_context_wgl_init(&ctx, &win) );
+    #endif
     
-    printf("[NGI TEST] ngi_context_*_init: %d\n", succ);
+    // printf("[NGI TEST] ngi_context_*_init: %d\n", succ);
     
     glClearColor(1.0f, 0,0,0);
     glClear(GL_COLOR_BUFFER_BIT);
