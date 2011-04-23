@@ -7,48 +7,50 @@ endif
 
 
 ifeq ($(AUTOCONF),1)
-ifeq ($(shell $(CC) -lEGL conf.c -DTEST_EGL 2>&1),)
+TEST_CC=$(CC) -o .testbin
+ifeq ($(shell $(TEST_CC) -lEGL conf.c -DTEST_EGL 2>&1),)
 EGL=1
 else
 EGL=0
 endif
 
-ifeq ($(shell $(CC) -lGLESv1_CM conf.c -DTEST_GLES1 2>&1),)
+ifeq ($(shell $(TEST_CC) -lGLESv1_CM conf.c -DTEST_GLES1 2>&1),)
 GLES1=1
 else
 GLES1=0
 endif
 
-ifeq ($(shell $(CC) -lGLESv2 conf.c -DTEST_GLES2 2>&1),)
+ifeq ($(shell $(TEST_CC) -lGLESv2 conf.c -DTEST_GLES2 2>&1),)
 GLES2=1
 else
 GLES2=0
 endif
 
-ifeq ($(shell $(CC) -framework Cocoa conf.c -DTEST_OSX_OPENGL 2>&1),)
+ifeq ($(shell $(TEST_CC) -framework Cocoa conf.c -DTEST_OSX_OPENGL 2>&1),)
 OSX=1
 else
 OSX=0
 endif
 
-ifeq ($(shell $(CC) -lGL conf.c -DTEST_OPENGL 2>&1),)
+ifeq ($(shell $(TEST_CC) -lGL conf.c -DTEST_OPENGL 2>&1),)
 OPENGL=1
 else
 OPENGL=0
 endif
 
-ifeq ($(shell $(CC) -L/usr/X11/lib -lX11 conf.c -DTEST_XLIB 2>&1),)
+ifeq ($(shell $(TEST_CC) -L/usr/X11/lib -lX11 conf.c -DTEST_XLIB 2>&1),)
 XLIB=1
 else
 XLIB=0
 endif
 
-ifeq ($(shell $(CC) -lxcb conf.c -DTEST_XCB 2>&1),)
+ifeq ($(shell $(TEST_CC) -lxcb conf.c -DTEST_XCB 2>&1),)
 XCB=1
 else
 XCB=0
 endif
 
+$(shell $(RM) .testbin)
 $(info [ngi conf] EGL:$(EGL) GLES1:$(GLES1) GLES2:$(GLES2) OPENGL:$(OPENGL) OSX:$(OSX) XLIB:$(XLIB) XCB:$(XCB))
 
 endif
