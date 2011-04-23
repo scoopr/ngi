@@ -2,9 +2,7 @@
 #include "ngi/ngi_config.h"
 
 #ifdef NGI_CONTEXT_EGL
-#include "ngi/ngi_context.h"
-#include "ngi/ngi_window.h"
-
+#include "ngi/ngi.h"
 
 #include <EGL/egl.h>
 #include <stdio.h>
@@ -43,9 +41,9 @@ int ngi_context_egl_init(ngi_context* ctx, ngi_window* win) {
         };
 
     EGLint attr[] = {
-        EGL_RENDERABLE_TYPE, EGL_OPENGL_BIT | EGL_OPENGL_ES_BIT | EGL_OPENGL_ES2_BIT,
-        EGL_NATIVE_RENDERABLE, 1,
-        EGL_CONFIG_CAVEAT, EGL_NONE,
+ /*       EGL_RENDERABLE_TYPE, EGL_OPENGL_BIT | EGL_OPENGL_ES_BIT | EGL_OPENGL_ES2_BIT,*/
+/*        EGL_NATIVE_RENDERABLE, 1,*/
+/*        EGL_CONFIG_CAVEAT, EGL_NONE,*/
         EGL_NONE
     };
     
@@ -56,7 +54,7 @@ int ngi_context_egl_init(ngi_context* ctx, ngi_window* win) {
     printf("eglInitialize: %d\n", succ);
     checkEGL();
 
-    eglBindAPI(EGL_OPENGL_API);
+//    eglBindAPI(EGL_OPENGL_API);
 
     const char* apis = eglQueryString(edpy, EGL_CLIENT_APIS);
     const char* exts = eglQueryString(edpy, EGL_EXTENSIONS);
@@ -66,9 +64,11 @@ int ngi_context_egl_init(ngi_context* ctx, ngi_window* win) {
 
     
     if(!eglChooseConfig(edpy, attr, &ecfg, 1, &num_config)) {
+        printf("eglChooseConfig error\n");
         return 0;
     }
     if(num_config != 1) {
+        printf("More than one config: %d\n", num_config);
         return 0;
     }
 

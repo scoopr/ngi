@@ -3,7 +3,7 @@
 
 #ifdef NGI_WINDOW_XLIB
 
-#include "ngi/ngi_window.h"
+#include "ngi/ngi.h"
 
 #include <X11/Xlib.h>
 #include <string.h>
