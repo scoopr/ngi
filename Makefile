@@ -48,10 +48,12 @@ XCB=1
 else
 XCB=0
 endif
+
+$(info [ngi conf] EGL:$(EGL) GLES1:$(GLES1) GLES2:$(GLES2) OPENGL:$(OPENGL) OSX:$(OSX) XLIB:$(XLIB) XCB:$(XCB))
+
 endif
 
 
-$(info [ngi conf] EGL:$(EGL) GLES1:$(GLES1) GLES2:$(GLES2) OPENGL:$(OPENGL) OSX:$(OSX) XLIB:$(XLIB) XCB:$(XCB))
 
 
 
