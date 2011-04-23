@@ -3,7 +3,8 @@
 
 
 typedef struct {
-    
+    const char* type;
+
     void *xlib_dpy;
     
 } ngi_application;
