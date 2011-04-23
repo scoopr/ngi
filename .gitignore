@@ -4,4 +4,7 @@ msvc/*.filters
 msvc/*.user
 msvc/Debug
 msvc/Release
+*.o
+test
+a.out
 
