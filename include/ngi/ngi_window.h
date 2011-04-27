@@ -1,6 +1,9 @@
 #ifndef NGI_WINDOW_H
 #define NGI_WINDOW_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef enum {
     ngi_window_type_xlib,
@@ -29,6 +32,9 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win);
 int ngi_window_init_cocoa(ngi_application *app, ngi_window* win);
 
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 
