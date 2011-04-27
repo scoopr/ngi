@@ -142,6 +142,10 @@ int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win) {
         NSOpenGLPFADepthSize, 32,
         0
     };
+    
+    ctx->type = ngi_context_api_cocoa;
+    ctx->graphics = ngi_graphics_api_opengl;
+
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
 
     NSOpenGLPixelFormat* pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
