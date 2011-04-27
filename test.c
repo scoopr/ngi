@@ -10,12 +10,12 @@
 #endif
 
 #ifdef NGI_CONTEXT_EGL
-#include <GLES2/gl2.h>
+//#include <GLES2/gl2.h>
 #endif
 
-#ifdef NGI_CONTEXT_GLX
-//#include <GL/gl.h>
-#endif
+//#ifdef NGI_CONTEXT_GLX
+#include <GL/gl.h>
+//#endif
 
 #ifdef NGI_WINDOW_WIN32
 #define VC_EXTRALEAN
@@ -91,6 +91,9 @@ int main() {
     #ifdef NGI_CONTEXT_WGL
     check( ngi_context_wgl_init(&ctx, &win) );
     #endif
+
+    printf("[NGI TEST] ctx api: %s\n", ctx.type);
+    printf("[NGI TEST] gfx api: %s\n", ctx.graphics);
     
     // printf("[NGI TEST] ngi_context_*_init: %d\n", succ);
     

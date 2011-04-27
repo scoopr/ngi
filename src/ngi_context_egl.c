@@ -24,6 +24,7 @@ int ngi_context_egl_init(ngi_context* ctx, ngi_window* win) {
     EGLNativeDisplayType ndpy = (EGLNativeDisplayType)win->app->xlib_dpy;
     EGLNativeWindowType nwnd = (EGLNativeWindowType)win->platform.iwnd;
 
+    ctx->type = ngi_context_api_egl;
     EGLDisplay edpy = ctx->platform.egl.edpy = eglGetDisplay( ndpy );
     EGLint majorVersion, minorVersion;
     int succ;
@@ -79,7 +80,7 @@ int ngi_context_egl_init(ngi_context* ctx, ngi_window* win) {
         printf("Unable to create EGL surface (%x)\n", eglGetError());
         return 0;
     }
-    ectxt = eglCreateContext(edpy, ecfg, EGL_NO_CONTEXT, ctxattr);
+    ectxt = ctx->platform.egl.ectx = eglCreateContext(edpy, ecfg, EGL_NO_CONTEXT, ctxattr);
     if(ectxt == EGL_NO_CONTEXT) {
         printf("Unable to create EGL context (%x)\n", eglGetError());
         return 0;
@@ -94,6 +95,24 @@ int ngi_context_egl_init(ngi_context* ctx, ngi_window* win) {
     eglQueryContext(edpy, ectxt, EGL_CONTEXT_CLIENT_VERSION, &val);
     printf("Context client version: %d\n", val);
 
+    EGLenum api = eglQueryAPI();
+    int ver=0;
+
+    switch(api) {
+        case EGL_OPENGL_ES_API:
+        eglQueryContext(edpy, ectxt, EGL_CONTEXT_CLIENT_VERSION, &ver);
+        switch(ver) {
+            case 1: ctx->graphics = ngi_graphics_api_gles1; break;
+            case 2: ctx->graphics = ngi_graphics_api_gles2; break;
+            default: printf("Unsupported GLES version %d\n", ver);
+        }
+        break;
+        case EGL_OPENGL_API:
+        ctx->graphics = ngi_graphics_api_opengl;
+        break;
+        default:
+        printf("Unsupported EGL Graphics api 0x%x\n", api);
+    }
 
     return 1;
 }
@@ -104,3 +123,4 @@ int ngi_context_egl_swap(ngi_context* ctx) {
 
 
 #endif
+

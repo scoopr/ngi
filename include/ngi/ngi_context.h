@@ -4,10 +4,13 @@
 #include "ngi/ngi_window.h"
 
 typedef struct ngi_context_tag {
+    const char* type;
+    const char* graphics;
     union {
         struct {
             void* edpy;
             void* esfc;
+            void* ectx;
         } egl;
 
         struct {
