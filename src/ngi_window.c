@@ -3,9 +3,11 @@
 
 static const char* find_config_string(const char* name, ngi_config* config, const char* fallback) {
 
+    int i;
+    
     if(config == 0) return 0;
 
-    for(int i = 0; i < config->num_entries; ++i)
+    for(i = 0; i < config->num_entries; ++i)
     {
         if(config->config[i].name == name) return config->config[i].value.s;
     }
@@ -16,9 +18,11 @@ static const char* find_config_string(const char* name, ngi_config* config, cons
 
 static int find_config_int(const char* name, ngi_config* config, int fallback) {
 
+    int i;
+    
     if(config == 0) return 0;
 
-    for(int i = 0; i < config->num_entries; ++i)
+    for(i = 0; i < config->num_entries; ++i)
     {
         if(config->config[i].name == name) return config->config[i].value.i;
     }
