@@ -35,7 +35,7 @@ int ngi_context_egl_init(ngi_context* ctx, ngi_window* win) {
     EGLSurface esfc;
 
     EGLint ctxattr[] = { 
-/*        EGL_CONTEXT_CLIENT_VERSION, 2, */
+        EGL_CONTEXT_CLIENT_VERSION, 2, 
         
         EGL_NONE 
         

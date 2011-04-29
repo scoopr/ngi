@@ -22,8 +22,9 @@
 @end
 
 
-void ngi_application_init_cocoa() {
+int ngi_application_init_cocoa(ngi_application *app) {
     
+    app->type = ngi_wm_api_cocoa;
 
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
 
@@ -43,6 +44,7 @@ void ngi_application_init_cocoa() {
 
 
     [pool drain];
+    return 1;
 }
 
 

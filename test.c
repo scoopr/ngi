@@ -10,12 +10,12 @@
 #endif
 
 #ifdef NGI_CONTEXT_EGL
-//#include <GLES2/gl2.h>
+#include <GLES2/gl2.h>
 #endif
 
-//#ifdef NGI_CONTEXT_GLX
+#ifdef NGI_CONTEXT_GLX
 #include <GL/gl.h>
-//#endif
+#endif
 
 #ifdef NGI_WINDOW_WIN32
 #define VC_EXTRALEAN
@@ -27,9 +27,9 @@
 
 void check_(int succ, const char* str) {
     if(succ) {
-        printf("[ngi] %s OK\n", str);
+        printf("[NGI TEST] %s OK\n", str);
     } else {
-        printf("[ngi] %s FAIL\n", str);
+        printf("[NGI TEST] %s FAIL\n", str);
         exit(1);
     }
 }
@@ -42,7 +42,6 @@ int main() {
     ngi_application app;
     ngi_window win;
     ngi_context ctx;
-    int succ;
     
     
     ngi_config config;
@@ -55,23 +54,9 @@ int main() {
     printf("[NGI TEST] start\n");
 
 
-    #ifdef NGI_WINDOW_XLIB
-    printf("[NGI TEST] Support NGI_WINDOW_XLIB\n");
-    #endif
+    check( ngi_application_init(&app) );
 
-    #ifdef NGI_WINDOW_COCOA
-    printf("[NGI TEST] Support NGI_WINDOW_COCOA\n");
-    #endif
-
-    #ifdef NGI_WINDOW_WIN32
-    printf("[NGI TEST] Support NGI_WINDOW_WIN32\n");
-    #endif
-
-
-
-    ngi_application_init(&app);
-
-    printf("Using wm api: %s\n", app.type);
+    printf("[NGI TEST] wm api: %s\n", app.type);
     
     check( ngi_window_init(&app, &win, &config) );
     
@@ -79,18 +64,8 @@ int main() {
 
 
 
-    #ifdef NGI_CONTEXT_EGL
-    if(app.type == ngi_wm_api_xlib)
-        check( ngi_context_egl_init(&ctx, &win) );
-    #endif
 
-    #ifdef NGI_CONTEXT_COCOA
-    if(app.type == ngi_wm_api_cocoa)
-        check( ngi_context_cocoa_init(&ctx, &win) );
-    #endif
-    #ifdef NGI_CONTEXT_WGL
-    check( ngi_context_wgl_init(&ctx, &win) );
-    #endif
+    check( ngi_context_init(&ctx, &win) );
 
     printf("[NGI TEST] ctx api: %s\n", ctx.type);
     printf("[NGI TEST] gfx api: %s\n", ctx.graphics);
@@ -100,21 +75,14 @@ int main() {
     glClearColor(1.0f, 0,0,0);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    #ifdef NGI_CONTEXT_EGL
-    ngi_context_egl_swap(&ctx);
-    #endif
-    #ifdef NGI_CONTEXT_COCOA
-    ngi_context_cocoa_swap(&ctx);
-    #endif
-	#ifdef NGI_CONTEXT_WGL
-	ngi_context_wgl_swap(&ctx);
-	#endif
+    check( ngi_context_swap(&ctx) );
 
-    ngi_application_run(&app);
+
+    check( ngi_application_run(&app) );
     
     printf("[NGI TEST] end\n");
     
-    ngi_application_deinit(&app);
+    check( ngi_application_deinit(&app) );
 
     return 0;
 }

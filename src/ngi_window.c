@@ -1,7 +1,7 @@
 
 #include "ngi/ngi.h"
 
-static const char* find_config_string(const char* name, ngi_config* config, const char* fallback) {
+static inline const char* find_config_string(const char* name, ngi_config* config, const char* fallback) {
 
     int i;
     
@@ -16,7 +16,7 @@ static const char* find_config_string(const char* name, ngi_config* config, cons
 
 }
 
-static int find_config_int(const char* name, ngi_config* config, int fallback) {
+static inline int find_config_int(const char* name, ngi_config* config, int fallback) {
 
     int i;
     

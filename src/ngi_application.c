@@ -5,18 +5,16 @@
 #include <X11/Xlib.h>
 #endif
 
-void ngi_application_init(ngi_application* app) {
+int ngi_application_init(ngi_application* app) {
     
     #ifdef NGI_WINDOW_COCOA
-    app->type = ngi_wm_api_cocoa;
-    ngi_application_init_cocoa();
-    return;
+    return ngi_application_init_cocoa();
     #endif
 
     #ifdef NGI_WINDOW_WIN32
     app->type = ngi_wm_api_win32;
     ngi_application_init_win32();
-    return;
+    return 1;
     #endif
     
     #ifdef NGI_WINDOW_XLIB
@@ -24,16 +22,16 @@ void ngi_application_init(ngi_application* app) {
 
     XInitThreads();
     app->xlib_dpy = XOpenDisplay(NULL);
-    return;
+    return 1;
     #endif
     
     
     
-
     (void)app;
+    return 0;
 }
 
-void ngi_application_deinit(ngi_application* app) {
+int ngi_application_deinit(ngi_application* app) {
     
     
     #ifdef NGI_WINDOW_XLIB
@@ -45,11 +43,12 @@ void ngi_application_deinit(ngi_application* app) {
     }
     #endif
     
+    return 1;
     (void)app;
 }
 
 
-void ngi_application_run(ngi_application* app) {
+int ngi_application_run(ngi_application* app) {
     #ifdef NGI_WINDOW_XLIB
     if(app->type == ngi_wm_api_xlib) {
         XEvent ev;
@@ -82,5 +81,6 @@ void ngi_application_run(ngi_application* app) {
     }
     #endif
 
+    return 1;
     (void)app;
 }
