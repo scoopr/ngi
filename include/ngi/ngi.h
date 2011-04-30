@@ -39,6 +39,12 @@ extern const char* ngi_config_depth_bits;       /* int */
 extern const char* ngi_config_stencil_bits;   /* int */
 extern const char* ngi_config_multisamples;   /* int */
 
+extern const char* ngi_event_key_down;
+extern const char* ngi_event_key_up;
+extern const char* ngi_event_key_repeat;
+extern const char* ngi_event_quit;
+
+
 
 #define NGI_MAX_CONFIG 32
 

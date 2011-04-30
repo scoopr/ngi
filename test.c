@@ -34,6 +34,8 @@ void check_(int succ, const char* str) {
     }
 }
 
+
+
 #define check(x) check_( (x), #x)
 
 int main() {
@@ -78,7 +80,24 @@ int main() {
     check( ngi_context_swap(&ctx) );
 
 
-    check( ngi_application_run(&app) );
+    int done = 0;
+    while(!done) {
+        ngi_event ev;
+        ngi_application_wait_event(&app, &ev);
+
+        if(ev.type) {
+            printf("[NGI TEST] event: %s\n", ev.type);
+
+            if(ev.type == ngi_event_key_down && ev.data.key.unicode==27) {
+                done = 1;
+            }
+            
+        }
+
+    }
+
+
+//    check( ngi_application_run(&app) );
     
     printf("[NGI TEST] end\n");
     

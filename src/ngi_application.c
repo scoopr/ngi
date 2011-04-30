@@ -6,7 +6,7 @@
 #endif
 
 int ngi_application_init(ngi_application* app) {
-    
+
     #ifdef NGI_WINDOW_COCOA
     return ngi_application_init_cocoa();
     #endif
@@ -47,40 +47,32 @@ int ngi_application_deinit(ngi_application* app) {
     (void)app;
 }
 
-
-int ngi_application_run(ngi_application* app) {
+int ngi_application_wait_event(ngi_application* app, ngi_event* ev) {
     #ifdef NGI_WINDOW_XLIB
     if(app->type == ngi_wm_api_xlib) {
         XEvent ev;
-        int done = 0;
-        while(XNextEvent(app->xlib_dpy, &ev) && !done) {
-            switch(ev.type) {
-                case KeyPress:
-                done=1;
-                break;
-            }
+        XNextEvent(app->xlib_dpy, &ev);
+        switch(ev.type) {
+            break;
         }
     }
     #endif
 
     #ifdef NGI_WINDOW_WIN32
     if(app->type == ngi_wm_api_win32) {
-        int done=0;
-        while(!done) {
-            ngi_application_win32_runloop_iteration(app);
-        }
+        ngi_application_win32_runloop_iteration(app);
     }
     #endif
 
     #ifdef NGI_WINDOW_COCOA
     if(app->type == ngi_wm_api_cocoa) {
-        int done=0;
-        while(!done) {
-            ngi_application_cocoa_runloop_iteration(app);
-        }
+        ngi_application_cocoa_runloop_iteration(app,ev);
     }
     #endif
 
     return 1;
     (void)app;
 }
+
+// int ngi_application_run(ngi_application* app) {
+// }

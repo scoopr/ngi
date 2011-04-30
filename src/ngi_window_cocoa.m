@@ -15,6 +15,12 @@
 
 @implementation NGIApplication
 
+- (void)applicationWillTerminate:(NSNotification *)aNotification {
+    (void)aNotification;
+    exit(1);
+}
+
+
 -(void)setRunning {
     /* This is the same hack used in cocoa-glut to *actually* mark the application as running */
     _running = 1;
@@ -33,14 +39,16 @@ int ngi_application_init_cocoa(ngi_application *app) {
     TransformProcessType(&psn, kProcessTransformToForegroundApplication);
     SetFrontProcess(&psn);
 
-    NSApp = [[NGIApplication alloc] init];
+
+    NSApp = [NGIApplication sharedApplication];
+    [NSApp setDelegate:NSApp];
     [NSApp finishLaunching];
     [NSApp setRunning];
-
 
     BOOL success = [NSBundle loadNibNamed:@"ngi" owner:NSApp];
     if(!success) {
     }
+
 
 
     [pool drain];
@@ -113,7 +121,7 @@ int ngi_window_init_cocoa(ngi_application *app, ngi_window* win) {
 }
 
 
-void ngi_application_cocoa_runloop_iteration(ngi_application* app) {
+void ngi_application_cocoa_runloop_iteration(ngi_application* app, ngi_event* ev) {
     (void)app;
 
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
@@ -130,7 +138,28 @@ void ngi_application_cocoa_runloop_iteration(ngi_application* app) {
                            dequeue: YES];
 
 
-    if(event.type == NSKeyDown && [event.characters length]>0 && [event.characters characterAtIndex:0] == 27) exit(1);
+//    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate distantPast]];
+
+    // if(event.type == NSKeyDown && [event.characters length]>0 && [event.characters characterAtIndex:0] == 27) {
+    //     [NSApp terminate:nil];
+    // }
+
+//    ngi_event ev;
+    memset(ev,0,sizeof(ngi_event));
+                       
+    switch(event.type) {
+        case NSKeyDown:
+        ev->data.key.down = 1;
+        ev->type = ngi_event_key_down;
+        case NSKeyUp:
+        if(!ev->type) ev->type = ngi_event_key_up;
+        if(event.isARepeat) ev->type = ngi_event_key_repeat;
+        if([event.characters length]>0)
+            ev->data.key.unicode = [event.characters characterAtIndex:0];
+        ev->data.key.scancode = event.keyCode;
+        
+        break;
+    }
 
     [pool drain];
 
@@ -142,6 +171,7 @@ int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win) {
     NSOpenGLPixelFormatAttribute attribs[] = {
         NSOpenGLPFADoubleBuffer,
         NSOpenGLPFADepthSize, 32,
+  //      NSOpenGLPFAFullScreen,
         0
     };
     
