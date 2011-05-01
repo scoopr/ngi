@@ -106,13 +106,19 @@ LDFLAGS+= -lGL
 CPPFLAGS+= -DNGI_RENDER_API_OPENGL
 endif
 
+run: test
+	./test
+
 ifeq ($(OSX),1)
 LDFLAGS+= -framework Cocoa -framework OpenGL -liconv
 CPPFLAGS+= -DNGI_RENDER_API_OPENGL -DNGI_CONTEXT_COCOA -DNGI_WINDOW_COCOA
+.PHONY: resources
+resources: ngi.nib
+test: | resources
+ngi.nib: ngi.xib
+	ibtool --compile ngi.nib ngi.xib
 endif
 
-run: test
-	./test
 
 test: $(OBJ) $(OBJ_TEST)
 	$(LINK.c) -o $@ $^
