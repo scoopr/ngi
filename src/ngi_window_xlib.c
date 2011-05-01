@@ -41,7 +41,7 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
     #endif
     
     memset(&attrs, 0, sizeof(XSetWindowAttributes));
-    attrs.event_mask = KeyPressMask;
+    attrs.event_mask = KeyPressMask | KeyReleaseMask;
     XChangeWindowAttributes(app->xlib_dpy, xwin, CWEventMask, &attrs);
     
    

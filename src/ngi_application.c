@@ -1,9 +1,6 @@
 
 #include "ngi/ngi.h"
 
-#ifdef NGI_WINDOW_XLIB
-#include <X11/Xlib.h>
-#endif
 
 int ngi_application_init(ngi_application* app) {
 
@@ -18,13 +15,8 @@ int ngi_application_init(ngi_application* app) {
     #endif
     
     #ifdef NGI_WINDOW_XLIB
-    app->type = ngi_wm_api_xlib;
-
-    XInitThreads();
-    app->xlib_dpy = XOpenDisplay(NULL);
-    return 1;
+    return ngi_application_init_xlib();
     #endif
-    
     
     
     (void)app;
@@ -35,11 +27,8 @@ int ngi_application_deinit(ngi_application* app) {
     
     
     #ifdef NGI_WINDOW_XLIB
-
     if(app->type == ngi_wm_api_xlib) {
-        if(app->xlib_dpy) {
-            XCloseDisplay(app->xlib_dpy);
-        }
+        ngi_application_deinit_xlib(app);
     }
     #endif
     
@@ -48,13 +37,10 @@ int ngi_application_deinit(ngi_application* app) {
 }
 
 int ngi_application_wait_event(ngi_application* app, ngi_event* ev) {
+    ev->type=NULL;
     #ifdef NGI_WINDOW_XLIB
     if(app->type == ngi_wm_api_xlib) {
-        XEvent ev;
-        XNextEvent(app->xlib_dpy, &ev);
-        switch(ev.type) {
-            break;
-        }
+        return ngi_application_wait_event_xlib(app, ev);
     }
     #endif
 
