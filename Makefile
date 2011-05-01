@@ -73,6 +73,7 @@ OBJ_TEST=$(SRC_TEST:.c=.o)
 CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic -ggdb
 CFLAGS+=-std=c99
 
+
 ifeq ($(XLIB),1)
 LDFLAGS+= -L/usr/X11/lib -lX11
 CPPFLAGS+= -DNGI_WINDOW_XLIB
@@ -106,7 +107,7 @@ CPPFLAGS+= -DNGI_RENDER_API_OPENGL
 endif
 
 ifeq ($(OSX),1)
-LDFLAGS+= -framework Cocoa -framework OpenGL
+LDFLAGS+= -framework Cocoa -framework OpenGL -liconv
 CPPFLAGS+= -DNGI_RENDER_API_OPENGL -DNGI_CONTEXT_COCOA -DNGI_WINDOW_COCOA
 endif
 

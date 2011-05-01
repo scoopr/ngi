@@ -25,6 +25,39 @@
 #endif
 
 
+#include <iconv.h>
+
+char* codepointhex(int cp) {
+    static char out[4*2];
+    unsigned char* in = (unsigned char*)&cp;
+    snprintf(out,8,"%2x%2x%2x%2x", in[0], in[1], in[2], in[3]);
+    return out;
+}
+
+char* codepointutf8(int cp) {
+    int cps[] = {cp};
+    static char out[8];
+    size_t inb = 4;
+    size_t outb = 7;
+
+
+    iconv_t cd = NULL;
+
+    cd = iconv_open("UTF-8", "UCS-4LE");
+    if (cd == (iconv_t) -1) {
+        printf("iconv_open ERROR\n");
+    }
+
+    char* inptr = (char*)cps;
+    char* outptr = out;
+    memset(out,0,8);
+    size_t n = iconv(cd, &inptr, &inb, &outptr, &outb);
+    if( n == (size_t)-1) {
+        printf("iconv ERROR\n");
+    }
+    return out;
+}
+
 void check_(int succ, const char* str) {
     if(succ) {
         printf("[NGI TEST] %s OK\n", str);
@@ -81,12 +114,15 @@ int main() {
 
 
     int done = 0;
+    ngi_event ev;
     while(!done) {
-        ngi_event ev;
         ngi_application_wait_event(&app, &ev);
 
         if(ev.type) {
-            printf("[NGI TEST] event: %s\n", ev.type);
+//            printf("[NGI TEST] event: %s\n", ev.type);
+
+            if(ev.type==ngi_event_key_down || ev.type==ngi_event_key_up || ev.type==ngi_event_key_repeat)
+                printf("<%s: \t%s\t (%s)>\n", ev.type, codepointutf8(ev.data.key.unicode), codepointhex(ev.data.key.unicode));
 
             if(ev.type == ngi_event_key_down && ev.data.key.unicode==27) {
                 done = 1;
