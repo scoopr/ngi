@@ -4,6 +4,7 @@
 
 int ngi_application_init(ngi_application* app) {
 
+
     #ifdef NGI_WINDOW_COCOA
     return ngi_application_init_cocoa();
     #endif

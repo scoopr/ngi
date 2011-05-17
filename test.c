@@ -137,6 +137,7 @@ int main() {
     
     printf("[NGI TEST] end\n");
     
+    check( ngi_window_deinit(&win) );
     check( ngi_application_deinit(&app) );
 
     return 0;

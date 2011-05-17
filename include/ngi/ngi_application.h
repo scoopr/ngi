@@ -10,7 +10,15 @@ extern "C" {
 typedef struct {
     const char* type;
 
-    void *xlib_dpy;
+    union {
+        struct {
+            void *dpy;
+            void *xim;
+        } xlib;
+        
+    } plat;
+    
+    struct ngi_window_tag *first_window;
     
 } ngi_application;
 

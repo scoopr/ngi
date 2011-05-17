@@ -35,7 +35,7 @@ int ngi_window_init(ngi_application* app, ngi_window* win, ngi_config* config) {
     
     win->app = app;
     
-    const char* wmapi = find_config_string(ngi_config_wm_api, config, NULL);
+    const char* wmapi = app->type; //find_config_string(ngi_config_wm_api, config, NULL);
 
     // const char* ctxapi = find_config_string(ngi_config_context_api, config, NULL);
     // // ngi_graphics_api gfxapi = find_config(ngi_config_graphics_api, config);
@@ -95,4 +95,17 @@ int ngi_window_init(ngi_application* app, ngi_window* win, ngi_config* config) {
 
     return 0;
 }
+
+int ngi_window_deinit(ngi_window* win) {
+
+    #ifdef NGI_WINDOW_XLIB
+    if(win->app->type == ngi_wm_api_xlib) {
+        return ngi_window_deinit_xlib(win);
+    }
+    #endif
+
+    return 0;
+}
+
+
 

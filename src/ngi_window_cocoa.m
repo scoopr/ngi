@@ -98,11 +98,11 @@ int ngi_application_init_cocoa(ngi_application *app) {
 int ngi_window_init_cocoa(ngi_application *app, ngi_window* win) {
 
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
-    (void)app;
+
     
     NSRect rect = { { 100, 100, }, { 200, 200} };
     win->platform.pwnd = [[NGIWindow alloc] initWithRect:rect];
-
+    win->app = app;
 
     if(!win->platform.pwnd) {
         [pool drain];

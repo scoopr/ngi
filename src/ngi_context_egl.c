@@ -21,8 +21,16 @@ void checkEGL() {
 
 int ngi_context_egl_init(ngi_context* ctx, ngi_window* win) {
 
-    EGLNativeDisplayType ndpy = (EGLNativeDisplayType)win->app->xlib_dpy;
-    EGLNativeWindowType nwnd = (EGLNativeWindowType)win->platform.iwnd;
+    EGLNativeDisplayType ndpy = NULL;
+    
+    EGLNativeWindowType nwnd = NULL;
+    
+    #ifdef NGI_WINDOW_XLIB
+    if(win->app->type = ngi_wm_api_xlib ) {
+        ndpy = (EGLNativeDisplayType)win->app->plat.xlib.dpy;
+        nwnd = (EGLNativeWindowType)win->plat.xlib.win;
+    }
+    #endif
 
     ctx->type = ngi_context_api_egl;
     EGLDisplay edpy = ctx->platform.egl.edpy = eglGetDisplay( ndpy );

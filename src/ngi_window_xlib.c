@@ -8,22 +8,43 @@
 #include <X11/Xlib.h>
 #include <string.h>
 
+
+void ngi_window_add_window_xlib(ngi_application* app, ngi_window * win) {
+    
+    ngi_window *cur = app->first_window;
+    
+    if(app->first_window == NULL) {
+        app->first_window = win;
+        return;
+    }
+    
+    while(cur->next_window != NULL) {
+        cur = cur->next_window;
+    }
+    
+    cur->next_window = win;
+    win->next_window = NULL;
+
+}
+
+
 int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
+    
+    memset(win, 0, sizeof(ngi_window));
     
     XWindowAttributes winattr;
     Window xwin;
     XSetWindowAttributes attrs;
 
-    if(app->xlib_dpy == NULL) {
+    if(app->plat.xlib.dpy == NULL) {
         return 0;
     }
 
-    win->type = ngi_window_type_xlib;
-
-    XGetWindowAttributes(app->xlib_dpy, DefaultRootWindow(app->xlib_dpy), &winattr);
+    XGetWindowAttributes(app->plat.xlib.dpy, DefaultRootWindow(app->plat.xlib.dpy), &winattr);
  
-    win->platform.iwnd = XCreateSimpleWindow(app->xlib_dpy,
-                                      DefaultRootWindow(app->xlib_dpy),
+    win->app = app;
+    win->plat.xlib.win = XCreateSimpleWindow(app->plat.xlib.dpy,
+                                      DefaultRootWindow(app->plat.xlib.dpy),
                                       0,
                                       0,
                                       winattr.width/2,
@@ -33,7 +54,8 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
                                       0
                                       ); 
     
-    xwin = win->platform.iwnd;
+    xwin = win->plat.xlib.win;
+    printf("xwin: %p\n",xwin);
     #if 0
     XWindowChanges xwc;
     memset(&xwc,0,sizeof(XWindowChanges));
@@ -42,17 +64,39 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
     
     memset(&attrs, 0, sizeof(XSetWindowAttributes));
     attrs.event_mask = KeyPressMask | KeyReleaseMask;
-    XChangeWindowAttributes(app->xlib_dpy, xwin, CWEventMask, &attrs);
+    XChangeWindowAttributes(app->plat.xlib.dpy, xwin, CWEventMask, &attrs);
     
    
+    XIC xic = XCreateIC(win->app->plat.xlib.xim, 
+        XNInputStyle, XIMPreeditNothing | XIMStatusNothing,
+        XNClientWindow, xwin,
+        XNFocusWindow, xwin,
+        NULL);
     
+    win->plat.xlib.xic = xic;
+        
+    if(xic == NULL) {
+        // TODO: XDestroyWindow etc.
+        return 0;
+    }
     
+    XMapWindow(app->plat.xlib.dpy, xwin);
     
-    XMapWindow(app->xlib_dpy, xwin);
-                                  
+    ngi_window_add_window_xlib(app,win);
+
     return 1;
 }
 
+
+int ngi_window_deinit_xlib(ngi_window* win) {
+    if(win->app->type != ngi_wm_api_xlib) return 0;
+
+    if(win->plat.xlib.win) XDestroyWindow(win->app->plat.xlib.dpy, win->plat.xlib.win);
+    if(win->plat.xlib.xic) XDestroyIC(win->plat.xlib.xic);
+    
+    
+    return 1;
+}
 
 
 
