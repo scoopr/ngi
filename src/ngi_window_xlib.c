@@ -7,7 +7,7 @@
 
 #include <X11/Xlib.h>
 #include <string.h>
-
+#include <stdio.h>
 
 void ngi_window_add_window_xlib(ngi_application* app, ngi_window * win) {
     
@@ -43,7 +43,7 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
     XGetWindowAttributes(app->plat.xlib.dpy, DefaultRootWindow(app->plat.xlib.dpy), &winattr);
  
     win->app = app;
-    win->plat.xlib.win = XCreateSimpleWindow(app->plat.xlib.dpy,
+    win->plat.xlib.win = (void*)XCreateSimpleWindow((Display*)app->plat.xlib.dpy,
                                       DefaultRootWindow(app->plat.xlib.dpy),
                                       0,
                                       0,
@@ -54,8 +54,8 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
                                       0
                                       ); 
     
-    xwin = win->plat.xlib.win;
-    printf("xwin: %p\n",xwin);
+    xwin = (Window)win->plat.xlib.win;
+    printf("xwin: %p\n",(void*)xwin);
     #if 0
     XWindowChanges xwc;
     memset(&xwc,0,sizeof(XWindowChanges));
@@ -91,7 +91,7 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
 int ngi_window_deinit_xlib(ngi_window* win) {
     if(win->app->type != ngi_wm_api_xlib) return 0;
 
-    if(win->plat.xlib.win) XDestroyWindow(win->app->plat.xlib.dpy, win->plat.xlib.win);
+    if(win->plat.xlib.win) XDestroyWindow(win->app->plat.xlib.dpy, (Window)win->plat.xlib.win);
     if(win->plat.xlib.xic) XDestroyIC(win->plat.xlib.xic);
     
     

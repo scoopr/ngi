@@ -16,7 +16,7 @@ int ngi_application_init(ngi_application* app) {
     #endif
     
     #ifdef NGI_WINDOW_XLIB
-    return ngi_application_init_xlib();
+    return ngi_application_init_xlib(app);
     #endif
     
     

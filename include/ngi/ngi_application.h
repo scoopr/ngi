@@ -14,6 +14,7 @@ typedef struct {
         struct {
             void *dpy;
             void *xim;
+            unsigned int utf8state;
         } xlib;
         
     } plat;
@@ -50,6 +51,10 @@ void ngi_application_cocoa_runloop_iteration(ngi_application* app, ngi_event* ev
 
 void ngi_application_init_win32();
 void ngi_application_win32_runloop_iteration(ngi_application* app);
+
+int ngi_application_init_xlib(ngi_application* app);
+void ngi_application_deinit_xlib(ngi_application *app);
+int ngi_application_wait_event_xlib(ngi_application* app, ngi_event* ev);
 
 
 #ifdef __cplusplus

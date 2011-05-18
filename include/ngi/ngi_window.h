@@ -31,6 +31,7 @@ int ngi_window_init_win32(ngi_application *app, ngi_window* win);
 int ngi_window_init_xlib(ngi_application *app, ngi_window* win);
 int ngi_window_init_cocoa(ngi_application *app, ngi_window* win);
 
+int ngi_window_deinit_xlib(ngi_window* win);
 
 #ifdef __cplusplus
 }

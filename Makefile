@@ -70,7 +70,7 @@ endif
 SRC_TEST=test.c
 OBJ_TEST=$(SRC_TEST:.c=.o)
 
-CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic -ggdb
+CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic -ggdb -Werror
 CFLAGS+=-std=c99
 
 

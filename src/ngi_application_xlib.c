@@ -6,6 +6,8 @@
 
 #include "../../wtf8/wtf8.h"
 
+#include <stdio.h>
+
 unsigned int KeySymToUcs4(KeySym keysym);
 
 
@@ -26,6 +28,8 @@ int ngi_application_init_xlib(ngi_application* app) {
         XCloseDisplay(app->plat.xlib.dpy);
         return 0;
     }
+    
+    app->plat.xlib.utf8state = 0;
     
     app->first_window = NULL;
 
@@ -50,8 +54,8 @@ ngi_window* find_window(ngi_application* app, Window w) {
     ngi_window* cur = app->first_window;
     
     while(cur != NULL) {
-        printf("%p (%p) == %p\n",cur,cur->plat.xlib.win,w);
-        if(cur->plat.xlib.win == w) return cur;
+        printf("%p (%p) == %p\n",(void*)cur,cur->plat.xlib.win,(void*)w);
+        if(cur->plat.xlib.win == (void*)w) return cur;
         cur = cur->next_window;
     }
     
@@ -84,10 +88,19 @@ int ngi_application_wait_event_xlib(ngi_application* app, ngi_event* ev) {
             memset(buf,0,8);
             KeySym ks;
             Status status;
-            int codepoint = 0;
-            if(xev.type==KeyPress) {
-                int ret = Xutf8LookupString(win->plat.xlib.xic, &xev.xkey, buf, 7, &ks, &status);
-                wtf8_decode(buf,7,&codepoint);
+            unsigned int codepoint = 0;
+            if(xev.type==KeyPress || xev.type==KeyRelease) {
+                /*int ret =*/ Xutf8LookupString(win->plat.xlib.xic, &xev.xkey, buf, 7, &ks, &status);
+                unsigned char* b = (unsigned char*)buf;
+                while(*b) {
+                    int ret = wtf8_decode_state(&app->plat.xlib.utf8state, &codepoint, *b );
+                    if(ret == UTF8_ACCEPT) {
+//                        app->plat.xlib.utf8state = 0;
+                        break;
+                    }
+                    ++b;
+                }
+//                wtf8_decode(buf,7,&codepoint);
             } else {
                 
             }

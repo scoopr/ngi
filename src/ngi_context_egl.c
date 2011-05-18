@@ -23,10 +23,10 @@ int ngi_context_egl_init(ngi_context* ctx, ngi_window* win) {
 
     EGLNativeDisplayType ndpy = NULL;
     
-    EGLNativeWindowType nwnd = NULL;
+    EGLNativeWindowType nwnd = 0;
     
     #ifdef NGI_WINDOW_XLIB
-    if(win->app->type = ngi_wm_api_xlib ) {
+    if(win->app->type == ngi_wm_api_xlib ) {
         ndpy = (EGLNativeDisplayType)win->app->plat.xlib.dpy;
         nwnd = (EGLNativeWindowType)win->plat.xlib.win;
     }

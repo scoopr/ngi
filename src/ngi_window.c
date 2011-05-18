@@ -32,7 +32,7 @@ static inline int find_config_int(const char* name, ngi_config* config, int fall
 }
 
 int ngi_window_init(ngi_application* app, ngi_window* win, ngi_config* config) {
-    
+    (void)config;
     win->app = app;
     
     const char* wmapi = app->type; //find_config_string(ngi_config_wm_api, config, NULL);
