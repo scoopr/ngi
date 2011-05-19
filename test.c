@@ -70,6 +70,29 @@ void check_(int succ, const char* str) {
 
 
 #define check(x) check_( (x), #x)
+int done;
+int event(ngi_event* ev) {
+    
+    switch(ev->type) {
+        case ngi_key_event:
+        printf("<key: %f %s \t%d>\n", ev->character.timestamp, "todo" /* ev->key.keycode*/, ev->key.down);
+        break;
+        case ngi_character_event:
+        printf("<character: %f %s \tU+%04X>\n", ev->character.timestamp, codepointutf8(ev->character.codepoint), ev->character.codepoint);
+        
+        
+        if(ev->character.codepoint==27) {
+            done = 1;
+        }
+        break;
+        
+        
+        default: break;
+    }
+
+    return 0;
+}
+
 
 int main() {
 
@@ -113,23 +136,9 @@ int main() {
     check( ngi_context_swap(&ctx) );
 
 
-    int done = 0;
-    ngi_event ev;
+    done = 0;
     while(!done) {
-        ngi_application_wait_event(&app, &ev);
-
-        if(ev.type) {
-//            printf("[NGI TEST] event: %s\n", ev.type);
-
-            if(ev.type==ngi_event_key_down || ev.type==ngi_event_key_up || ev.type==ngi_event_key_repeat)
-                printf("<%s: %d \t%s\t (%s)>\n", ev.type, ev.data.key.scancode, codepointutf8(ev.data.key.unicode), codepointhex(ev.data.key.unicode));
-
-            if(ev.type == ngi_event_key_down && ev.data.key.unicode==27) {
-                done = 1;
-            }
-            
-        }
-
+        ngi_application_wait_event(&app, event);
     }
 
 

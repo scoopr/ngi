@@ -132,3 +132,4 @@ int ngi_context_egl_swap(ngi_context* ctx) {
 
 #endif
 
+extern int dummy;

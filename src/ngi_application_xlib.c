@@ -7,6 +7,7 @@
 #include "../../wtf8/wtf8.h"
 
 #include <stdio.h>
+#include <sys/time.h>
 
 unsigned int KeySymToUcs4(KeySym keysym);
 
@@ -57,7 +58,7 @@ ngi_window* find_window(ngi_application* app, Window w) {
     ngi_window* cur = app->first_window;
     
     while(cur != NULL) {
-        printf("%p (%p) == %p\n",(void*)cur,cur->plat.xlib.win,(void*)w);
+        // printf("%p (%p) == %p\n",(void*)cur,cur->plat.xlib.win,(void*)w);
         if(cur->plat.xlib.win == (void*)w) return cur;
         cur = cur->next_window;
     }
@@ -66,14 +67,23 @@ ngi_window* find_window(ngi_application* app, Window w) {
     
 }
 
-int ngi_application_wait_event_xlib(ngi_application* app, ngi_event* ev) {
+double get_timestamp() {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    return tv.tv_sec + tv.tv_usec/10000000.0;
+}
 
-    memset(ev,0,sizeof(ngi_event));
+int ngi_application_wait_event_xlib(ngi_application* app, ngi_event_cb cb) {
+
     
     XEvent xev;
     
+    ngi_event ev;
+    memset(&ev,0,sizeof(ngi_event));
     
+
     XNextEvent(app->plat.xlib.dpy, &xev);
+    double timestamp = get_timestamp();
 
     /*int filtered =*/ XFilterEvent(&xev, None);
 
@@ -81,10 +91,7 @@ int ngi_application_wait_event_xlib(ngi_application* app, ngi_event* ev) {
 
     switch(xev.type) {
         case KeyPress:
-        ev->data.key.down = 1;
-        ev->type = ngi_event_key_down;
         case KeyRelease:
-        if(!ev->type) ev->type = ngi_event_key_up;
         {
 
             if(!win) { printf("NULL ngi_window!\n"); return 0; }
@@ -115,7 +122,6 @@ int ngi_application_wait_event_xlib(ngi_application* app, ngi_event* ev) {
                 
             }
 
-            // KeySym ks = XKeycodeToKeysym(app->xlib_dpy, xev.xkey.keycode, 0);
             ks = XKeycodeToKeysym(app->plat.xlib.dpy, xev.xkey.keycode, 0);
             // int shifts = ShiftMask|LockMask;
             // 
@@ -124,12 +130,25 @@ int ngi_application_wait_event_xlib(ngi_application* app, ngi_event* ev) {
             // int level = (state & shifts) ? 1 : 0;
             // KeySym ks = XkbKeycodeToKeysym ( app->plat.xlib.dpy, xev.xkey.keycode, group, level );
             // unsigned int mods = XkbKeysymToModifiers(app->plat.xlib.dpy, ks);
-            ev->data.key.unicode = codepoint; //KeySymToUcs4(ks);
+
+            if(codepoint) {
+                ev.type = ngi_character_event;
+                ev.character.codepoint = codepoint;
+                ev.character.timestamp = timestamp;
+                cb(&ev);
+            }
+
+            ev.type = ngi_key_event;
+            ev.key.timestamp = timestamp;
+            ev.key.down = xev.type == KeyPress;
+            ev.key.keycode = NULL; // TODO
+            ev.key.modifiers = 0; // TODO
+            cb(&ev);
 
             // if(ks != NoSymbol)
             //     ev->data.key.unicode = KeySymToUcs4(ks);
         }
-        ev->data.key.scancode = xev.xkey.keycode;
+
         
         break;
     }

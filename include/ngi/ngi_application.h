@@ -22,38 +22,23 @@ typedef struct {
     
 } ngi_application;
 
-typedef struct ngi_event_tag {
-    const char* type;
-    
-    union {
-        struct {
-            int down;
-            int scancode;
-            int unicode;
-        } key;
-    } data;
-    
-    int modifiers;
-    
-} ngi_event;
-
 
 
 int ngi_application_init(ngi_application* app);
 int ngi_application_deinit(ngi_application* app);
 //int ngi_application_run(ngi_application* app);
-int ngi_application_wait_event(ngi_application* app, ngi_event* ev);
+int ngi_application_wait_event(ngi_application* app, ngi_event_cb cb);
 
 
 int ngi_application_init_cocoa();
-void ngi_application_cocoa_runloop_iteration(ngi_application* app, ngi_event* ev);
+void ngi_application_cocoa_runloop_iteration(ngi_application* app, ngi_event_cb cb);
 
 void ngi_application_init_win32();
 void ngi_application_win32_runloop_iteration(ngi_application* app);
 
 int ngi_application_init_xlib(ngi_application* app);
 void ngi_application_deinit_xlib(ngi_application *app);
-int ngi_application_wait_event_xlib(ngi_application* app, ngi_event* ev);
+int ngi_application_wait_event_xlib(ngi_application* app, ngi_event_cb cb);
 
 
 #ifdef __cplusplus

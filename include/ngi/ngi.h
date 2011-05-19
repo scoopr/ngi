@@ -84,7 +84,7 @@ static inline int ngi_config_match(const char* a, const char* b) {
     return strcmp(a,b) == 0;
 }
 
-
+#include "ngi/ngi_event.h"
 #include "ngi/ngi_application.h"
 #include "ngi/ngi_window.h"
 #include "ngi/ngi_context.h"

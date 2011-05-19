@@ -101,16 +101,16 @@ int ngi_window_init_cocoa(ngi_application *app, ngi_window* win) {
 
     
     NSRect rect = { { 100, 100, }, { 200, 200} };
-    win->platform.pwnd = [[NGIWindow alloc] initWithRect:rect];
+    win->plat.pwnd = [[NGIWindow alloc] initWithRect:rect];
     win->app = app;
 
-    if(!win->platform.pwnd) {
+    if(!win->plat.pwnd) {
         [pool drain];
         return 0;
     }
 
 
-    NGIWindow* window = win->platform.pwnd;
+    NGIWindow* window = win->plat.pwnd;
     
     [window makeMainWindow];
     [window makeKeyAndOrderFront:nil];
@@ -121,7 +121,7 @@ int ngi_window_init_cocoa(ngi_application *app, ngi_window* win) {
 }
 
 
-void ngi_application_cocoa_runloop_iteration(ngi_application* app, ngi_event* ev) {
+void ngi_application_cocoa_runloop_iteration(ngi_application* app, ngi_event_cb cb) {
     (void)app;
 
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
@@ -144,19 +144,33 @@ void ngi_application_cocoa_runloop_iteration(ngi_application* app, ngi_event* ev
     //     [NSApp terminate:nil];
     // }
 
-//    ngi_event ev;
-    memset(ev,0,sizeof(ngi_event));
+    ngi_event ev;
+    memset(&ev,0,sizeof(ngi_event));
                        
     switch(event.type) {
         case NSKeyDown:
-        ev->data.key.down = 1;
-        ev->type = ngi_event_key_down;
         case NSKeyUp:
-        if(!ev->type) ev->type = ngi_event_key_up;
-        if(event.isARepeat) ev->type = ngi_event_key_repeat;
-        if([event.characters length]>0)
-            ev->data.key.unicode = [event.characters characterAtIndex:0];
-        ev->data.key.scancode = event.keyCode;
+        
+        ev.type = ngi_key_event;
+        ev.key.timestamp = event.timestamp;
+        ev.key.down = event.type == NSKeyDown;
+        ev.key.keycode = NULL; // TODO
+        ev.key.modifiers = 0; // TODO
+        cb(&ev);
+
+        if([event.characters length]>0) {
+            
+            ev.type = ngi_character_event;
+            ev.character.timestamp = event.timestamp;
+            ev.character.codepoint = [event.characters characterAtIndex:0];
+            ev.character.repeat = event.isARepeat;
+            cb(&ev);
+            
+        }
+            
+
+        
+        
         
         break;
     }
@@ -183,7 +197,7 @@ int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win) {
     NSOpenGLPixelFormat* pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
     NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pixelFormat shareContext:nil];
 
-    NGIWindow *w = win->platform.pwnd;
+    NGIWindow *w = win->plat.pwnd;
     w.oglContext = context;
     [context makeCurrentContext];
     [context setView:w.view];
