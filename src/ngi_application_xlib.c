@@ -21,6 +21,8 @@ int ngi_application_init_xlib(ngi_application* app) {
     if(app->plat.xlib.dpy == NULL) return 0;
 
 
+    XSetLocaleModifiers("");
+
     XIM xim = XOpenIM(app->plat.xlib.dpy, NULL, NULL, NULL);
     app->plat.xlib.xim = xim;
 
@@ -29,7 +31,8 @@ int ngi_application_init_xlib(ngi_application* app) {
         return 0;
     }
     
-    app->plat.xlib.utf8state = 0;
+    
+    
     
     app->first_window = NULL;
 
@@ -72,6 +75,8 @@ int ngi_application_wait_event_xlib(ngi_application* app, ngi_event* ev) {
     
     XNextEvent(app->plat.xlib.dpy, &xev);
 
+    /*int filtered =*/ XFilterEvent(&xev, None);
+
     ngi_window* win = find_window(app, xev.xany.window);
 
     switch(xev.type) {
@@ -86,26 +91,32 @@ int ngi_application_wait_event_xlib(ngi_application* app, ngi_event* ev) {
 
             char buf[8];
             memset(buf,0,8);
-            KeySym ks;
+            KeySym ks = 0;
             Status status;
             unsigned int codepoint = 0;
-            if(xev.type==KeyPress || xev.type==KeyRelease) {
+            if(xev.type==KeyPress /*|| xev.type==KeyRelease*/) {
                 /*int ret =*/ Xutf8LookupString(win->plat.xlib.xic, &xev.xkey, buf, 7, &ks, &status);
-                unsigned char* b = (unsigned char*)buf;
-                while(*b) {
-                    int ret = wtf8_decode_state(&app->plat.xlib.utf8state, &codepoint, *b );
-                    if(ret == UTF8_ACCEPT) {
-//                        app->plat.xlib.utf8state = 0;
-                        break;
-                    }
-                    ++b;
+                
+                
+                int utf = 0;
+                int keysym = 0;
+                switch(status) {
+//                    case XBufferOverflow: printf("XBufferOverflow\n"); break;
+                    case XLookupNone:                           break;
+                    case XLookupChars:  utf = 1;                break;
+                    case XLookupKeySym:          keysym = 1;    break;
+                    case XLookupBoth:   utf = 1; keysym = 1;    break;
                 }
-//                wtf8_decode(buf,7,&codepoint);
+                
+                if( utf ) {
+                    wtf8_decode(buf,7,&codepoint);
+                }
             } else {
                 
             }
 
             // KeySym ks = XKeycodeToKeysym(app->xlib_dpy, xev.xkey.keycode, 0);
+            ks = XKeycodeToKeysym(app->plat.xlib.dpy, xev.xkey.keycode, 0);
             // int shifts = ShiftMask|LockMask;
             // 
             // int state = xev.xkey.state;

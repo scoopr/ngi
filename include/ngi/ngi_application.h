@@ -14,7 +14,6 @@ typedef struct {
         struct {
             void *dpy;
             void *xim;
-            unsigned int utf8state;
         } xlib;
         
     } plat;

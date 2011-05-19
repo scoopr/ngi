@@ -122,7 +122,7 @@ int main() {
 //            printf("[NGI TEST] event: %s\n", ev.type);
 
             if(ev.type==ngi_event_key_down || ev.type==ngi_event_key_up || ev.type==ngi_event_key_repeat)
-                printf("<%s: \t%s\t (%s)>\n", ev.type, codepointutf8(ev.data.key.unicode), codepointhex(ev.data.key.unicode));
+                printf("<%s: %d \t%s\t (%s)>\n", ev.type, ev.data.key.scancode, codepointutf8(ev.data.key.unicode), codepointhex(ev.data.key.unicode));
 
             if(ev.type == ngi_event_key_down && ev.data.key.unicode==27) {
                 done = 1;
