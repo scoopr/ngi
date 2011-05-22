@@ -24,8 +24,7 @@
 #include <GL/gl.h>
 #endif
 
-
-#include <iconv.h>
+#include "../../wtf8/wtf8.h"
 
 char* codepointhex(int cp) {
     static char out[4*2];
@@ -34,27 +33,13 @@ char* codepointhex(int cp) {
     return out;
 }
 
-char* codepointutf8(int cp) {
-    int cps[] = {cp};
+char* codepointutf8(unsigned int cp) {
     static char out[8];
-    size_t inb = 4;
-    size_t outb = 7;
 
-
-    iconv_t cd = NULL;
-
-    cd = iconv_open("UTF-8", "UCS-4LE");
-    if (cd == (iconv_t) -1) {
-        printf("iconv_open ERROR\n");
-    }
-
-    char* inptr = (char*)cps;
-    char* outptr = out;
     memset(out,0,8);
-    size_t n = iconv(cd, &inptr, &inb, &outptr, &outb);
-    if( n == (size_t)-1) {
-        printf("iconv ERROR\n");
-    }
+    
+    wtf8_encode(cp, out);
+
     return out;
 }
 
