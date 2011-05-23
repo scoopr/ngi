@@ -2,6 +2,11 @@
 #define NGI_CONFIG_H
 
 
+#if defined(_MSC_VER) && !defined(__cplusplus)
+#define inline __inline
+#endif
+
+
 // #ifndef NGI_DONT_GUESS
 // 
 //     #ifdef __linux

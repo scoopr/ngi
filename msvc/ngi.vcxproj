@@ -42,6 +42,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NGI_WINDOW_WIN32;NGI_CONTEXT_WGL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -64,6 +65,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\ngi_application.c" />
+    <ClCompile Include="..\src\ngi_const.c" />
+    <ClCompile Include="..\src\ngi_context.c" />
     <ClCompile Include="..\src\ngi_context_egl.c" />
     <ClCompile Include="..\src\ngi_window.c" />
     <ClCompile Include="..\src\ngi_window_win32.c" />

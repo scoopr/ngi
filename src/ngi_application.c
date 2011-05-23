@@ -47,7 +47,7 @@ int ngi_application_wait_event(ngi_application* app, ngi_event_cb cb) {
 
     #ifdef NGI_WINDOW_WIN32
     if(app->type == ngi_wm_api_win32) {
-        ngi_application_win32_runloop_iteration(app);
+        ngi_application_win32_runloop_iteration(app,cb);
     }
     #endif
 

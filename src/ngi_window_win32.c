@@ -11,17 +11,62 @@
 
 #include <windows.h>
 
-
-#include "ngi/ngi_window.h"
-#include "ngi/ngi_context.h"
+#include "ngi/ngi.h"
 
 const char* NGI_WINDOW_CLASS_NAME="ngi";
+
+
+ngi_event_cb current_event_cb;
+
+
+#define bits(val,from,to) ( ((val) >> (from)) & ( (1 << (to) ) - 1 ) )
 
 LRESULT CALLBACK WndProc(   HWND    hWnd,
                 UINT    uMsg,
                 WPARAM  wParam,
                 LPARAM  lParam)
 {
+
+    double timestamp = GetMessageTime() / 1000.0;
+    
+    switch(uMsg) {
+        case WM_KEYUP:
+        case WM_KEYDOWN:
+        {
+            int repeats = bits(lParam, 0, 15);
+            // int scancode = bits(lParam, 16, 23);
+            // int extended = bits(lParam, 24, 24);
+            int prevstate = bits(lParam, 30, 30);
+
+            ngi_event ev;
+            ev.type = ngi_key_event;
+            ev.key.timestamp = timestamp;
+            ev.key.down = uMsg == WM_KEYDOWN;
+            ev.key.keycode = "todo";
+            ev.key.modifiers = 0; 
+            
+            current_event_cb(&ev);
+        }
+        
+        break;
+        
+        case WM_UNICHAR:
+        case WM_CHAR:
+        {
+
+            ngi_event ev;
+            ev.type = ngi_character_event;
+            ev.character.timestamp = timestamp;
+            ev.character.codepoint = wParam;
+            
+            current_event_cb(&ev);
+            
+        }
+
+        break;
+    }
+    
+    
     return DefWindowProc(hWnd,uMsg,wParam,lParam);
 }
 
@@ -54,11 +99,11 @@ int ngi_window_init_win32(ngi_application* app, ngi_window* win) {
 
 
     if(!hWnd) {
-        win->platform.iwnd = 0;
+        win->plat.iwnd = 0;
         return 0;
     }
 
-    win->platform.iwnd = (int)hWnd;
+    win->plat.iwnd = (int)hWnd;
 
     ShowWindow(hWnd,SW_SHOW);
     SetForegroundWindow(hWnd);
@@ -83,14 +128,19 @@ void ngi_application_init_win32(ngi_application* app) {
     wc.lpszClassName    = NGI_WINDOW_CLASS_NAME;
 
 
+//    UINT oldcp = GetConsoleOutputCP();
+    
+    SetConsoleOutputCP(CP_UTF8);
+
     if (!RegisterClass(&wc))
     {
 
     }
 }
 
-void ngi_application_win32_runloop_iteration(ngi_application* app) {
+void ngi_application_win32_runloop_iteration(ngi_application* app, ngi_event_cb cb) {
     MSG msg;
+    current_event_cb = cb;
     if (GetMessage(&msg,NULL,0,0))
     {
 
@@ -114,7 +164,7 @@ int ngi_context_wgl_init(ngi_context* ctx, ngi_window* win) {
     HGLRC hRC=NULL;
     HDC hDC=NULL;
 
-    HWND hWnd = (HWND)win->platform.iwnd;
+    HWND hWnd = (HWND)win->plat.iwnd;
     unsigned int PixelFormat;
 
     static  PIXELFORMATDESCRIPTOR pfd=
@@ -139,6 +189,8 @@ int ngi_context_wgl_init(ngi_context* ctx, ngi_window* win) {
         0, 0, 0
     };
 
+    ctx->type = ngi_context_api_wgl;
+    ctx->graphics = ngi_graphics_api_opengl;
 
     if (!(hDC=GetDC(hWnd))) {
         return 0;
