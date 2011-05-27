@@ -131,14 +131,14 @@ int ngi_application_wait_event_xlib(ngi_application* app, ngi_event_cb cb) {
             // KeySym ks = XkbKeycodeToKeysym ( app->plat.xlib.dpy, xev.xkey.keycode, group, level );
             // unsigned int mods = XkbKeysymToModifiers(app->plat.xlib.dpy, ks);
 
-            if(codepoint) {
-                ev.type = ngi_character_event;
-                ev.character.codepoint = codepoint;
-                ev.character.timestamp = timestamp;
-                cb(&ev);
-            }
+            // if(codepoint) {
+            //     ev.type = ngi_character_event;
+            //     ev.character.codepoint = codepoint;
+            //     ev.character.timestamp = timestamp;
+            //     cb(&ev);
+            // }
 
-            ev.type = ngi_key_event;
+            ev.type = xev.type == KeyPress ? ngi_key_down_event : ngi_key_up_event;
             ev.key.timestamp = timestamp;
             ev.key.down = xev.type == KeyPress;
             ev.key.keycode = NULL; // TODO

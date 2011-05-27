@@ -2,8 +2,10 @@
 #define NGI_EVENT_H
 
 typedef enum ngi_event_type_t {
-    ngi_key_event,
-    ngi_character_event,
+    ngi_key_down_event,
+    ngi_key_up_event,
+    ngi_text_event,
+    ngi_marked_text_event,
     ngi_mouse_move_event,
     ngi_mouse_button_event,
     ngi_touch_event,
@@ -23,17 +25,18 @@ typedef struct ngi_key_t {
 
     int down;
     const char* keycode;
+    unsigned int codepoint;
     int modifiers;
 } ngi_key;
 
-typedef struct ngi_character_t {
+typedef struct ngi_text_t {
     ngi_event_type type;
     double timestamp;
 
     int codepoint;
     int repeat;
     int modifiers;
-} ngi_character;
+} ngi_text;
 
 typedef struct ngi_mouse_move_t {
     ngi_event_type type;
@@ -120,7 +123,7 @@ typedef union ngi_event_tag {
     ngi_event_type type;
     
     ngi_key key;
-    ngi_character character;
+    ngi_text text;
     ngi_mouse_move mouse_move;
     ngi_mouse_button mouse_button;
 #if 0

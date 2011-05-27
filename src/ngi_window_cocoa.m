@@ -146,32 +146,25 @@ void ngi_application_cocoa_runloop_iteration(ngi_application* app, ngi_event_cb 
 
     ngi_event ev;
     memset(&ev,0,sizeof(ngi_event));
+
+    [NSApp sendEvent:event];
                        
     switch(event.type) {
         case NSKeyDown:
         case NSKeyUp:
         
-        ev.type = ngi_key_event;
+        ev.type = event.type == NSKeyDown ? ngi_key_down_event : ngi_key_up_event;
         ev.key.timestamp = event.timestamp;
         ev.key.down = event.type == NSKeyDown;
-        ev.key.keycode = NULL; // TODO
+        ev.key.keycode = "todo"; // TODO
         ev.key.modifiers = 0; // TODO
+        
+        if([event.characters length]>0) {
+            ev.key.codepoint = [event.characters characterAtIndex:0];
+        }
+
         cb(&ev);
 
-        if([event.characters length]>0) {
-            
-            ev.type = ngi_character_event;
-            ev.character.timestamp = event.timestamp;
-            ev.character.codepoint = [event.characters characterAtIndex:0];
-            ev.character.repeat = event.isARepeat;
-            cb(&ev);
-            
-        }
-            
-
-        
-        
-        
         break;
     }
 

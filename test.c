@@ -64,16 +64,17 @@ int done;
 int event(ngi_event* ev) {
     
     switch(ev->type) {
-        case ngi_key_event:
-        printf("<key: %f %s \t%d>\n", ev->character.timestamp, "todo" /* ev->key.keycode*/, ev->key.down);
-        break;
-        case ngi_character_event:
-        printf("<character: %f %s \tU+%04X>\n", ev->character.timestamp, codepointutf8(ev->character.codepoint), ev->character.codepoint);
-        
-        
-        if(ev->character.codepoint==27) {
+        case ngi_key_down_event:
+        case ngi_key_up_event:
+        printf("<key: %f, %s, %d, %s>\n", ev->key.timestamp, ev->key.keycode, ev->key.down, codepointutf8(ev->key.codepoint));
+        if(ev->key.codepoint==27) {
             done = 1;
         }
+        break;
+        case ngi_text_event:
+        printf("<text: %f %s \tU+%04X>\n", ev->text.timestamp, codepointutf8(ev->text.codepoint), ev->text.codepoint);
+        
+        
         break;
         
         
