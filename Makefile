@@ -67,10 +67,16 @@ ifeq ($(OSX),1)
 OBJ+=  $(SRC_M:.m=.o)
 endif
 
+ifeq ($(MAKECMDGOALS),clean)
+OBJ+=  $(SRC_M:.m=.o)
+endif
+
 SRC_TEST=test.c
 OBJ_TEST=$(SRC_TEST:.c=.o)
 
 CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic -ggdb -Werror
+# -arch i386
+#LDFLAGS+=-arch i386
 CFLAGS+=-std=c99
 
 
