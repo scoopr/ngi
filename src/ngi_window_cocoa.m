@@ -17,7 +17,6 @@
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     (void)aNotification;
-    exit(1);
 }
 
 
@@ -34,6 +33,12 @@ int ngi_application_init_cocoa(ngi_application *app) {
 
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
 
+    /* 
+      If ran outside of application bundle, system assumes a
+      command-line application or similiar. Tell system that we
+      are actually a gui application that likes to have a dock icon etc.
+      
+    */
     ProcessSerialNumber psn;
     GetCurrentProcess(&psn);
     TransformProcessType(&psn, kProcessTransformToForegroundApplication);
