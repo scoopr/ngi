@@ -39,7 +39,7 @@ LRESULT CALLBACK WndProc(   HWND    hWnd,
             int prevstate = bits(lParam, 30, 30);
 
             ngi_event ev;
-            ev.type = ngi_key_event;
+            ev.type = uMsg == WM_KEYDOWN ? ngi_key_down_event : ngi_key_up_event;
             ev.key.timestamp = timestamp;
             ev.key.down = uMsg == WM_KEYDOWN;
             ev.key.keycode = "todo";
@@ -54,12 +54,12 @@ LRESULT CALLBACK WndProc(   HWND    hWnd,
         case WM_CHAR:
         {
 
-            ngi_event ev;
-            ev.type = ngi_character_event;
-            ev.character.timestamp = timestamp;
-            ev.character.codepoint = wParam;
+//            ngi_event ev;
+//            ev.type = ngi_text_event;
+//            ev.text.timestamp = timestamp;
+//            ev.text.codepoint = wParam;
             
-            current_event_cb(&ev);
+//            current_event_cb(&ev);
             
         }
 
