@@ -7,4 +7,5 @@ msvc/Release
 *.o
 test
 a.out
+ngi.nib
 
