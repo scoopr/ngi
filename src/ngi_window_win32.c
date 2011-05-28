@@ -13,7 +13,7 @@
 
 #include "ngi/ngi.h"
 
-const char* NGI_WINDOW_CLASS_NAME="ngi";
+wchar_t* NGI_WINDOW_CLASS_NAME = L"ngi";
 
 
 ngi_event_cb current_event_cb;
@@ -47,13 +47,23 @@ LRESULT CALLBACK WndProc(   HWND    hWnd,
             
             current_event_cb(&ev);
         }
+        return 1;
         
+        case WM_IME_KEYUP:
+        case WM_IME_KEYDOWN:
+        printf("WIM_IME_KEY_\n");
         break;
-        
+
+        case WM_IME_CHAR:
+        printf("IME");
+        case WM_SYSCHAR:
+        printf("SYS");
         case WM_UNICHAR:
+        printf("UNI");
         case WM_CHAR:
         {
-
+            
+            printf("CHAR U+%0X\n",wParam);
 //            ngi_event ev;
 //            ev.type = ngi_text_event;
 //            ev.text.timestamp = timestamp;
@@ -62,7 +72,26 @@ LRESULT CALLBACK WndProc(   HWND    hWnd,
 //            current_event_cb(&ev);
             
         }
+        return 1;
+//        break;
+        case WM_IME_STARTCOMPOSITION:
+        printf("WM_IME_STARTCOMPOSITION\n");
+        break;
+        case WM_IME_COMPOSITION:
+        printf("WM_IME_COMPOSITION\n");
+        {
+            wchar_t *buf;
+            int bytes = ImmGetCompositionStringW(ImmGetContext(hWnd), GCS_COMPSTR, NULL, 0);
+            buf = _alloca(bytes+1);
+            memset(buf,0,bytes+1);
+            ImmGetCompositionStringW(ImmGetContext(hWnd), GCS_COMPSTR, buf, bytes);
 
+
+            
+        }
+        break;
+        case WM_IME_ENDCOMPOSITION:
+        printf("WM_IME_ENDCOMPOSITION\n");
         break;
     }
     
@@ -75,7 +104,7 @@ int ngi_window_init_win32(ngi_application* app, ngi_window* win) {
 
     HWND hWnd;
 
-    const char* title = "ngi window";
+    wchar_t* title = L"ngi window";
 
     DWORD dwExStyle=WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
     DWORD dwStyle=WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
@@ -86,7 +115,7 @@ int ngi_window_init_win32(ngi_application* app, ngi_window* win) {
 
 
 
-    hWnd=CreateWindowEx(dwExStyle,
+    hWnd=CreateWindowExW(dwExStyle,
                         NGI_WINDOW_CLASS_NAME,
                         title,
                         dwStyle,
@@ -113,7 +142,7 @@ int ngi_window_init_win32(ngi_application* app, ngi_window* win) {
 }
 
 void ngi_application_init_win32(ngi_application* app) {
-    WNDCLASS    wc;
+    WNDCLASSW    wc;
     HINSTANCE hInstance = GetModuleHandle(NULL);
 
     wc.style        = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
@@ -132,7 +161,7 @@ void ngi_application_init_win32(ngi_application* app) {
     
     SetConsoleOutputCP(CP_UTF8);
 
-    if (!RegisterClass(&wc))
+    if (!RegisterClassW(&wc))
     {
 
     }
@@ -141,7 +170,7 @@ void ngi_application_init_win32(ngi_application* app) {
 void ngi_application_win32_runloop_iteration(ngi_application* app, ngi_event_cb cb) {
     MSG msg;
     current_event_cb = cb;
-    if (GetMessage(&msg,NULL,0,0))
+    if (GetMessageW(&msg,NULL,0,0))
     {
 
         if (msg.message==WM_QUIT)
@@ -151,7 +180,7 @@ void ngi_application_win32_runloop_iteration(ngi_application* app, ngi_event_cb 
         {
 
             TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            DispatchMessageW(&msg);
         }
     }
 
