@@ -139,7 +139,8 @@ int ngi_application_wait_event_xlib(ngi_application* app, ngi_event_cb cb) {
             // }
 
             ev.type = xev.type == KeyPress ? ngi_key_down_event : ngi_key_up_event;
-            ev.key.timestamp = timestamp;
+            ev.common.timestamp = timestamp;
+            ev.common.window = win;
             ev.key.down = xev.type == KeyPress;
             ev.key.keycode = "todo"; // TODO
             ev.key.codepoint = codepoint;

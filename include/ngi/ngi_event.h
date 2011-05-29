@@ -1,6 +1,8 @@
 #ifndef NGI_EVENT_H
 #define NGI_EVENT_H
 
+
+
 typedef enum ngi_event_type_t {
     ngi_key_down_event,
     ngi_key_up_event,
@@ -18,10 +20,14 @@ typedef enum ngi_event_type_t {
     ngi_custom_event,
 } ngi_event_type;
 
+typedef struct ngi_common_event_t {
+    ngi_event_type type;
+    struct ngi_window_tag* window;
+    double timestamp;
+} ngi_common_event;
 
 typedef struct ngi_key_t {
-    ngi_event_type type;
-    double timestamp;
+    ngi_common_event common;
 
     int down;
     const char* keycode;
@@ -30,8 +36,7 @@ typedef struct ngi_key_t {
 } ngi_key;
 
 typedef struct ngi_text_t {
-    ngi_event_type type;
-    double timestamp;
+    ngi_common_event common;
 
     int codepoint;
     int repeat;
@@ -39,16 +44,14 @@ typedef struct ngi_text_t {
 } ngi_text;
 
 typedef struct ngi_mouse_move_t {
-    ngi_event_type type;
-    double timestamp;
+    ngi_common_event common;
 
     float x,y;
     float dx,dy;
 } ngi_mouse_move;
 
 typedef struct ngi_mouse_button_t {
-    ngi_event_type type;
-    double timestamp;
+    ngi_common_event common;
 
     float x,y;
     int button;
@@ -57,8 +60,7 @@ typedef struct ngi_mouse_button_t {
 } ngi_mouse_button;
 #if 0
 typedef struct ngi_touch_t {
-    ngi_event_type type;
-    double timestamp;
+    ngi_common_event common;
 
     float x, y;
     float dx,dy;
@@ -66,30 +68,26 @@ typedef struct ngi_touch_t {
 } ngi_touch;
 
 typedef struct ngi_scroll_t {
-    ngi_event_type type;
-    double timestamp;
+    ngi_common_event common;
 
     float dx,dy,dz;
 } ngi_scroll;
 
 typedef struct ngi_resize_t {
-    ngi_event_type type;
-    double timestamp;
+    ngi_common_event common;
 
     int width, height;
 } ngi_resize;
 
 typedef struct ngi_focus_t {
-    ngi_event_type type;
-    double timestamp;
+    ngi_common_event common;
 
     int gain;
 } ngi_focus;
 
 
 typedef struct ngi_custom_t {
-    ngi_event_type type;
-    double timestamp;
+    ngi_common_event common;
 
     const char* type;
     void* data;
@@ -104,8 +102,7 @@ typedef enum ngi_lifecycle_state_t {
 } ngi_lifecycle_state;
 
 typedef struct ngi_lifecycle_event_t {
-    ngi_event_type type;
-    double timestamp;
+    ngi_common_event common;
     
     ngi_lifecycle_state state;
     
@@ -119,8 +116,10 @@ typedef struct ngi_orientation_t {
 
 typedef union ngi_event_tag {
 
-    // As this is an union, this needs to be first on every struct as well.
+    /* As this is an union, this needs to be first on every struct as well. */
     ngi_event_type type;
+
+    ngi_common_event common;
     
     ngi_key key;
     ngi_text text;

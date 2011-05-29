@@ -66,13 +66,13 @@ int event(ngi_event* ev) {
     switch(ev->type) {
         case ngi_key_down_event:
         case ngi_key_up_event:
-        printf("<key: %f, %s, %d, %s>\n", ev->key.timestamp, ev->key.keycode, ev->key.down, codepointutf8(ev->key.codepoint));
+        printf("<key: %f, %s, %d, %s>\n", ev->common.timestamp, ev->key.keycode, ev->key.down, codepointutf8(ev->key.codepoint));
         if(ev->key.codepoint==27) {
             done = 1;
         }
         break;
         case ngi_text_event:
-        printf("<text: %f %s \tU+%04X>\n", ev->text.timestamp, codepointutf8(ev->text.codepoint), ev->text.codepoint);
+        printf("<text: %f %s \tU+%04X>\n", ev->common.timestamp, codepointutf8(ev->text.codepoint), ev->text.codepoint);
         
         
         break;
