@@ -1,10 +1,14 @@
 #include "ngi/ngi.h"
 
 #ifdef NGI_WINDOW_XLIB
+
 #include <X11/Xlib.h>
-#endif
+#include <X11/Xresource.h>
+#include <X11/Xutil.h>
+
 
 #include "../../wtf8/wtf8.h"
+
 
 #include <stdio.h>
 #include <sys/time.h>
@@ -32,7 +36,7 @@ int ngi_application_init_xlib(ngi_application* app) {
         return 0;
     }
     
-    
+    app->plat.xlib.context = XUniqueContext();
     
     
     app->first_window = NULL;
@@ -87,7 +91,11 @@ int ngi_application_wait_event_xlib(ngi_application* app, ngi_event_cb cb) {
 
     /*int filtered =*/ XFilterEvent(&xev, None);
 
-    ngi_window* win = find_window(app, xev.xany.window);
+    // ngi_window* win = find_window(app, xev.xany.window);
+    ngi_window* win = NULL;
+    XPointer winptr = NULL;
+    XFindContext(app->plat.xlib.dpy, xev.xany.window, app->plat.xlib.context, &winptr);
+    win = (ngi_window*)winptr;
 
     switch(xev.type) {
         case KeyPress:
@@ -158,3 +166,6 @@ int ngi_application_wait_event_xlib(ngi_application* app, ngi_event_cb cb) {
     return 1;
 }
 
+
+
+#endif

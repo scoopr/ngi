@@ -6,6 +6,8 @@
 #include "ngi/ngi.h"
 
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
+
 #include <string.h>
 #include <stdio.h>
 
@@ -55,8 +57,11 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
                                       ); 
     
     xwin = (Window)win->plat.xlib.win;
-    printf("xwin: %p\n",(void*)xwin);
+
+    XSaveContext(app->plat.xlib.dpy, xwin, app->plat.xlib.context, (XPointer)win);
+
     #if 0
+    printf("xwin: %p  (ngi win %p)\n",(void*)xwin, (void*)win);
     XWindowChanges xwc;
     memset(&xwc,0,sizeof(XWindowChanges));
     XConfigureWindow(app->xlib_dpy, xwin, 0, &xwc);

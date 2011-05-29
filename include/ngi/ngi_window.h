@@ -18,6 +18,8 @@ typedef struct ngi_window_tag {
         } xlib;
     } plat;
     
+    void *userdata;
+    
     struct ngi_window_tag* next_window;
 } ngi_window;
 
