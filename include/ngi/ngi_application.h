@@ -7,11 +7,11 @@ extern "C" {
 
     // typedef int (*ngi_event_cb)(ngi_event* ev);
 
-typedef struct {
+typedef struct ngi_application_tag {
     const char* type;
 
     union {
-        struct {
+        struct xlib_tag {
             void *dpy;
             void *xim;
             unsigned int context;

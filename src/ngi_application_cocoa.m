@@ -5,6 +5,10 @@
 
 #import <Cocoa/Cocoa.h>
 
+
+#include "ngi_window_cocoa.h"
+
+
 @interface NGIApplication : NSApplication {
     int dummy;
 }
@@ -73,6 +77,7 @@ void ngi_application_cocoa_runloop_iteration(ngi_application* app, ngi_event_cb 
 
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
 
+
     int blocking=1;
     NSDate* limitDate = nil;
     if(blocking) limitDate = [NSDate distantFuture];
@@ -93,16 +98,23 @@ void ngi_application_cocoa_runloop_iteration(ngi_application* app, ngi_event_cb 
 
     ngi_event ev;
     memset(&ev,0,sizeof(ngi_event));
-
     [NSApp sendEvent:event];
-                       
+
+    NSWindow* nswin = event.window;
+    ngi_window* win = NULL;
+    if([nswin isKindOfClass:[NGIWindow class]]) {
+        NGIWindow* ngiwin = (NGIWindow*)nswin;
+        win = ngiwin.view.win;
+    }
+
+    ev.common.window = win;
+
     switch(event.type) {
         case NSKeyDown:
         case NSKeyUp:
         
         ev.type = event.type == NSKeyDown ? ngi_key_down_event : ngi_key_up_event;
         ev.common.timestamp = event.timestamp;
-        ev.common.window = NULL;
         ev.key.down = event.type == NSKeyDown;
         ev.key.keycode = "todo"; // TODO
         ev.key.modifiers = 0; // TODO

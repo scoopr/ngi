@@ -8,29 +8,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-
-
-
-@interface NGIView : NSView <NSTextInputClient> {
-
-    NSTextInputContext *inputContext;
-    BOOL activeIME;
-    ngi_window* win;
-    
-}
-@property ngi_window* win;
-@end
-
-
-@interface NGIWindow : NSWindow <NSWindowDelegate> {
-    NGIView* view;
-    NSOpenGLContext* oglContext;
-}
-
-@property (assign) NGIView* view;
-@property (assign) NSOpenGLContext* oglContext;
-
-@end
+#include "ngi_window_cocoa.h"
 
 
 
@@ -226,7 +204,6 @@ int ngi_window_init_cocoa(ngi_application *app, ngi_window* win) {
         [pool drain];
         return 0;
     }
-
 
     NGIWindow* window = win->plat.pwnd;
     
