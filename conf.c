@@ -19,7 +19,7 @@
 #include <GL/gl.h>
 #endif
 
-#ifdef TEST_X11
+#ifdef TEST_XLIB
 #include <X11/Xlib.h>
 #endif
 

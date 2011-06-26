@@ -38,7 +38,7 @@ else
 OPENGL=0
 endif
 
-ifeq ($(shell $(TEST_CC) -L/usr/X11/lib -lX11 conf.c -DTEST_XLIB 2>&1),)
+ifeq ($(shell $(TEST_CC) -L/usr/lib/X11 -L/usr/X11/lib -lX11 conf.c -DTEST_XLIB ),)
 XLIB=1
 else
 XLIB=0
@@ -81,7 +81,7 @@ CFLAGS+=-std=c99
 
 
 ifeq ($(XLIB),1)
-LDFLAGS+= -L/usr/X11/lib -lX11
+LDFLAGS+= -L/usr/lib/X11 -L/usr/X11/lib -lX11
 CPPFLAGS+= -DNGI_WINDOW_XLIB
 # -lGL
 endif
