@@ -213,6 +213,9 @@ int ngi_window_init_cocoa(ngi_application *app, ngi_window* win) {
     
     window.view.win = win;
     
+    win->width = window.frame.size.width;
+    win->height = window.frame.size.height;
+    
     [pool drain];
     return 1;
 }

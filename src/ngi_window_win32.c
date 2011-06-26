@@ -113,6 +113,7 @@ int ngi_window_init_win32(ngi_application* app, ngi_window* win) {
     int height = 100;
     HINSTANCE hInstance = GetModuleHandle(NULL);
 
+    RECT r;
 
 
     hWnd=CreateWindowExW(dwExStyle,
@@ -133,6 +134,11 @@ int ngi_window_init_win32(ngi_application* app, ngi_window* win) {
     }
 
     win->plat.iwnd = (int)hWnd;
+
+    if(GetClientRect(hWnd, &r)) {
+        win->width = r.right;
+        win->height = r.bottom;
+    }
 
     ShowWindow(hWnd,SW_SHOW);
     SetForegroundWindow(hWnd);

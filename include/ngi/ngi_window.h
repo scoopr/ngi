@@ -20,6 +20,8 @@ typedef struct ngi_window_tag {
     
     void *userdata;
     
+    int width, height;
+    
     struct ngi_window_tag* next_window;
 } ngi_window;
 
