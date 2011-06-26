@@ -40,7 +40,7 @@ LRESULT CALLBACK WndProc(   HWND    hWnd,
 
             ngi_event ev;
             ev.type = uMsg == WM_KEYDOWN ? ngi_key_down_event : ngi_key_up_event;
-            ev.key.timestamp = timestamp;
+            ev.common.timestamp = timestamp;
             ev.key.down = uMsg == WM_KEYDOWN;
             ev.key.keycode = "todo";
             ev.key.modifiers = 0; 
