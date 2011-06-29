@@ -71,8 +71,8 @@ ifeq ($(MAKECMDGOALS),clean)
 OBJ+=  $(SRC_M:.m=.o)
 endif
 
-SRC_TEST=test.c
-OBJ_TEST=$(SRC_TEST:.c=.o)
+SRC_PROBE=probe/main.c
+OBJ_PROBE=$(SRC_PROBE:.c=.o)
 
 CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic -ggdb -Werror
 # -arch i386
@@ -112,27 +112,27 @@ LDFLAGS+= -lGL
 CPPFLAGS+= -DNGI_RENDER_API_OPENGL
 endif
 
-run: test
-	./test
+run: probe/probe
+	./probe/probe
 
 ifeq ($(OSX),1)
 LDFLAGS+= -framework Cocoa -framework OpenGL -liconv
 CPPFLAGS+= -DNGI_RENDER_API_OPENGL -DNGI_CONTEXT_COCOA -DNGI_WINDOW_COCOA
 .PHONY: resources
 resources: ngi.nib
-test: | resources
+probe/probe: | resources
 ngi.nib: ngi.xib
 	ibtool --compile ngi.nib ngi.xib
 endif
 
 
-test: $(OBJ) $(OBJ_TEST)
+probe/probe: $(OBJ) $(OBJ_PROBE)
 	$(LINK.c) -o $@ $^
 
 
 
 clean:
-	$(RM) $(OBJ) $(OBJ_TEST) test
+	$(RM) $(OBJ) $(OBJ_PROBE) probe/probe
 
 
 
