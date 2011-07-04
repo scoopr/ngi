@@ -13,6 +13,7 @@
 
 #include "../../wtf8/wtf8.h"
 
+#include "render.h"
 #include "render_opengl.h"
 
 
@@ -72,6 +73,7 @@ int event(ngi_event* ev) {
 
 const unsigned char white[]={255,255,255,255};
 
+struct render* rend = &render_opengl;
 
 void drawCorners(int w, int h) {
 
@@ -79,25 +81,25 @@ void drawCorners(int w, int h) {
     int sw = 5;
     int lw = 20;
 
-    render_opengl_quad(m, m, sw, lw, white);
-    render_opengl_quad(m, m, lw, sw, white);
+    rend->quad(m, m, sw, lw, white);
+    rend->quad(m, m, lw, sw, white);
     
-    render_opengl_quad(w-m-sw, m, sw, lw, white);
-    render_opengl_quad(w-m-lw, m, lw, sw, white);
+    rend->quad(w-m-sw, m, sw, lw, white);
+    rend->quad(w-m-lw, m, lw, sw, white);
 
-    render_opengl_quad(w-m-sw, h-lw-m, sw, lw, white);
-    render_opengl_quad(w-m-lw, h-sw-m, lw, sw, white);
+    rend->quad(w-m-sw, h-lw-m, sw, lw, white);
+    rend->quad(w-m-lw, h-sw-m, lw, sw, white);
 
-    render_opengl_quad(m, h-lw-m, sw, lw, white);
-    render_opengl_quad(m, h-sw-m, lw, sw, white);
+    rend->quad(m, h-lw-m, sw, lw, white);
+    rend->quad(m, h-sw-m, lw, sw, white);
     
 }
 
 void draw(int w, int h) {
     
-    render_opengl_init();
-    render_opengl_resize(w,h);
-    render_opengl_clear();
+    rend->init();
+    rend->resize(w,h);
+    rend->clear();
 
     drawCorners(w,h);
     
