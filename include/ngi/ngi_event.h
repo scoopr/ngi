@@ -138,6 +138,16 @@ typedef union ngi_event_tag {
 } ngi_event;
 
 
+static inline const char* ngi_event_name(ngi_event_type type) {
+    switch(type) {
+        case ngi_key_down_event: return ngi_event_key_down;
+        case ngi_key_up_event: return ngi_event_key_up;
+        default:
+        return "unknown event type";
+    }
+    return NULL;
+}
+
 
 typedef int (*ngi_event_cb)(ngi_event* ev);
 

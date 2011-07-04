@@ -47,7 +47,7 @@ void check_(int succ, const char* str) {
 #define check(x) check_( (x), #x)
 int done;
 int event(ngi_event* ev) {
-    
+    printf("Got event %s\n", ngi_event_name(ev->type));
     switch(ev->type) {
         case ngi_key_down_event:
         case ngi_key_up_event:
@@ -124,6 +124,8 @@ int main() {
 
     check( ngi_application_init(&app) );
 
+    app.event_callback = event;
+
     printf("[NGI TEST] wm api: %s\n", app.type);
     
     check( ngi_window_init(&app, &win, &config) );
@@ -146,7 +148,7 @@ int main() {
 
     done = 0;
     while(!done) {
-        ngi_application_wait_event(&app, event);
+        ngi_application_wait_event(&app);
 
 
         draw(win.width, win.height);

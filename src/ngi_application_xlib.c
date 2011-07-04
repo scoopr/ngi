@@ -77,7 +77,7 @@ double get_timestamp() {
     return tv.tv_sec + tv.tv_usec/10000000.0;
 }
 
-int ngi_application_wait_event_xlib(ngi_application* app, ngi_event_cb cb) {
+int ngi_application_wait_event_xlib(ngi_application* app) {
 
     
     XEvent xev;
@@ -97,6 +97,8 @@ int ngi_application_wait_event_xlib(ngi_application* app, ngi_event_cb cb) {
     XFindContext(app->plat.xlib.dpy, xev.xany.window, app->plat.xlib.context, &winptr);
     win = (ngi_window*)winptr;
 
+    ngi_event_cb cb = app->event_callback;
+    
     switch(xev.type) {
         case KeyPress:
         case KeyRelease:

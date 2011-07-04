@@ -72,7 +72,7 @@ int ngi_application_init_cocoa(ngi_application *app) {
 
 
 
-void ngi_application_cocoa_runloop_iteration(ngi_application* app, ngi_event_cb cb) {
+void ngi_application_cocoa_runloop_iteration(ngi_application* app) {
     (void)app;
 
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
@@ -108,13 +108,13 @@ void ngi_application_cocoa_runloop_iteration(ngi_application* app, ngi_event_cb 
     }
 
     ev.common.window = win;
+    ev.common.timestamp = event.timestamp;
 
     switch(event.type) {
         case NSKeyDown:
         case NSKeyUp:
         
         ev.type = event.type == NSKeyDown ? ngi_key_down_event : ngi_key_up_event;
-        ev.common.timestamp = event.timestamp;
         ev.key.down = event.type == NSKeyDown;
         ev.key.keycode = "todo"; // TODO
         ev.key.modifiers = 0; // TODO
@@ -123,7 +123,7 @@ void ngi_application_cocoa_runloop_iteration(ngi_application* app, ngi_event_cb 
             ev.key.codepoint = [event.characters characterAtIndex:0];
         }
 
-        cb(&ev);
+        ngi_post_event(app, &ev);
 
         break;
     }

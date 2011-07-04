@@ -136,6 +136,19 @@
         
 }
 
+- (void)drawRect:(NSRect)dirtyRect {
+    (void)dirtyRect;
+    NSLog(@"drawRect:");
+    
+}
+
+- (void)setFrameSize:(NSSize)newSize {
+    (void)newSize;
+//    [self display];
+//    [self setNeedsDisplay:YES];
+    NSLog(@"setFrameSize");
+    [super setFrameSize:newSize];
+}
 
 
 @end
@@ -210,7 +223,7 @@ int ngi_window_init_cocoa(ngi_application *app, ngi_window* win) {
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
 
     
-    NSRect rect = { { 100, 100, }, { 200, 200} };
+    NSRect rect = { { 100, 100, }, { 640, 480} };
     win->plat.pwnd = [[NGIWindow alloc] initWithRect:rect];
     win->app = app;
 

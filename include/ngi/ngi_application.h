@@ -10,6 +10,8 @@ extern "C" {
 typedef struct ngi_application_tag {
     const char* type;
 
+    ngi_event_cb event_callback;
+
     union {
         struct xlib_tag {
             void *dpy;
@@ -28,18 +30,20 @@ typedef struct ngi_application_tag {
 int ngi_application_init(ngi_application* app);
 int ngi_application_deinit(ngi_application* app);
 //int ngi_application_run(ngi_application* app);
-int ngi_application_wait_event(ngi_application* app, ngi_event_cb cb);
+int ngi_application_wait_event(ngi_application* app);
 
 
 int ngi_application_init_cocoa();
-void ngi_application_cocoa_runloop_iteration(ngi_application* app, ngi_event_cb cb);
+void ngi_application_cocoa_runloop_iteration(ngi_application* app);
 
 void ngi_application_init_win32();
-void ngi_application_win32_runloop_iteration(ngi_application* app, ngi_event_cb cb);
+void ngi_application_win32_runloop_iteration(ngi_application* app);
 
 int ngi_application_init_xlib(ngi_application* app);
 void ngi_application_deinit_xlib(ngi_application *app);
-int ngi_application_wait_event_xlib(ngi_application* app, ngi_event_cb cb);
+int ngi_application_wait_event_xlib(ngi_application* app);
+
+int ngi_post_event(ngi_application* app, ngi_event* ev);
 
 
 #ifdef __cplusplus
