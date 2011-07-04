@@ -177,10 +177,24 @@
 }
 
 
+- (void)windowDidResize:(NSNotification *)notification {
+    (void)notification;
+        
+    view.win->width = view.frame.size.width;
+    view.win->height = view.frame.size.height;
+    
+}
 
 
 - (BOOL)canBecomeKeyWindow { return YES; }
 - (BOOL)canBecomeMainWindow { return YES; }
+
+- (BOOL)preservesContentDuringLiveResize {
+    return NO;
+}
+
+
+
 
 
 @end
@@ -213,8 +227,8 @@ int ngi_window_init_cocoa(ngi_application *app, ngi_window* win) {
     
     window.view.win = win;
     
-    win->width = window.frame.size.width;
-    win->height = window.frame.size.height;
+    win->width = window.view.frame.size.width;
+    win->height = window.view.frame.size.height;
     
     [pool drain];
     return 1;

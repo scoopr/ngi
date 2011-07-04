@@ -10,26 +10,11 @@
 #include "ngi/ngi.h"
 
 
-#ifdef NGI_WINDOW_COCOA
-#include <OpenGL/gl.h>
-#endif
-
-#ifdef NGI_CONTEXT_EGL
-#include <GLES2/gl2.h>
-#endif
-
-#ifdef NGI_CONTEXT_GLX
-#include <GL/gl.h>
-#endif
-
-#ifdef NGI_WINDOW_WIN32
-#define VC_EXTRALEAN
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <GL/gl.h>
-#endif
 
 #include "../../wtf8/wtf8.h"
+
+#include "render_opengl.h"
+
 
 char* codepointhex(int cp) {
     static char out[4*2];
@@ -85,6 +70,40 @@ int event(ngi_event* ev) {
 }
 
 
+const unsigned char white[]={255,255,255,255};
+
+
+void drawCorners(int w, int h) {
+
+    int m = 5;
+    int sw = 5;
+    int lw = 20;
+
+    render_opengl_quad(m, m, sw, lw, white);
+    render_opengl_quad(m, m, lw, sw, white);
+    
+    render_opengl_quad(w-m-sw, m, sw, lw, white);
+    render_opengl_quad(w-m-lw, m, lw, sw, white);
+
+    render_opengl_quad(w-m-sw, h-lw-m, sw, lw, white);
+    render_opengl_quad(w-m-lw, h-sw-m, lw, sw, white);
+
+    render_opengl_quad(m, h-lw-m, sw, lw, white);
+    render_opengl_quad(m, h-sw-m, lw, sw, white);
+    
+}
+
+void draw(int w, int h) {
+    
+    render_opengl_init();
+    render_opengl_resize(w,h);
+    render_opengl_clear();
+
+    drawCorners(w,h);
+    
+}
+
+
 int main() {
 
     
@@ -121,15 +140,18 @@ int main() {
     
     // printf("[NGI TEST] ngi_context_*_init: %d\n", succ);
     
-    glClearColor(1.0f, 0,0,0);
-    glClear(GL_COLOR_BUFFER_BIT);
-
+    draw(win.width, win.height);
     check( ngi_context_swap(&ctx) );
 
 
     done = 0;
     while(!done) {
         ngi_application_wait_event(&app, event);
+
+
+        draw(win.width, win.height);
+        check( ngi_context_swap(&ctx) );
+
     }
 
 

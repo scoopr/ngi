@@ -71,7 +71,7 @@ ifeq ($(MAKECMDGOALS),clean)
 OBJ+=  $(SRC_M:.m=.o)
 endif
 
-SRC_PROBE=probe/main.c
+SRC_PROBE=$(wildcard probe/*.c)
 OBJ_PROBE=$(SRC_PROBE:.c=.o)
 
 CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic -ggdb -Werror
