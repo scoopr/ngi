@@ -64,6 +64,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\probe\main.c" />
+    <ClCompile Include="..\probe\render_opengl.c" />
     <ClCompile Include="..\src\ngi_application.c" />
     <ClCompile Include="..\src\ngi_const.c" />
     <ClCompile Include="..\src\ngi_context.c" />
@@ -71,13 +73,13 @@
     <ClCompile Include="..\src\ngi_window.c" />
     <ClCompile Include="..\src\ngi_window_win32.c" />
     <ClCompile Include="..\src\ngi_window_xlib.c" />
-    <ClCompile Include="..\test.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\ngi\ngi_application.h" />
     <ClInclude Include="..\include\ngi\ngi_config.h" />
     <ClInclude Include="..\include\ngi\ngi_context.h" />
     <ClInclude Include="..\include\ngi\ngi_window.h" />
+    <ClInclude Include="..\probe\render_opengl.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

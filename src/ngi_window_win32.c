@@ -15,6 +15,7 @@
 
 wchar_t* NGI_WINDOW_CLASS_NAME = L"ngi";
 
+#include <stdio.h>
 
 ngi_event_cb current_event_cb;
 
@@ -28,7 +29,8 @@ LRESULT CALLBACK WndProc(   HWND    hWnd,
 {
 
     double timestamp = GetMessageTime() / 1000.0;
-    
+    ngi_window *win = GetWindowLongPtr(hWnd, GWLP_USERDATA);
+
     switch(uMsg) {
         case WM_KEYUP:
         case WM_KEYDOWN:
@@ -93,6 +95,19 @@ LRESULT CALLBACK WndProc(   HWND    hWnd,
         case WM_IME_ENDCOMPOSITION:
         printf("WM_IME_ENDCOMPOSITION\n");
         break;
+
+
+        case WM_SIZE:
+        {
+            RECT r;
+            if(GetClientRect(hWnd, &r)) {
+                win->width = r.right;
+                win->height = r.bottom;
+            }
+        }
+
+
+        break;
     }
     
     
@@ -132,6 +147,8 @@ int ngi_window_init_win32(ngi_application* app, ngi_window* win) {
         win->plat.iwnd = 0;
         return 0;
     }
+
+    SetWindowLongPtr(hWnd, GWLP_USERDATA, win);
 
     win->plat.iwnd = (int)hWnd;
 
@@ -173,9 +190,9 @@ void ngi_application_init_win32(ngi_application* app) {
     }
 }
 
-void ngi_application_win32_runloop_iteration(ngi_application* app, ngi_event_cb cb) {
+void ngi_application_win32_runloop_iteration(ngi_application* app) {
     MSG msg;
-    current_event_cb = cb;
+    current_event_cb = app->event_callback;
     if (GetMessageW(&msg,NULL,0,0))
     {
 

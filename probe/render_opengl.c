@@ -43,8 +43,6 @@ void render_opengl_clear() {
 
 void render_opengl_quad(float x, float y, float w, float h, const unsigned char color[4]) {
     
-    glColor4ubv(color);
-
     float verts[] = {
         x,y,
         x,y+h,
@@ -54,6 +52,8 @@ void render_opengl_quad(float x, float y, float w, float h, const unsigned char 
         x,y
     };
     
+    glColor4ubv(color);
+
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(2, GL_FLOAT, 0, verts);
     
