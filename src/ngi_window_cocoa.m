@@ -11,6 +11,21 @@
 #include "ngi_window_cocoa.h"
 
 
+#include <mach/mach_time.h>
+
+
+
+double ngi_get_time() {
+    static mach_timebase_info_data_t    sTimebaseInfo;
+    if ( sTimebaseInfo.denom == 0 ) {
+        (void) mach_timebase_info(&sTimebaseInfo);
+    }
+    
+    uint64_t t = mach_absolute_time();
+    
+    return (double)t * sTimebaseInfo.numer / sTimebaseInfo.denom / 1000000000.0;
+}
+
 
 
 @implementation NGIView
@@ -138,17 +153,22 @@
 
 - (void)drawRect:(NSRect)dirtyRect {
     (void)dirtyRect;
-    NSLog(@"drawRect:");
-    
+
+    if(!win) return;
+
+    ngi_event ev;
+    memset(&ev,0,sizeof(ngi_event));
+
+    ev.type = ngi_redraw_event;
+    ev.common.window = win;
+    ev.common.timestamp = ngi_get_time();
+
+    NGIWindow *w = win->plat.pwnd;
+    [w update];
+
+    ngi_post_event(win->app, &ev);
 }
 
-- (void)setFrameSize:(NSSize)newSize {
-    (void)newSize;
-//    [self display];
-//    [self setNeedsDisplay:YES];
-    NSLog(@"setFrameSize");
-    [super setFrameSize:newSize];
-}
 
 
 @end
