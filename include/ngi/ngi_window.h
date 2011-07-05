@@ -17,6 +17,8 @@ typedef struct ngi_window_tag {
             void* xic;
         } xlib;
     } plat;
+
+    struct ngi_context_tag *context;
     
     void *userdata;
     

@@ -267,6 +267,7 @@ int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win) {
     NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pixelFormat shareContext:nil];
 
     NGIWindow *w = win->plat.pwnd;
+    win->context = ctx;
     w.oglContext = context;
     [context makeCurrentContext];
     [context setView:w.view];
