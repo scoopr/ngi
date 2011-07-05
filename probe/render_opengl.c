@@ -33,6 +33,7 @@ void render_opengl_resize(int w, int h) {
     glLoadIdentity();
     glOrtho(0,w,0,h,-1,1);
     glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
     glViewport(0,0,w,h);
 }
 

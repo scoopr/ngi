@@ -47,29 +47,6 @@ void check_(int succ, const char* str) {
 
 #define check(x) check_( (x), #x)
 int done;
-int event(ngi_event* ev) {
-    printf("Got event %s\n", ngi_event_name(ev->type));
-    switch(ev->type) {
-        case ngi_key_down_event:
-        case ngi_key_up_event:
-        printf("<key: %f, %s, %d, %s>\n", ev->common.timestamp, ev->key.keycode, ev->key.down, codepointutf8(ev->key.codepoint));
-        if(ev->key.codepoint==27) {
-            done = 1;
-        }
-        break;
-        case ngi_text_event:
-        printf("<text: %f %s \tU+%04X>\n", ev->common.timestamp, codepointutf8(ev->text.codepoint), ev->text.codepoint);
-        
-        
-        break;
-        
-        
-        default: break;
-    }
-
-    return 0;
-}
-
 
 const unsigned char white[]={255,255,255,255};
 
@@ -104,6 +81,36 @@ void draw(int w, int h) {
     drawCorners(w,h);
     
 }
+
+
+int event(ngi_event* ev) {
+    printf("[event %s  time:%f]\n", ngi_event_name(ev->type), ev->common.timestamp);
+    switch(ev->type) {
+        case ngi_key_down_event:
+        case ngi_key_up_event:
+        printf("<key: %f, %s, %d, %s>\n", ev->common.timestamp, ev->key.keycode, ev->key.down, codepointutf8(ev->key.codepoint));
+        if(ev->key.codepoint==27) {
+            done = 1;
+        }
+        break;
+        case ngi_text_event:
+        printf("<text: %f %s \tU+%04X>\n", ev->common.timestamp, codepointutf8(ev->text.codepoint), ev->text.codepoint);
+        
+        
+        break;
+        
+        case ngi_redraw_event:
+        draw(ev->common.window->width, ev->common.window->height);
+        check( ngi_context_swap(ev->common.window->context) );
+        break;
+        
+        default: break;
+    }
+
+    return 0;
+}
+
+
 
 
 int main() {
