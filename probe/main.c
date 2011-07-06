@@ -54,9 +54,9 @@ struct render* rend = &render_opengl;
 
 void drawCorners(int w, int h) {
 
-    int m = 5;
-    int sw = 5;
-    int lw = 20;
+    float m = 5;
+    float sw = 5;
+    float lw = 20;
 
     rend->quad(m, m, sw, lw, white);
     rend->quad(m, m, lw, sw, white);
