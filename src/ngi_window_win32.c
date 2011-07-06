@@ -29,7 +29,7 @@ LRESULT CALLBACK WndProc(   HWND    hWnd,
 {
 
     double timestamp = GetMessageTime() / 1000.0;
-    ngi_window *win = GetWindowLongPtr(hWnd, GWLP_USERDATA);
+    ngi_window *win = (ngi_window*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
 
     switch(uMsg) {
         case WM_KEYUP:
@@ -42,12 +42,13 @@ LRESULT CALLBACK WndProc(   HWND    hWnd,
 
             ngi_event ev;
             ev.type = uMsg == WM_KEYDOWN ? ngi_key_down_event : ngi_key_up_event;
+            ev.common.window = win;
             ev.common.timestamp = timestamp;
             ev.key.down = uMsg == WM_KEYDOWN;
             ev.key.keycode = "todo";
             ev.key.modifiers = 0; 
             
-            current_event_cb(&ev);
+            ngi_post_event(win->app, &ev);
         }
         return 1;
         
@@ -103,11 +104,30 @@ LRESULT CALLBACK WndProc(   HWND    hWnd,
             if(GetClientRect(hWnd, &r)) {
                 win->width = r.right;
                 win->height = r.bottom;
+
             }
+            return 0;
         }
+        
+        case WM_PAINT:
+        {
+            ngi_event ev;
+            ev.type = ngi_redraw_event;
+            ev.common.window = win;
+            ev.common.timestamp = GetTickCount()/1000.0;
+                        
+            ValidateRect(hWnd, NULL);
 
+            ngi_post_event(win->app, &ev);
 
+            return 0;
+        }
         break;
+        
+        case WM_ERASEBKGND:
+        return 1;
+        break;
+
     }
     
     
@@ -121,7 +141,7 @@ int ngi_window_init_win32(ngi_application* app, ngi_window* win) {
 
     wchar_t* title = L"ngi window";
 
-    DWORD dwExStyle=WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
+    DWORD dwExStyle=WS_EX_APPWINDOW | WS_EX_WINDOWEDGE; //| WS_EX_LAYERED; // | WS_EX_COMPOSITED;
     DWORD dwStyle=WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 
     int width = 100;
@@ -148,8 +168,8 @@ int ngi_window_init_win32(ngi_application* app, ngi_window* win) {
         return 0;
     }
 
-    SetWindowLongPtr(hWnd, GWLP_USERDATA, win);
-
+    SetWindowLongPtrW(hWnd, GWLP_USERDATA, (LONG_PTR)win);
+//    SetLayeredWindowAttributes(hWnd, RGB(0,0,0), 255, LWA_ALPHA);
     win->plat.iwnd = (int)hWnd;
 
     if(GetClientRect(hWnd, &r)) {
@@ -223,7 +243,7 @@ int ngi_context_wgl_init(ngi_context* ctx, ngi_window* win) {
     {
         sizeof(PIXELFORMATDESCRIPTOR),
         1,
-        PFD_DRAW_TO_WINDOW |
+        PFD_DRAW_TO_WINDOW | //PFD_SUPPORT_COMPOSITION |
         PFD_SUPPORT_OPENGL |
         PFD_DOUBLEBUFFER,
         PFD_TYPE_RGBA,
@@ -243,6 +263,7 @@ int ngi_context_wgl_init(ngi_context* ctx, ngi_window* win) {
 
     ctx->type = ngi_context_api_wgl;
     ctx->graphics = ngi_graphics_api_opengl;
+    win->context = ctx;
 
     if (!(hDC=GetDC(hWnd))) {
         return 0;
