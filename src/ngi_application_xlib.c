@@ -163,6 +163,19 @@ int ngi_application_wait_event_xlib(ngi_application* app) {
 
         
         break;
+        case Expose:
+
+        if(xev.xexpose.count == 0) {
+            ev.type = ngi_redraw_event;
+            ev.common.timestamp = timestamp;
+            ev.common.window = win;
+            cb(&ev);
+
+
+        }
+
+
+        break;
     }
     
     return 1;

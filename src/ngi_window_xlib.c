@@ -31,7 +31,9 @@ void ngi_window_add_window_xlib(ngi_application* app, ngi_window * win) {
 
 
 int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
-    
+   
+
+    int w, h; 
     memset(win, 0, sizeof(ngi_window));
     
     XWindowAttributes winattr;
@@ -43,14 +45,20 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
     }
 
     XGetWindowAttributes(app->plat.xlib.dpy, DefaultRootWindow(app->plat.xlib.dpy), &winattr);
- 
+
+    w = winattr.width/2;
+    h = winattr.height/2;
+    
+    win->width = w;
+    win->height = h;
+
     win->app = app;
     win->plat.xlib.win = (void*)XCreateSimpleWindow((Display*)app->plat.xlib.dpy,
                                       DefaultRootWindow(app->plat.xlib.dpy),
                                       0,
                                       0,
-                                      winattr.width/2,
-                                      winattr.height/2,
+                                      w,
+                                      h,
                                       0,
                                       0,
                                       0
@@ -68,7 +76,7 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
     #endif
     
     memset(&attrs, 0, sizeof(XSetWindowAttributes));
-    attrs.event_mask = KeyPressMask | KeyReleaseMask;
+    attrs.event_mask = KeyPressMask | KeyReleaseMask | ExposureMask;
     XChangeWindowAttributes(app->plat.xlib.dpy, xwin, CWEventMask, &attrs);
     
    
