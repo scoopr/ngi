@@ -13,6 +13,8 @@
 
 #include "ngi/ngi.h"
 
+// #include <dwmapi.h>
+
 wchar_t* NGI_WINDOW_CLASS_NAME = L"ngi";
 
 #include <stdio.h>
@@ -149,6 +151,7 @@ int ngi_window_init_win32(ngi_application* app, ngi_window* win) {
     HINSTANCE hInstance = GetModuleHandle(NULL);
 
     RECT r;
+    // DWM_PRESENT_PARAMETERS dpp;
 
 
     hWnd=CreateWindowExW(dwExStyle,
@@ -176,6 +179,16 @@ int ngi_window_init_win32(ngi_application* app, ngi_window* win) {
         win->width = r.right;
         win->height = r.bottom;
     }
+
+    // memset(&dpp, 0, sizeof(dpp));
+    // dpp.cbSize = sizeof(dpp);
+    // dpp.fQueue = 1;
+    // dpp.cBuffer = 2;
+    // dpp.fUseSourceRate =0;
+    // dpp.cRefreshesPerFrame = 1;
+    // dpp.eSampling = DWM_SOURCE_FRAME_SAMPLING_POINT;
+    // /*HRESULT hr =*/ DwmSetPresentParameters(hWnd, &dpp);
+
 
     ShowWindow(hWnd,SW_SHOW);
     SetForegroundWindow(hWnd);

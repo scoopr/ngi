@@ -46,7 +46,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>kernel32.lib;user32.lib;opengl32.lib;gdi32.lib;imm32.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;opengl32.lib;gdi32.lib;imm32.lib;dwmapi.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
