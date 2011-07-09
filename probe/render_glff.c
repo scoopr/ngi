@@ -1,15 +1,20 @@
 
+/*
+  OpenGL Fixed function
+*/
 
-#ifdef NGI_WINDOW_COCOA
+#ifdef NGI_RENDER_API_GLES1
+#include <GLES/gl.h>
+#endif
+
+#ifdef NGI_RENDER_API_OPENGL
+
+#ifdef __APPLE__
 #include <OpenGL/gl.h>
-#endif
-
-#ifdef NGI_CONTEXT_EGL
-#include <GLES2/gl2.h>
-#endif
-
-#ifdef NGI_CONTEXT_GLX
+#else
 #include <GL/gl.h>
+#endif
+
 #endif
 
 #ifdef NGI_WINDOW_WIN32
@@ -22,13 +27,13 @@
 
 
 
-void render_opengl_init()
+void render_glff_init()
 {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
 
-void render_opengl_resize(int w, int h) {
+void render_glff_resize(int w, int h) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0,w,0,h,-1,1);
@@ -37,12 +42,12 @@ void render_opengl_resize(int w, int h) {
     glViewport(0,0,w,h);
 }
 
-void render_opengl_clear() {
+void render_glff_clear() {
     glClearColor(0.2, 0.3f, 0.4f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void render_opengl_quad(float x, float y, float w, float h, const unsigned char color[4]) {
+void render_glff_quad(float x, float y, float w, float h, const unsigned char color[4]) {
     
     float verts[] = {
         x,y,

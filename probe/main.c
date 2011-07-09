@@ -14,7 +14,8 @@
 #include "../../wtf8/wtf8.h"
 
 #include "render.h"
-#include "render_opengl.h"
+#include "render_glff.h"
+#include "render_glsl.h"
 
 
 char* codepointhex(int cp) {
@@ -50,7 +51,7 @@ int done;
 
 const unsigned char white[]={255,255,255,255};
 
-struct render* rend = &render_opengl;
+struct render* rend = &render_glsl;
 
 void drawCorners(int w, int h) {
 
