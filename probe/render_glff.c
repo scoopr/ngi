@@ -36,7 +36,7 @@ void render_glff_init()
 void render_glff_resize(int w, int h) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0,w,0,h,-1,1);
+    glOrthof(0,w,0,h,-1,1);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport(0,0,w,h);
@@ -58,7 +58,7 @@ void render_glff_quad(float x, float y, float w, float h, const unsigned char co
         x,y
     };
     
-    glColor4ubv(color);
+    glColor4ub(color[0], color[1], color[2], color[3] );
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(2, GL_FLOAT, 0, verts);
