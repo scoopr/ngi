@@ -75,7 +75,6 @@ void drawCorners(int w, int h) {
 
 void draw(int w, int h) {
     
-    rend->init();
     rend->resize(w,h);
     rend->clear();
 
@@ -151,7 +150,9 @@ int main() {
     printf("[NGI TEST] gfx api: %s\n", ctx.graphics);
     
     // printf("[NGI TEST] ngi_context_*_init: %d\n", succ);
-    
+
+    rend->init();
+
     draw(win.width, win.height);
     check( ngi_context_swap(&ctx) );
 
