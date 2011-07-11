@@ -17,6 +17,7 @@
 #include "render_glff.h"
 #include "render_glsl.h"
 
+#include "typo.h"
 
 char* codepointhex(int cp) {
     static char out[4*2];
@@ -51,7 +52,7 @@ int done;
 
 const unsigned char white[]={255,255,255,255};
 
-struct render* rend = &render_glsl;
+struct render_t* rend = &render_glsl;
 
 void drawCorners(int w, int h) {
 
@@ -73,17 +74,56 @@ void drawCorners(int w, int h) {
     
 }
 
+#define max_last_events  64
+ngi_event last_events[max_last_events];
+int event_serials[max_last_events];
+int cur_last_event = 0;
+int num_last_events = 0;
+int event_serial = 0;
+
 void draw(int w, int h) {
-    
+
+    int cy;
+    float lh = 16*1.2f;
     rend->resize(w,h);
     rend->clear();
 
     drawCorners(w,h);
+
+    cy = h-lh*2;
+    int left = lh*2;
+
+    rend->text(left, cy, "NGI Probe");
+
+    cy-=lh*2;
+
+    for(int i = 0; i < num_last_events && cy > lh*2; ++i)
+    {
+
+        int j = (cur_last_event-i-1 + max_last_events)%max_last_events;
+
+        
+        const char* str = ngi_event_name(last_events[j].type);
+        rend->text(left, cy, "Event %4d: %s", event_serials[j], str);
+
+        cy-=lh;
+    }
+
+
     
 }
 
 
+
 int event(ngi_event* ev) {
+    
+    last_events[cur_last_event] = *ev;
+    event_serials[cur_last_event] = event_serial;
+    cur_last_event = (cur_last_event+1)%max_last_events;
+    num_last_events++;
+    event_serial++;
+    if(num_last_events>max_last_events) num_last_events = max_last_events;
+    
     printf("[event %s  time:%f]\n", ngi_event_name(ev->type), ev->common.timestamp);
     switch(ev->type) {
         case ngi_key_down_event:
@@ -125,6 +165,7 @@ int main() {
     ngi_config_init(&config);
 //    ngi_config_set_string(&config, ngi_config_wm_api, ngi_wm_api_cocoa);
     
+    memset(last_events,0,sizeof(ngi_event)*max_last_events);
 
     
 

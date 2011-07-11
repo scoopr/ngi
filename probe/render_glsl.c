@@ -21,30 +21,59 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
 
+#include <math.h>
+
+#include "typo.h"
 
 static const char* vertex_shader=
 "                                                \n"
 "attribute vec2 pos;                             \n"
+"                                                \n"
+"#ifdef TEX                                      \n"
+"attribute vec2 texc;                            \n"
+"varying   vec2 tc;                              \n"
+"#endif                                          \n"
+"                                                \n"
 "uniform mat4 proj;                              \n"
 "void main() {                                   \n"
-"   gl_Position = proj * vec4(pos, 0.0, 1.0);    \n"
+"                                                \n"
+"    #ifdef TEX                                  \n"
+"    tc=texc;                                    \n"
+"    #endif                                      \n"
+"                                                \n"
+"    gl_Position = proj * vec4(pos, 0.0, 1.0);   \n"
 "}                                               \n";
 static const char* fragment_shader=
 
 "                                                \n"
+"#ifdef TEX                                      \n"
+"varying   vec2 tc;                              \n"
+"uniform sampler2D tex;                          \n"
+"#else                                           \n"
+"                                                \n"
 "uniform vec4 color;                             \n"
+"#endif                                          \n"
 "                                                \n"
 "void main() {                                   \n"
-"   gl_FragColor = color;                        \n"
+"    #ifdef TEX                                  \n"
+"    gl_FragColor = texture2D(tex,tc).aaar;          \n"
+"    #else                                       \n"
+"    gl_FragColor = color;                       \n"
+"    #endif                                      \n"
 "}                                               \n";
 
 
-GLuint program;
+GLuint solid_program;
+GLuint tex_program;
 
 
 float projection[16];
 
+
+GLuint fontTex;
 
 void ortho(float left, float right, float bottom, float top, float znear, float zfar) {
     float deltax = right - left;
@@ -69,9 +98,7 @@ void ortho(float left, float right, float bottom, float top, float znear, float 
 }
 
 
-
-void render_glsl_init()
-{
+void compile_shader(GLuint* program, const char* opts, const char* vs, const char* fs) {
     GLuint vsh;
     GLuint fsh;
     char err[1024] = {0};
@@ -79,36 +106,75 @@ void render_glsl_init()
     vsh = glCreateShader(GL_VERTEX_SHADER);
     fsh = glCreateShader(GL_FRAGMENT_SHADER);
 
-    int vsz = strlen(vertex_shader);
-    int fsz = strlen(fragment_shader);
-    glShaderSource(vsh, 1, &vertex_shader, &vsz );
-    glShaderSource(fsh, 1, &fragment_shader, &fsz );
+    int optsz = strlen(opts);
+    
+    int vsz[] = { optsz, strlen(vs) };
+    int fsz[] = { optsz, strlen(fs) };
+    
+    const char* vso[] = { opts, vs };
+    const char* fso[] = { opts, fs };
+    
+    glShaderSource(vsh, 2, vso, vsz );
+    glShaderSource(fsh, 2, fso, fsz );
 
 
     glCompileShader(vsh);
 
     glGetShaderInfoLog(vsh, 1024, NULL, err);        
     if(err[0] != 0) printf("[vertex shader] %s\n", err);
- 
+
     glCompileShader(fsh);
 
     glGetShaderInfoLog(fsh, 1024, NULL, err);        
     if(err[0] != 0) printf("[fragment shader] %s\n", err);
 
-    program = glCreateProgram();
-    
-    glAttachShader(program, vsh);
-    glAttachShader(program, fsh);
+    *program = glCreateProgram();
+
+    glAttachShader(*program, vsh);
+    glAttachShader(*program, fsh);
 
 
-//    glBindAttribLocation(program, 0, "pos");
+    //    glBindAttribLocation(program, 0, "pos");
 
-    glLinkProgram(program);
-    
-    glValidateProgram(program);
-    glGetProgramInfoLog(program, 1024, NULL, err);        
+    glLinkProgram(*program);
+
+    glValidateProgram(*program);
+    glGetProgramInfoLog(*program, 1024, NULL, err);        
     if(err[0] != 0) printf("[link shader] %s\n", err);
-    
+
+}
+
+
+
+
+void render_glsl_init()
+{
+    int font_width = 512;
+    int font_height = 512;
+
+    compile_shader(&solid_program, "\n", vertex_shader, fragment_shader);
+    compile_shader(&tex_program, "#define TEX\n", vertex_shader, fragment_shader);
+
+    glGenTextures(1, &fontTex);
+    glBindTexture(GL_TEXTURE_2D, fontTex);
+        
+    char *fontTex = typo_init_texture(13.0, font_width, font_height);
+
+
+    for(int i = 0; i < font_width*font_height; ++i)
+    {
+        int v = ((unsigned char*)fontTex)[i];
+        v = powf(v/255.0f, 1.0f/1.4f)*255.0f;
+        if(v>255) v = 255;
+        if(v<0) v = 0;
+        fontTex[i] = v;
+    }
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, font_width, font_height, 0, GL_ALPHA, GL_UNSIGNED_BYTE, fontTex);
+
+    free(fontTex);
+
 }
 
 void render_glsl_resize(int w, int h) {
@@ -135,18 +201,68 @@ void render_glsl_quad(float x, float y, float w, float h, const unsigned char co
         x,y
     };
 
-    glUseProgram(program);
+
+    glDisable(GL_BLEND);
+
+    glUseProgram(solid_program);
 
     float colorf[4] = { color[0]/255.0f, color[1]/255.0f, color[2]/255.0f, color[3]/255.0f };
-    glUniform4fv(glGetUniformLocation(program, "color"), 1, colorf);
+    glUniform4fv(glGetUniformLocation(solid_program, "color"), 1, colorf);
 
-    glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_FALSE, projection);
+    glUniformMatrix4fv(glGetUniformLocation(solid_program, "proj"), 1, GL_FALSE, projection);
     
-    int pos_loc = glGetAttribLocation(program, "pos");
+    int pos_loc = glGetAttribLocation(solid_program, "pos");
     glEnableVertexAttribArray(pos_loc);
     glVertexAttribPointer(pos_loc, 2, GL_FLOAT, GL_FALSE, 0, verts );
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
+    
+    
+}
+
+void render_glsl_text(float x, float y, const char* str, ...) {
+    va_list ap;
+
+    int len;
+    float *verts;
+    float *v;
+
+    char tmp[255];
+    char *tmp2 = tmp;
+
+    va_start(ap, str);
+    vsnprintf(tmp2, 255, str, ap);
+    va_end(ap);
+
+    len = strlen(tmp);
+    verts = alloca(len * 24 * sizeof(float));
+    v=verts;
+
+    while(*tmp2) {
+        
+        typo_get_char(*tmp2, &x, &y, v);
+
+        v+=24;
+        tmp2++;
+    }
+    
+    
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE);
+    glUseProgram(tex_program);
+    
+    int pos_loc = glGetAttribLocation(tex_program, "pos");
+    int texc_loc = glGetAttribLocation(tex_program, "texc");
+
+    glUniformMatrix4fv(glGetUniformLocation(tex_program, "proj"), 1, GL_FALSE, projection);
+
+    glEnableVertexAttribArray(pos_loc);
+    glVertexAttribPointer(pos_loc, 2, GL_FLOAT, GL_FALSE, sizeof(float)*4, verts );
+
+    glEnableVertexAttribArray(texc_loc);
+    glVertexAttribPointer(texc_loc, 2, GL_FLOAT, GL_FALSE, sizeof(float)*4, verts +2);
+
+    glDrawArrays(GL_TRIANGLES, 0, len*6);
     
     
 }

@@ -136,3 +136,9 @@ clean:
 
 
 
+probe/typo.o: CPPFLAGS+=-Wno-unused-parameter
+probe/typo.o: CPPFLAGS+=-Wno-unused-variable
+
+ifeq ($(CC),clang)
+probe/typo.o: CPPFLAGS+=-Wno-array-bounds
+endif

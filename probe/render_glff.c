@@ -36,7 +36,11 @@ void render_glff_init()
 void render_glff_resize(int w, int h) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+    #ifdef NGI_RENDER_API_GLES1
     glOrthof(0,w,0,h,-1,1);
+    #else
+    glOrtho(0,w,0,h,-1,1);
+    #endif
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glViewport(0,0,w,h);
@@ -66,5 +70,13 @@ void render_glff_quad(float x, float y, float w, float h, const unsigned char co
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
     
+    
+}
+
+
+void render_glff_text(float x, float y, const char* str, ...) {
+    (void)x;
+    (void)y;
+    (void)str;
     
 }
