@@ -26,6 +26,9 @@
 
 #include <math.h>
 
+#include <alloca.h>
+
+
 #include "typo.h"
 
 static const char* vertex_shader=
@@ -73,7 +76,7 @@ GLuint tex_program;
 float projection[16];
 
 
-GLuint fontTex;
+GLuint font_tex;
 
 void ortho(float left, float right, float bottom, float top, float znear, float zfar) {
     float deltax = right - left;
@@ -155,8 +158,8 @@ void render_glsl_init()
     compile_shader(&solid_program, "\n", vertex_shader, fragment_shader);
     compile_shader(&tex_program, "#define TEX\n", vertex_shader, fragment_shader);
 
-    glGenTextures(1, &fontTex);
-    glBindTexture(GL_TEXTURE_2D, fontTex);
+    glGenTextures(1, &font_tex);
+    glBindTexture(GL_TEXTURE_2D, font_tex);
         
     char *fontTex = typo_init_texture(13.0, font_width, font_height);
 

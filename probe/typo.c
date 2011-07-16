@@ -36,7 +36,6 @@ void* typo_init_texture(float pts, int w, int h)
     
 
     free(font_data);
-    free(texdata);
     
     typo_width = w;
     typo_height = h;
