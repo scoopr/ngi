@@ -138,6 +138,7 @@ clean:
 
 probe/typo.o: CPPFLAGS+=-Wno-unused-parameter
 probe/typo.o: CPPFLAGS+=-Wno-unused-variable
+src/ngi_window_cocoa.o: CPPFLAGS+=-Wno-overflow
 
 ifeq ($(CC),clang)
 probe/typo.o: CPPFLAGS+=-Wno-array-bounds
