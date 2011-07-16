@@ -3,10 +3,12 @@
   OpenGL Shader rendering
 */
       
+#ifndef _WIN32
 
 #ifdef NGI_RENDER_API_GLES2
 #include <GLES2/gl2.h>
 #endif
+
 
 
 #ifdef NGI_RENDER_API_OPENGL
@@ -26,8 +28,9 @@
 
 #include <math.h>
 
+#ifndef _WIN32
 #include <alloca.h>
-
+#endif
 
 #include "typo.h"
 
@@ -269,4 +272,6 @@ void render_glsl_text(float x, float y, const char* str, ...) {
     
     
 }
+
+#endif
 

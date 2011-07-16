@@ -52,7 +52,7 @@ int done;
 
 const unsigned char white[]={255,255,255,255};
 
-struct render_t* rend = &render_glsl;
+struct render_t* rend = &render_glff;
 
 void drawCorners(int w, int h) {
 
@@ -83,21 +83,23 @@ int event_serial = 0;
 
 void draw(int w, int h) {
 
-    int cy;
+    float cy;
     float lh = 16*1.2f;
+    float left = lh*2;
+    int i = 0;
+
     rend->resize(w,h);
     rend->clear();
 
     drawCorners(w,h);
 
     cy = h-lh*2;
-    int left = lh*2;
 
     rend->text(left, cy, "NGI Probe");
 
     cy-=lh*2;
 
-    for(int i = 0; i < num_last_events && cy > lh*2; ++i)
+    for(; i < num_last_events && cy > lh*2; ++i)
     {
 
         int j = (cur_last_event-i-1 + max_last_events)%max_last_events;

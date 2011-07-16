@@ -10,7 +10,7 @@ void render_glsl_clear();
 void render_glsl_quad(float x, float y, float w, float h, const unsigned char color[4]);
 void render_glsl_text(float x, float y, const char* str, ...);
 
-
+#ifndef _WIN32
 struct render_t render_glsl = {
     render_glsl_init,
     render_glsl_resize,
@@ -18,5 +18,6 @@ struct render_t render_glsl = {
     render_glsl_quad,
     render_glsl_text
 };
+#endif
 
 #endif
