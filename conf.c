@@ -31,6 +31,11 @@
 #include <windows.h>
 #endif
 
+#ifdef TEST_GLX
+#include <GL/glx.h>
+#endif
+
 int main() {
     return 0;
 }
+

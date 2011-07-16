@@ -3,6 +3,10 @@
 
 int ngi_context_init(ngi_context* ctx, ngi_window* win) {
     
+    #ifdef NGI_CONTEXT_GLX
+    if(win->app->type == ngi_wm_api_xlib)
+        return ngi_context_glx_init(ctx, win);
+    #endif
     
     #ifdef NGI_CONTEXT_EGL
     if(win->app->type == ngi_wm_api_xlib)
@@ -24,6 +28,11 @@ int ngi_context_init(ngi_context* ctx, ngi_window* win) {
 }
 
 int ngi_context_swap(ngi_context* ctx) {
+
+    #ifdef NGI_CONTEXT_GLX
+    if(ctx->type == ngi_context_api_glx)
+        return ngi_context_glx_swap(ctx);
+    #endif
 
     #ifdef NGI_CONTEXT_EGL
     if(ctx->type == ngi_context_api_egl)

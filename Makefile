@@ -50,8 +50,14 @@ else
 XCB=0
 endif
 
+ifeq ($(shell $(TEST_CC) conf.c -lGL -DTEST_GLX 2>&1),)
+GLX=1
+else
+GLX=0
+endif
+
 $(shell $(RM) .testbin)
-$(info [ngi conf] EGL:$(EGL) GLES1:$(GLES1) GLES2:$(GLES2) OPENGL:$(OPENGL) OSX:$(OSX) XLIB:$(XLIB) XCB:$(XCB))
+$(info [ngi conf] EGL:$(EGL) GLES1:$(GLES1) GLES2:$(GLES2) OPENGL:$(OPENGL) OSX:$(OSX) XLIB:$(XLIB) XCB:$(XCB) GLX:$(GLX))
 
 endif
 
@@ -110,6 +116,10 @@ endif
 ifeq ($(OPENGL),1)
 LDFLAGS+= -lGL
 CPPFLAGS+= -DNGI_RENDER_API_OPENGL
+endif
+
+ifeq ($(GLX),1)
+CPPFLAGS+= -DNGI_CONTEXT_GLX
 endif
 
 run: probe/probe

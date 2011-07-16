@@ -10,6 +10,7 @@ extern "C" {
 typedef struct ngi_context_tag {
     const char* type;
     const char* graphics;
+    ngi_application* app;
     union {
         struct {
             void* edpy;
@@ -24,7 +25,10 @@ typedef struct ngi_context_tag {
         struct {
             void *hdc;
         } wgl;
-            
+        struct {
+            void *ctx;
+            int drawable;
+        } glx;
     } platform;
 } ngi_context;
 
@@ -39,6 +43,9 @@ int ngi_context_cocoa_swap(ngi_context* ctx);
 
 int ngi_context_wgl_init(ngi_context* ctx, ngi_window* win);
 int ngi_context_wgl_swap(ngi_context* ctx);
+
+int ngi_context_glx_init(ngi_context* ctx, ngi_window* win);
+int ngi_context_glx_swap(ngi_context* ctx);
 
 #ifdef __cplusplus
 }
