@@ -174,7 +174,8 @@ int main() {
     printf("[NGI TEST] start\n");
 
 
-    check( ngi_application_init(&app) );
+    check( ngi_application_init_xlib(&app) );
+    // check( ngi_application_init(&app) );
 
     app.event_callback = event;
 

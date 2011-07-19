@@ -50,7 +50,7 @@ else
 XCB=0
 endif
 
-ifeq ($(shell $(TEST_CC) conf.c -lGL -DTEST_GLX 2>&1),)
+ifeq ($(shell $(TEST_CC) -I/usr/X11R6/include conf.c  -DTEST_GLX 2>&1),)
 GLX=1
 else
 GLX=0
@@ -119,7 +119,8 @@ CPPFLAGS+= -DNGI_RENDER_API_OPENGL
 endif
 
 ifeq ($(GLX),1)
-CPPFLAGS+= -DNGI_CONTEXT_GLX
+CPPFLAGS+= -DNGI_CONTEXT_GLX -I/usr/X11/include
+LDFLAGS+=-lGL
 endif
 
 run: probe/probe
