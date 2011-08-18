@@ -44,6 +44,7 @@ extern const char* ngi_event_key_up;
 extern const char* ngi_event_key_repeat;
 extern const char* ngi_event_quit;
 extern const char* ngi_event_redraw;
+extern const char* ngi_event_resize;
 
 
 

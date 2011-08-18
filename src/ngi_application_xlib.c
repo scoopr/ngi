@@ -176,6 +176,20 @@ int ngi_application_wait_event_xlib(ngi_application* app) {
 
 
         break;
+        case ConfigureNotify:
+        if( win->width != xev.xconfigure.width || win->height != xev.xconfigure.height) {
+            ev.type = ngi_resize_event;
+            ev.common.timestamp = timestamp;
+            ev.common.window = win;
+            win->width = ev.resize.width = xev.xconfigure.width;
+            win->height = ev.resize.height = xev.xconfigure.height;
+            
+            cb(&ev);
+        }
+        
+        
+        
+        break;
     }
     
     return 1;
