@@ -12,10 +12,8 @@
 
 int ngi_context_glx_init_1_3(ngi_context* ctx, ngi_window* win) {
     Display* dpy = win->app->plat.xlib.dpy;
-
+ 
     int attr[]= {
-      GLX_X_RENDERABLE    , True,
-      GLX_X_VISUAL_TYPE   , GLX_TRUE_COLOR,
 
         GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,
         GLX_RENDER_TYPE,   GLX_RGBA_BIT,
@@ -31,21 +29,23 @@ int ngi_context_glx_init_1_3(ngi_context* ctx, ngi_window* win) {
     };
 
     
-
+    Window* xwin = win->plat.xlib.win;
+    
     int nconfig = 0;
     GLXFBConfig* config = glXChooseFBConfig(dpy, DefaultScreen(dpy), attr, &nconfig);    
 
-    
-    GLXContext glxctx = glXCreateNewContext(dpy, config[0], GLX_RGBA_TYPE, NULL, True);
+    GLXFBConfig fbc = config[0];
+
+    GLXContext glxctx = glXCreateNewContext(dpy, fbc, GLX_RGBA_TYPE, NULL, True);
     if(glxctx == NULL) return 0;
     
-    GLXWindow glxwin = glXCreateWindow(dpy, config[0], (Window)win->plat.xlib.win, NULL);
 
 
-    glXMakeContextCurrent(dpy, glxwin, glxwin, glxctx);
+
+    glXMakeCurrent( dpy, (GLXDrawable)xwin, glxctx );
 
     ctx->platform.glx.ctx = glxctx;
-    ctx->platform.glx.drawable = glxwin;
+    ctx->platform.glx.drawable = (void*)xwin;
     
     return 1;
 }
@@ -76,7 +76,7 @@ int ngi_context_glx_init_1_0(ngi_context* ctx, ngi_window* win) {
     if(glxctx == NULL) return 0;
     
     ctx->platform.glx.ctx = glxctx;
-    ctx->platform.glx.drawable = xwin;
+    ctx->platform.glx.drawable = (void*)xwin;
     
     glXMakeCurrent(dpy, xwin, glxctx);
 
@@ -104,7 +104,7 @@ int ngi_context_glx_init(ngi_context* ctx, ngi_window* win) {
     ctx->app = win->app;
     
 
-    if(majorVersion == 1 && minorVersion == 3)
+    if(majorVersion == 1 && minorVersion >= 3)
         ret = ngi_context_glx_init_1_3(ctx, win);
     else 
         ret = ngi_context_glx_init_1_0(ctx, win);
@@ -120,7 +120,7 @@ int ngi_context_glx_swap(ngi_context* ctx) {
 
     Display *dpy = ctx->app->plat.xlib.dpy;
 //    GLXContext glxctx = ctx->platform.glx.ctx;
-    GLXWindow glxwin = ctx->platform.glx.drawable;
+    GLXWindow glxwin = (GLXDrawable)ctx->platform.glx.drawable;
 
 //    glXMakeContextCurrent(dpy, glxwin, glxwin, glxctx);
 

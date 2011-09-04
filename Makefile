@@ -85,6 +85,15 @@ CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic -ggdb -Werror
 #LDFLAGS+=-arch i386
 CFLAGS+=-std=c99
 
+ifeq ($(OPENGL),1)
+LDFLAGS+= -lGL
+CPPFLAGS+= -DNGI_RENDER_API_OPENGL
+endif
+
+ifeq ($(GLX),1)
+CPPFLAGS+= -DNGI_CONTEXT_GLX -I/usr/X11/include
+LDFLAGS+=-lGL
+endif
 
 ifeq ($(XLIB),1)
 LDFLAGS+= -L/usr/lib/X11 -L/usr/X11/lib -lX11
@@ -113,15 +122,6 @@ LDFLAGS+= -lGLESv2
 CPPFLAGS+= -DNGI_RENDER_API_GLES2
 endif
 
-ifeq ($(OPENGL),1)
-LDFLAGS+= -lGL
-CPPFLAGS+= -DNGI_RENDER_API_OPENGL
-endif
-
-ifeq ($(GLX),1)
-CPPFLAGS+= -DNGI_CONTEXT_GLX -I/usr/X11/include
-LDFLAGS+=-lGL
-endif
 
 run: probe/probe
 	./probe/probe

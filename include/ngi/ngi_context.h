@@ -27,7 +27,7 @@ typedef struct ngi_context_tag {
         } wgl;
         struct {
             void *ctx;
-            int drawable;
+            void* drawable;
         } glx;
     } platform;
 } ngi_context;
