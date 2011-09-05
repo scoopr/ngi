@@ -3,6 +3,8 @@ AUTOCONF=1
 
 ifeq ($(MAKECMDGOALS),clean)
 AUTOCONF=0
+else
+SKIP_FILE_DEPS=1
 endif
 
 CACHE_FILE=.config.cache
@@ -114,6 +116,56 @@ LDFLAGS+=-lGL
 endif
 
 
+
+
+BUILD_DIR=build
+OBJ:=$(addprefix $(BUILD_DIR)/,$(OBJ))
+OBJ_PROBE:=$(addprefix $(BUILD_DIR)/,$(OBJ_PROBE))
+PATH_SEPARATOR=/
+MKDIR=mkdir -p
+
+# Suppres default rules
+%.o: %.c ;
+%.o: %.m ;
+
+
+FILE_DEP_DIR=$(BUILD_DIR)/deps
+FILE_DEPS:=$(SRC_C:.c=.d) $(SRC_PROBE:.c=.d) $(SRC_M:.m=.d)
+FILE_DEPS:=$(addprefix $(FILE_DEP_DIR)/,$(FILE_DEPS))
+
+
+DEP_FLAGS=-E -w -Wno-unused-parameter -MMD -MP 
+
+# deps
+$(FILE_DEP_DIR)/%.d: %.c
+	@$(MKDIR) $(subst /,$(PATH_SEPARATOR),$(dir $@))
+	@$(COMPILE.c) $(CPPFLAGS) $(CFLAGS) $(DEP_FLAGS) -MT $(BUILD_DIR)/$(<:.c=.o) $< -MF $@ 2>&1 > /dev/null
+
+$(FILE_DEP_DIR)/%.d: %.m
+	@$(MKDIR) $(subst /,$(PATH_SEPARATOR),$(dir $@))
+	@$(COMPILE.m) $(CPPFLAGS) $(CXXFLAGS) $(DEP_FLAGS) -MT $(BUILD_DIR)/$(<:.m=.o) $< -MF $@ 2>&1 > /dev/null
+
+
+
+# compiles
+$(BUILD_DIR)/%.o: %.c
+	@echo CC $<
+	$(SILENT) $(MKDIR) $(subst /,$(PATH_SEPARATOR),$(dir $@))
+	$(SILENT) $(COMPILE.c) -o $@ $<
+
+$(BUILD_DIR)/%.o: %.m
+	@echo CM $<
+	$(SILENT) $(MKDIR) $(subst /,$(PATH_SEPARATOR),$(dir $@))
+	$(SILENT) $(COMPILE.m) -o $@ $<
+
+
+
+
+
+
+
+
+
 probe/probe: $(OBJ) $(OBJ_PROBE)
 	$(LINK.c) -o $@ $^
 
@@ -124,10 +176,15 @@ clean:
 
 
 
-probe/typo.o: CPPFLAGS+=-Wno-unused-parameter
-probe/typo.o: CPPFLAGS+=-Wno-unused-variable
-src/ngi_window_cocoa.o: CPPFLAGS+=-Wno-overflow
+$(BUILD_DIR)/probe/typo.o: CPPFLAGS+=-Wno-unused-parameter
+$(BUILD_DIR)/probe/typo.o: CPPFLAGS+=-Wno-unused-variable
+$(BUILD_DIR)/src/ngi_window_cocoa.o: CPPFLAGS+=-Wno-overflow
 
 ifeq ($(CC),clang)
-probe/typo.o: CPPFLAGS+=-Wno-array-bounds
+$(BUILD_DIR)/probe/typo.o: CPPFLAGS+=-Wno-array-bounds
+endif
+
+
+ifneq ($(SKIP_FILE_DEPS),)
+-include $(FILE_DEPS)
 endif
