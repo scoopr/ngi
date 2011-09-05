@@ -5,64 +5,41 @@ ifeq ($(MAKECMDGOALS),clean)
 AUTOCONF=0
 endif
 
+CACHE_FILE=.config.cache
+ifeq ($(wildcard $(CACHE_FILE)),$(CACHE_FILE))
+AUTOCONF=0
+endif
+
+ifneq ($(FORCE),)
+AUTOCONF=1
+endif
+
+AUTOCONF_TEST=$$(if $$(shell $$(TEST_CC) $(2) conf.c  2>&1), \
+                    $$(shell echo $(1)=0 >> $$(CACHE_FILE)),  \
+                    $$(shell echo $(1)=1 >> $$(CACHE_FILE)))
+
 
 ifeq ($(AUTOCONF),1)
 TEST_CC=$(CC) -o .testbin
-ifeq ($(shell $(TEST_CC) -lEGL conf.c -DTEST_EGL 2>&1),)
-EGL=1
-else
-EGL=0
-endif
 
-ifeq ($(shell $(TEST_CC) -lGLESv1_CM conf.c -DTEST_GLES1 2>&1),)
-GLES1=1
-else
-GLES1=0
-endif
-
-ifeq ($(shell $(TEST_CC) -lGLESv2 conf.c -DTEST_GLES2 2>&1),)
-GLES2=1
-else
-GLES2=0
-endif
-
-ifeq ($(shell $(TEST_CC) -framework Cocoa conf.c -DTEST_OSX_OPENGL 2>&1),)
-OSX=1
-else
-OSX=0
-endif
-
-ifeq ($(shell $(TEST_CC) -lGL conf.c -DTEST_OPENGL 2>&1),)
-OPENGL=1
-else
-OPENGL=0
-endif
-
-ifeq ($(shell $(TEST_CC) -L/usr/lib/X11 -L/usr/X11/lib -lX11 conf.c -DTEST_XLIB ),)
-XLIB=1
-else
-XLIB=0
-endif
-
-ifeq ($(shell $(TEST_CC) -lxcb conf.c -DTEST_XCB 2>&1),)
-XCB=1
-else
-XCB=0
-endif
-
-ifeq ($(shell $(TEST_CC) -I/usr/X11R6/include conf.c  -DTEST_GLX 2>&1),)
-GLX=1
-else
-GLX=0
-endif
-
+$(eval $(call AUTOCONF_TEST,EGL, -lEGL -DTEST_EGL ))
+$(eval $(call AUTOCONF_TEST,GLES1, -lGLESv1_CM  -DTEST_GLES1 ))
+$(eval $(call AUTOCONF_TEST,GLES2, -lGLESv2  -DTEST_GLES2 ))
+$(eval $(call AUTOCONF_TEST,OSX, -framework Cocoa -DTEST_OSX_OPENGL  ))
+$(eval $(call AUTOCONF_TEST,OPENGL, -lGL -DTEST_OPENGL  ))
+$(eval $(call AUTOCONF_TEST,XLIB_A, -L/usr/lib/X11 -lX11 -DTEST_XLIB  ))
+$(eval $(call AUTOCONF_TEST,XLIB_B, -L/usr/X11/lib -lX11 -DTEST_XLIB  ))
+$(eval $(call AUTOCONF_TEST,XCB, -lxcb -DTEST_XCB  ))
+$(eval $(call AUTOCONF_TEST,GLX, -I/usr/X11R6/include   -DTEST_GLX   ))
 $(shell $(RM) .testbin)
-$(info [ngi conf] EGL:$(EGL) GLES1:$(GLES1) GLES2:$(GLES2) OPENGL:$(OPENGL) OSX:$(OSX) XLIB:$(XLIB) XCB:$(XCB) GLX:$(GLX))
 
 endif
 
 
+include $(CACHE_FILE)
+XLIB=$(XLIB_A)$(XLIB_B)
 
+$(info [ngi conf] EGL:$(EGL) GLES1:$(GLES1) GLES2:$(GLES2) OPENGL:$(OPENGL) OSX:$(OSX) XLIB:$(XLIB) XCB:$(XCB) GLX:$(GLX))
 
 
 SRC_C=$(wildcard src/*.c)
@@ -90,12 +67,7 @@ LDFLAGS+= -lGL
 CPPFLAGS+= -DNGI_RENDER_API_OPENGL
 endif
 
-ifeq ($(GLX),1)
-CPPFLAGS+= -DNGI_CONTEXT_GLX -I/usr/X11/include
-LDFLAGS+=-lGL
-endif
-
-ifeq ($(XLIB),1)
+ifneq ($(XLIB),0)
 LDFLAGS+= -L/usr/lib/X11 -L/usr/X11/lib -lX11
 CPPFLAGS+= -DNGI_WINDOW_XLIB
 # -lGL
@@ -134,6 +106,11 @@ resources: ngi.nib
 probe/probe: | resources
 ngi.nib: ngi.xib
 	ibtool --compile ngi.nib ngi.xib
+endif
+
+ifeq ($(GLX),1)
+CPPFLAGS+= -DNGI_CONTEXT_GLX -I/usr/X11/include
+LDFLAGS+=-lGL
 endif
 
 
