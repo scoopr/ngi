@@ -105,6 +105,7 @@ int ngi_window_deinit(ngi_window* win) {
     }
     #endif
 
+    (void)win;
     return 0;
 }
 

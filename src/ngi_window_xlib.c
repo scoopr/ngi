@@ -117,3 +117,4 @@ int ngi_window_deinit_xlib(ngi_window* win) {
 #endif
 
 
+extern int dummy;
