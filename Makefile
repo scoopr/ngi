@@ -230,7 +230,7 @@ $(BUILD_DIR)/%.o: %.m
 
 
 $(EXE): $(OBJ) $(OBJ_PROBE)
-	$(LINK.c) -o $@ $^
+	$(CC) $^ $(LDFLAGS) -o $@ 
 
 
 
@@ -241,6 +241,7 @@ clean:
 
 $(BUILD_DIR)/probe/typo.o: CPPFLAGS+=-Wno-unused-parameter
 $(BUILD_DIR)/probe/typo.o: CPPFLAGS+=-Wno-unused-variable
+$(BUILD_DIR)/probe/typo.o: CPPFLAGS+=-Wno-unused-but-set-variable
 $(BUILD_DIR)/src/ngi_window_cocoa.o: CPPFLAGS+=-Wno-overflow
 
 ifeq ($(CC),clang)
