@@ -114,7 +114,7 @@ int ngi_application_wait_event_xlib(ngi_application* app) {
             if(xev.type==KeyPress /*|| xev.type==KeyRelease*/) {
                 /*int ret =*/ Xutf8LookupString(win->plat.xlib.xic, &xev.xkey, buf, 7, &ks, &status);
                 
-                
+                                
                 int utf = 0;
                 int keysym = 0;
                 switch(status) {
@@ -124,7 +124,7 @@ int ngi_application_wait_event_xlib(ngi_application* app) {
                     case XLookupKeySym:          keysym = 1;    break;
                     case XLookupBoth:   utf = 1; keysym = 1;    break;
                 }
-                
+                (void)keysym;
                 if( utf ) {
                     wtf8_decode(buf,7,&codepoint);
                 }
