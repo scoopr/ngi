@@ -74,39 +74,39 @@ CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic -ggdb -Werror
 CFLAGS+=-std=c99
 
 
-ifneq ($(findstring -gl,$(VARIANT)),)
+ifneq ($(findstring -gl-,$(VARIANT)),)
 LDFLAGS+= -lGL
 CPPFLAGS+= -DNGI_RENDER_API_OPENGL
 endif
 
-ifneq ($(findstring -xlib,$(VARIANT)),)
+ifneq ($(findstring -xlib-,$(VARIANT)),)
 LDFLAGS+= -L/usr/lib/X11 -L/usr/X11/lib -lX11
 CPPFLAGS+= -DNGI_WINDOW_XLIB
 # -lGL
 endif
 
-ifneq ($(findstring -xcb,$(VARIANT)),)
+ifneq ($(findstring -xcb-,$(VARIANT)),)
 LDFLAGS+= -lxcb
 CPPFLAGS+= -DNGI_WINDOW_XCB
 # -lGL
 endif
 
-ifneq ($(findstring -egl,$(VARIANT)),)
+ifneq ($(findstring -egl-,$(VARIANT)),)
 LDFLAGS+= -lEGL
 CPPFLAGS+= -DNGI_CONTEXT_EGL
 endif
 
-ifneq ($(findstring -gles1,$(VARIANT)),)
+ifneq ($(findstring -gles1-,$(VARIANT)),)
 LDFLAGS+= -lGLESv1_CM
 CPPFLAGS+= -DNGI_RENDER_API_GLES1
 endif
 
-ifneq ($(findstring -gles2,$(VARIANT)),)
+ifneq ($(findstring -gles2-,$(VARIANT)),)
 LDFLAGS+= -lGLESv2
 CPPFLAGS+= -DNGI_RENDER_API_GLES2
 endif
 
-ifneq ($(findstring -osx,$(VARIANT)),)
+ifneq ($(findstring -osx-,$(VARIANT)),)
 LDFLAGS+= -framework Cocoa -framework OpenGL -liconv
 CPPFLAGS+= -DNGI_RENDER_API_OPENGL -DNGI_CONTEXT_COCOA -DNGI_WINDOW_COCOA
 .PHONY: resources
@@ -119,7 +119,7 @@ OBJ+=  $(SRC_M:.m=.o)
 
 endif
 
-ifneq ($(findstring -glx,$(VARIANT)),)
+ifneq ($(findstring -glx-,$(VARIANT)),)
 CPPFLAGS+= -DNGI_CONTEXT_GLX -I/usr/X11/include
 LDFLAGS+=-lGL
 endif
