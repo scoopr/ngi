@@ -5,14 +5,17 @@
 
 #ifdef NGI_RENDER_API_GLES1
 #include <GLES/gl.h>
+#define RENDER_GLFF
 #endif
 
 #ifdef NGI_RENDER_API_OPENGL
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
+#define RENDER_GLFF
 #else
 #include <GL/gl.h>
+#define RENDER_GLFF
 #endif
 
 #endif
@@ -22,10 +25,11 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <GL/gl.h>
+#define RENDER_GLFF
 #endif
 
 
-
+#ifdef RENDER_GLFF
 
 void render_glff_init()
 {
@@ -80,3 +84,40 @@ void render_glff_text(float x, float y, const char* str, ...) {
     (void)str;
     
 }
+
+
+#else
+
+void render_glff_init()
+{
+}
+
+void render_glff_resize(int w, int h) {
+    (void)w;
+    (void)h;
+}
+
+void render_glff_clear() {
+}
+
+void render_glff_quad(float x, float y, float w, float h, const unsigned char color[4]) {
+    (void)x;
+    (void)y;
+    (void)w;
+    (void)h;
+    (void)color;
+}
+
+
+void render_glff_text(float x, float y, const char* str, ...) {
+    (void)x;
+    (void)y;
+    (void)str;
+}
+
+
+
+#endif
+
+
+extern int dummy;
