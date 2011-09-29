@@ -36,6 +36,9 @@
 #include "typo.h"
 
 static const char* vertex_shader=
+"#ifdef GL_ES \n"
+"precision highp float; \n"
+"#endif \n"
 "                                                \n"
 "attribute vec2 pos;                             \n"
 "                                                \n"
@@ -55,6 +58,9 @@ static const char* vertex_shader=
 "}                                               \n";
 static const char* fragment_shader=
 
+"#ifdef GL_ES \n"
+"precision highp float; \n"
+"#endif \n"
 "                                                \n"
 "#ifdef TEX                                      \n"
 "varying   vec2 tc;                              \n"
