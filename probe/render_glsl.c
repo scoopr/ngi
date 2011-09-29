@@ -3,16 +3,16 @@
   OpenGL Shader rendering
 */
       
-#ifndef _WIN32
 
 #ifdef NGI_RENDER_API_GLES2
+#define RENDER_GLSL
 #include <GLES2/gl2.h>
 #endif
 
 
 
 #ifdef NGI_RENDER_API_OPENGL
-
+#define RENDER_GLSL
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #else
@@ -34,6 +34,35 @@
 #endif
 
 #include "typo.h"
+
+
+int render_glsl_is_supported() {
+
+  #ifdef NGI_RENDER_API_OPENGL
+
+
+  const char* ver = (const char*)glGetString(GL_VERSION);
+  int major = 0;
+  int minor = 0;
+  sscanf(ver, "%d.%d",&major, &minor);
+
+  if(major>=2) return 1;
+
+  const char* ext = (const char*)glGetString(GL_EXTENSIONS);
+  if(strstr(ext, "GL_ARB_shading_language_100")) return 1;
+
+
+  #endif
+
+
+  #ifdef NGI_RENDER_API_GLES2
+  return 1;
+  #endif
+
+  return 0;
+}
+
+#ifdef RENDER_GLSL
 
 static const char* vertex_shader=
 "#ifdef GL_ES \n"
@@ -280,5 +309,38 @@ void render_glsl_text(float x, float y, const char* str, ...) {
     
 }
 
+#else
+
+void render_glsl_init()
+{
+}
+
+void render_glsl_resize(int w, int h) {
+    (void)w;
+    (void)h;
+}
+
+void render_glsl_clear() {
+}
+
+void render_glsl_quad(float x, float y, float w, float h, const unsigned char color[4]) {
+    (void)x;
+    (void)y;
+    (void)w;
+    (void)h;
+    (void)color;
+}
+
+
+void render_glsl_text(float x, float y, const char* str, ...) {
+    (void)x;
+    (void)y;
+    (void)str;
+}
+
+
+
 #endif
+
+
 

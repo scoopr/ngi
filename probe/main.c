@@ -52,7 +52,7 @@ int done;
 
 const unsigned char white[]={255,255,255,255};
 
-struct render_t* rend = &render_glff;
+struct render_t* rend = NULL;
 
 void drawCorners(int w, int h) {
 
@@ -116,6 +116,15 @@ void draw(int w, int h) {
 }
 
 
+struct render_t* guess_renderer(ngi_context* ctx) {
+    
+    if(render_glsl.is_supported()) return &render_glsl;
+    if(render_glff.is_supported()) return &render_glff;
+    
+    printf("warning: unsupported graphics api: %s\n", ctx->graphics ? ctx->graphics : "NULL" );
+    return NULL;
+
+}
 
 int event(ngi_event* ev) {
     
@@ -174,8 +183,8 @@ int main() {
     printf("[NGI TEST] start\n");
 
 
-    check( ngi_application_init_xlib(&app) );
-    // check( ngi_application_init(&app) );
+    // check( ngi_application_init_xlib(&app) );
+    check( ngi_application_init(&app) );
 
     app.event_callback = event;
 
@@ -192,6 +201,10 @@ int main() {
 
     printf("[NGI TEST] ctx api: %s\n", ctx.type);
     printf("[NGI TEST] gfx api: %s\n", ctx.graphics);
+
+
+    rend = guess_renderer(&ctx);
+    if(!rend) return 0;
     
     // printf("[NGI TEST] ngi_context_*_init: %d\n", succ);
 

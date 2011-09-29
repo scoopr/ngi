@@ -28,6 +28,13 @@
 #define RENDER_GLFF
 #endif
 
+int render_glff_is_supported() {
+    #ifdef RENDER_GLFF
+    return 1;
+    #else
+    return 0;
+    #endif
+}
 
 #ifdef RENDER_GLFF
 
