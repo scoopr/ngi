@@ -28,6 +28,13 @@
 #define RENDER_GLFF
 #endif
 
+#include "typo.h"
+#include <math.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <string.h>
+
 int render_glff_is_supported() {
     #ifdef RENDER_GLFF
     return 1;
@@ -38,10 +45,42 @@ int render_glff_is_supported() {
 
 #ifdef RENDER_GLFF
 
+GLuint font_tex;
+
+
 void render_glff_init()
 {
+    int font_width = 512;
+    int font_height = 512;
+    
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    
+    
+    
+    glGenTextures(1, &font_tex);
+    glBindTexture(GL_TEXTURE_2D, font_tex);
+        
+    char *fontTex = typo_init_texture(13.0, font_width, font_height);
+
+
+    for(int i = 0; i < font_width*font_height; ++i)
+    {
+        int v = ((unsigned char*)fontTex)[i];
+        v = powf(v/255.0f, 1.0f/1.4f)*255.0f;
+        if(v>255) v = 255;
+        if(v<0) v = 0;
+        fontTex[i] = v;
+    }
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_INTENSITY, font_width, font_height, 0, GL_RED, GL_UNSIGNED_BYTE, fontTex);
+
+    free(fontTex);
+
+    
+    
+    
 }
 
 void render_glff_resize(int w, int h) {
@@ -86,10 +125,47 @@ void render_glff_quad(float x, float y, float w, float h, const unsigned char co
 
 
 void render_glff_text(float x, float y, const char* str, ...) {
-    (void)x;
-    (void)y;
-    (void)str;
-    
+    va_list ap;
+
+      int len;
+      float *verts;
+      float *v;
+
+      char tmp[255];
+      char *tmp2 = tmp;
+
+      va_start(ap, str);
+      vsnprintf(tmp2, 255, str, ap);
+      va_end(ap);
+
+      len = strlen(tmp);
+      verts = alloca(len * 24 * sizeof(float));
+      v=verts;
+
+      while(*tmp2) {
+
+          typo_get_char(*tmp2, &x, &y, v);
+
+          v+=24;
+          tmp2++;
+      }
+
+
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_ONE, GL_ONE);
+
+      glEnable(GL_TEXTURE_2D);
+      glBindTexture(GL_TEXTURE_2D, font_tex);
+      
+      glEnableClientState(GL_VERTEX_ARRAY);
+      glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+      glVertexPointer(2, GL_FLOAT, sizeof(float)*4, verts );
+      glTexCoordPointer(2, GL_FLOAT, sizeof(float)*4, verts +2);
+      glDrawArrays(GL_TRIANGLES, 0, len*6);
+      
+      glDisable(GL_BLEND);
+      glDisable(GL_TEXTURE_2D);
+      
 }
 
 
