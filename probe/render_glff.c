@@ -22,9 +22,11 @@
 
 #ifdef NGI_WINDOW_WIN32
 #define VC_EXTRALEAN
+#define _CRT_SECURE_NO_WARNINGS
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <GL/gl.h>
+#define alloca _alloca
 #define RENDER_GLFF
 #endif
 
@@ -52,7 +54,9 @@ void render_glff_init()
 {
     int font_width = 512;
     int font_height = 512;
-    
+    char *fontTex = NULL;
+    int i;
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
@@ -61,13 +65,13 @@ void render_glff_init()
     glGenTextures(1, &font_tex);
     glBindTexture(GL_TEXTURE_2D, font_tex);
         
-    char *fontTex = typo_init_texture(13.0, font_width, font_height);
+    fontTex = typo_init_texture(13.0, font_width, font_height);
 
 
-    for(int i = 0; i < font_width*font_height; ++i)
+    for(i = 0; i < font_width*font_height; ++i)
     {
         int v = ((unsigned char*)fontTex)[i];
-        v = powf(v/255.0f, 1.0f/1.4f)*255.0f;
+        v = (int)( powf(v/255.0f, 1.0f/1.4f)*255.0f );
         if(v>255) v = 255;
         if(v<0) v = 0;
         fontTex[i] = v;
@@ -97,7 +101,7 @@ void render_glff_resize(int w, int h) {
 }
 
 void render_glff_clear() {
-    glClearColor(0.2, 0.3f, 0.4f, 0.0f);
+    glClearColor(0.2f, 0.3f, 0.4f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
