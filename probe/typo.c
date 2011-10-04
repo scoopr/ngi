@@ -17,7 +17,7 @@ int typo_width, typo_height;
 
 void* typo_init_texture(float pts, int w, int h)
 {
-    FILE* fp = fopen("res/Jura-Regular.ttf", "rb");
+    FILE* fp = fopen("res/OpenSans-Regular.ttf", "rb");
     long sz;
     unsigned char* font_data;
     unsigned char* texdata;

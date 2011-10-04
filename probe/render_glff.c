@@ -65,9 +65,10 @@ void render_glff_init()
     glGenTextures(1, &font_tex);
     glBindTexture(GL_TEXTURE_2D, font_tex);
         
-    fontTex = typo_init_texture(13.0, font_width, font_height);
+    fontTex = typo_init_texture(12.0, font_width, font_height);
 
 
+#if 0
     for(i = 0; i < font_width*font_height; ++i)
     {
         int v = ((unsigned char*)fontTex)[i];
@@ -76,6 +77,7 @@ void render_glff_init()
         if(v<0) v = 0;
         fontTex[i] = v;
     }
+#endif
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_INTENSITY, font_width, font_height, 0, GL_RED, GL_UNSIGNED_BYTE, fontTex);
