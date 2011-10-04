@@ -200,7 +200,7 @@ void render_glsl_init()
     glGenTextures(1, &font_tex);
     glBindTexture(GL_TEXTURE_2D, font_tex);
         
-    char *fontTex = typo_init_texture(12.0, font_width, font_height);
+    char *fontTex = typo_init_texture(14.0, font_width, font_height);
 
 #if 0
     float gamma = 1.0f;

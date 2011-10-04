@@ -55,7 +55,7 @@ void render_glff_init()
     int font_width = 512;
     int font_height = 512;
     char *fontTex = NULL;
-    int i;
+/*    int i;*/
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -65,7 +65,7 @@ void render_glff_init()
     glGenTextures(1, &font_tex);
     glBindTexture(GL_TEXTURE_2D, font_tex);
         
-    fontTex = typo_init_texture(12.0, font_width, font_height);
+    fontTex = typo_init_texture(14.0, font_width, font_height);
 
 
 #if 0
