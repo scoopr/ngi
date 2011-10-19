@@ -37,6 +37,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <alloca.h>
+
 int render_glff_is_supported() {
     #ifdef RENDER_GLFF
     return 1;
