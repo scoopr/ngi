@@ -23,8 +23,9 @@ typedef struct ngi_window_tag {
     void *userdata;
     
     int width, height;
-    
-    struct ngi_window_tag* next_window;
+    int redisplay;
+
+    struct ngi_window_tag* next_redisplay_window;
 } ngi_window;
 
 
@@ -38,6 +39,8 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win);
 int ngi_window_init_cocoa(ngi_application *app, ngi_window* win);
 
 int ngi_window_deinit_xlib(ngi_window* win);
+
+void ngi_window_redisplay(ngi_window *win);
 
 #ifdef __cplusplus
 }

@@ -193,6 +193,8 @@ int ngi_window_init_win32(ngi_application* app, ngi_window* win) {
     ShowWindow(hWnd,SW_SHOW);
     SetForegroundWindow(hWnd);
     SetFocus(hWnd);
+    win->redisplay = 0;
+
 
     return 1;
 }
@@ -214,6 +216,8 @@ void ngi_application_init_win32(ngi_application* app) {
 
 
 //    UINT oldcp = GetConsoleOutputCP();
+
+    app->redisplay = 0;
     
     SetConsoleOutputCP(CP_UTF8);
 

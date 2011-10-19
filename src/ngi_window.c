@@ -109,5 +109,19 @@ int ngi_window_deinit(ngi_window* win) {
     return 0;
 }
 
+#include <stdio.h>
+void ngi_window_redisplay(ngi_window *win) {
+
+    if(!win->redisplay) {
+        win->redisplay = 1;
+
+        ngi_application* app = win->app;
+        win->next_redisplay_window = app->first_redisplay_window;
+        app->first_redisplay_window = win;
+        printf("added %p window to redisplay queue\n", (void*)win);
+    }
+
+}
+
 
 

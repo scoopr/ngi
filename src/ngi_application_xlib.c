@@ -37,9 +37,9 @@ int ngi_application_init_xlib(ngi_application* app) {
     }
     
     app->plat.xlib.context = XUniqueContext();
+    app->redisplay = 0;
     
-    
-    app->first_window = NULL;
+//    app->first_window = NULL;
 
     return 1;
 }
@@ -56,6 +56,7 @@ void ngi_application_deinit_xlib(ngi_application* app) {
 }
 
 
+#if 0
 #include <stdlib.h>
 ngi_window* find_window(ngi_application* app, Window w) {
     
@@ -70,6 +71,7 @@ ngi_window* find_window(ngi_application* app, Window w) {
     return NULL;
     
 }
+#endif
 
 double get_timestamp() {
     struct timeval tv;

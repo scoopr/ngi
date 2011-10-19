@@ -21,7 +21,8 @@ typedef struct ngi_application_tag {
         
     } plat;
     
-    struct ngi_window_tag *first_window;
+    struct ngi_window_tag *first_redisplay_window;
+
     
 } ngi_application;
 

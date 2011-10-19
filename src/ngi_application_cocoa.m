@@ -62,7 +62,7 @@ int ngi_application_init_cocoa(ngi_application *app) {
     if(!success) {
     }
 
-
+    app->first_redisplay_window = NULL;
 
     [pool drain];
     return 1;
@@ -70,32 +70,37 @@ int ngi_application_init_cocoa(ngi_application *app) {
 
 
 
+double ngi_get_time();
+
+void ngi_application_cocoa_handle_redisplay(ngi_application* app) {
+
+    ngi_event ev;
+    memset(&ev,0,sizeof(ngi_event));
+    ngi_window* win = app->first_redisplay_window;
+    app->first_redisplay_window = NULL;
+    printf("checking redisplay queue\n");
+    while( win != NULL) {
+        
+        printf("handling redisplay of %p  (%d)\n", (void*)win, win->redisplay);
+        if(win->redisplay) {
+            win->redisplay = 0;
+            ev.type = ngi_redraw_event;
+            ev.common.window = win;
+            ev.common.timestamp = ngi_get_time();
+
+            ngi_post_event(app, &ev);
+        }
+
+        win = win->next_redisplay_window;
+    }
 
 
-void ngi_application_cocoa_runloop_iteration(ngi_application* app) {
-    (void)app;
 
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+}
 
 
-    int blocking=1;
-    NSDate* limitDate = nil;
-    if(blocking) limitDate = [NSDate distantFuture];
-    else limitDate = [NSDate distantPast];
 
-    NSUInteger mask = UINT_MAX; //NSAnyEventMask;
-    NSEvent* event = [NSApp nextEventMatchingMask: mask
-                           untilDate: limitDate
-                           inMode: NSDefaultRunLoopMode
-                           dequeue: YES];
-
-
-//    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate distantPast]];
-
-    // if(event.type == NSKeyDown && [event.characters length]>0 && [event.characters characterAtIndex:0] == 27) {
-    //     [NSApp terminate:nil];
-    // }
-
+void handle_NSEvent(NSEvent* event, ngi_application* app) {
     ngi_event ev;
     memset(&ev,0,sizeof(ngi_event));
     [NSApp sendEvent:event];
@@ -127,8 +132,50 @@ void ngi_application_cocoa_runloop_iteration(ngi_application* app) {
 
         break;
     }
+    
+}
+
+
+void ngi_application_cocoa_runloop_iteration(ngi_application* app) {
+    (void)app;
+
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+
+
+    int blocking=1;
+    NSDate* limitDate = nil;
+    if(blocking) limitDate = [NSDate distantFuture];
+    else limitDate = [NSDate distantPast];
+
+    NSUInteger mask = UINT_MAX; //NSAnyEventMask;
+    NSEvent* event = [NSApp nextEventMatchingMask: mask
+                           untilDate: limitDate
+                           inMode: NSDefaultRunLoopMode
+                           dequeue: YES];
+
+
+    handle_NSEvent(event, app);
+
+    limitDate = [NSDate distantPast];
+    while((event = [NSApp nextEventMatchingMask: mask
+                               untilDate: limitDate
+                               inMode: NSDefaultRunLoopMode
+                               dequeue: YES]) != nil) {
+        handle_NSEvent(event, app);
+    }
+
+
+//    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate distantPast]];
+
+    // if(event.type == NSKeyDown && [event.characters length]>0 && [event.characters characterAtIndex:0] == 27) {
+    //     [NSApp terminate:nil];
+    // }
+
+    ngi_application_cocoa_handle_redisplay(app);
+
 
     [pool drain];
+
 
 }
 

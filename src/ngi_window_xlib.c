@@ -11,6 +11,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#if 0
 void ngi_window_add_window_xlib(ngi_application* app, ngi_window * win) {
     
     ngi_window *cur = app->first_window;
@@ -28,7 +29,7 @@ void ngi_window_add_window_xlib(ngi_application* app, ngi_window * win) {
     win->next_window = NULL;
 
 }
-
+#endif
 
 int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
    
@@ -96,7 +97,7 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
     
     XMapWindow(app->plat.xlib.dpy, xwin);
     
-    ngi_window_add_window_xlib(app,win);
+//    ngi_window_add_window_xlib(app,win);
 
     return 1;
 }
