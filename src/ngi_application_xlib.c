@@ -1,6 +1,10 @@
+#define _POSIX_C_SOURCE  199309L
+
 #include "ngi/ngi.h"
 
 #ifdef NGI_WINDOW_XLIB
+
+#include <time.h>
 
 #include <X11/Xlib.h>
 #include <X11/Xresource.h>
@@ -73,11 +77,13 @@ ngi_window* find_window(ngi_application* app, Window w) {
     
 }
 #endif
-
 double ngi_get_time() {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return tv.tv_sec + tv.tv_usec/1000000.0;
+    struct timespec tv;
+//    struct timeval tv;
+//    gettimeofday(&tv, NULL);
+    clock_gettime(CLOCK_MONOTONIC, &tv);
+    return tv.tv_sec + tv.tv_nsec/1000000000.0;
+//    return tv.tv_sec + tv.tv_usec/1000000.0;
 }
 
 
@@ -132,6 +138,7 @@ void handle_X11Event(XEvent *xev, ngi_application *app) {
             KeySym ks = 0;
             Status status;
             unsigned int codepoint = 0;
+            timestamp = xev->xkey.time / 1000.0;
             if(xev->type==KeyPress /*|| xev.type==KeyRelease*/) {
                 /*int ret =*/ Xutf8LookupString(win->plat.xlib.xic, &xev->xkey, buf, 7, &ks, &status);
                 
