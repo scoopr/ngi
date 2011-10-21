@@ -223,15 +223,17 @@ void handle_X11Event(XEvent *xev, ngi_application *app) {
 }
 
 
-int ngi_application_wait_event_xlib(ngi_application* app) {
+int ngi_application_wait_event_xlib(ngi_application* app, int blocking) {
 
     
     XEvent xev;
     Display* dpy = app->plat.xlib.dpy;
-
-    XNextEvent(dpy, &xev);
-    handle_X11Event(&xev, app);
-
+    
+    if(blocking) {
+        XNextEvent(dpy, &xev);
+        handle_X11Event(&xev, app);
+    }
+    
     while(XPending(dpy) > 0) {
 //    while(XEventsQueued(dpy, QueuedAfterReading) > 0) {
         XNextEvent(dpy, &xev);

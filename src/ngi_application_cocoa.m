@@ -136,13 +136,13 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
 }
 
 
-void ngi_application_cocoa_runloop_iteration(ngi_application* app) {
+void ngi_application_cocoa_runloop_iteration(ngi_application* app, int blocking) {
     (void)app;
 
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
 
 
-    int blocking=1;
+//    int blocking=1;
     NSDate* limitDate = nil;
     if(blocking) limitDate = [NSDate distantFuture];
     else limitDate = [NSDate distantPast];

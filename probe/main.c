@@ -339,7 +339,7 @@ int main() {
 
     done = 0;
     while(!done) {
-        ngi_application_wait_event(&app);
+        ngi_application_wait_event(&app,1);
         ngi_window_redisplay(&win);
 
 //        draw(win.width, win.height);

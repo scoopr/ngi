@@ -31,18 +31,18 @@ typedef struct ngi_application_tag {
 int ngi_application_init(ngi_application* app);
 int ngi_application_deinit(ngi_application* app);
 //int ngi_application_run(ngi_application* app);
-int ngi_application_wait_event(ngi_application* app);
+int ngi_application_wait_event(ngi_application* app, int blocking);
 
 
 int ngi_application_init_cocoa();
-void ngi_application_cocoa_runloop_iteration(ngi_application* app);
+void ngi_application_cocoa_runloop_iteration(ngi_application* app, int blocking);
 
 void ngi_application_init_win32();
-void ngi_application_win32_runloop_iteration(ngi_application* app);
+void ngi_application_win32_runloop_iteration(ngi_application* app, int blocking);
 
 int ngi_application_init_xlib(ngi_application* app);
 void ngi_application_deinit_xlib(ngi_application *app);
-int ngi_application_wait_event_xlib(ngi_application* app);
+int ngi_application_wait_event_xlib(ngi_application* app, int blocking);
 
 int ngi_post_event(ngi_application* app, ngi_event* ev);
 

@@ -37,23 +37,23 @@ int ngi_application_deinit(ngi_application* app) {
     (void)app;
 }
 
-int ngi_application_wait_event(ngi_application* app) {
+int ngi_application_wait_event(ngi_application* app, int blocking) {
 
     #ifdef NGI_WINDOW_XLIB
     if(app->type == ngi_wm_api_xlib) {
-        return ngi_application_wait_event_xlib(app);
+        return ngi_application_wait_event_xlib(app, blocking);
     }
     #endif
 
     #ifdef NGI_WINDOW_WIN32
     if(app->type == ngi_wm_api_win32) {
-        ngi_application_win32_runloop_iteration(app);
+        ngi_application_win32_runloop_iteration(app, blocking);
     }
     #endif
 
     #ifdef NGI_WINDOW_COCOA
     if(app->type == ngi_wm_api_cocoa) {
-        ngi_application_cocoa_runloop_iteration(app);
+        ngi_application_cocoa_runloop_iteration(app, blocking);
     }
     #endif
 
