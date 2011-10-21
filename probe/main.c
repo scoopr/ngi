@@ -20,14 +20,10 @@
 #include "typo.h"
 
 
-typedef struct box_tag {
-    float left, right;
-    float top, bottom;
-    float width, height;
-} box_t;
 
 box_t screenBox;
 box_t timelineBox;
+box_t tachoBox;
 
 char* codepointhex(int cp) {
     static char out[4*2];
@@ -70,17 +66,17 @@ void drawCorners(int w, int h) {
     float sw = 5;
     float lw = 20;
 
-    rend->quad(m, m, sw, lw, white);
-    rend->quad(m, m, lw, sw, white);
+    render_rect(rend, m, m, sw, lw, white);
+    render_rect(rend, m, m, lw, sw, white);
     
-    rend->quad(w-m-sw, m, sw, lw, white);
-    rend->quad(w-m-lw, m, lw, sw, white);
+    render_rect(rend, w-m-sw, m, sw, lw, white);
+    render_rect(rend, w-m-lw, m, lw, sw, white);
 
-    rend->quad(w-m-sw, h-lw-m, sw, lw, white);
-    rend->quad(w-m-lw, h-sw-m, lw, sw, white);
+    render_rect(rend, w-m-sw, h-lw-m, sw, lw, white);
+    render_rect(rend, w-m-lw, h-sw-m, lw, sw, white);
 
-    rend->quad(m, h-lw-m, sw, lw, white);
-    rend->quad(m, h-sw-m, lw, sw, white);
+    render_rect(rend, m, h-lw-m, sw, lw, white);
+    render_rect(rend, m, h-sw-m, lw, sw, white);
     
 }
 
@@ -92,7 +88,12 @@ int cur_last_event = 0;
 int num_last_events = 0;
 int event_serial = 0;
 
-double last_swap = 0;
+#define max_frametimes 256
+int cur_frametime = 0;
+int last_frametime = 0;
+double frametimes[max_frametimes];
+
+
 
 const unsigned char line_color[]={255,255,255,255};
 
@@ -128,6 +129,13 @@ void layout(int w, int h) {
     timelineBox.height = 30;
     box_update_bottom_right(&timelineBox);
     
+    box_inside(&screenBox, &tachoBox, 50);
+    tachoBox.top = timelineBox.bottom - 5;
+    tachoBox.left += tachoBox.width/2;
+    tachoBox.bottom = tachoBox.top - (tachoBox.right - tachoBox.left);
+    box_update_size(&tachoBox);
+    
+    
 }
 
 // FIXME:
@@ -146,9 +154,9 @@ unsigned char timeline_bg_color[4] = { 32,32,64 };
 void draw_timeline() {
     int i;
     
-    rend->quad(timelineBox.left, timelineBox.bottom, 
+    render_rect(rend, timelineBox.left, timelineBox.bottom, 
                timelineBox.width, timelineBox.height, timeline_bg_color);
-    rend->quad(timelineBox.left, timelineBox.top, timelineBox.width, 1, line_color);
+    render_rect(rend, timelineBox.left, timelineBox.top, timelineBox.width, 1, line_color);
     
     
 //    float scale = 1;
@@ -156,7 +164,7 @@ void draw_timeline() {
     double spacing = 1.0/60.0 * scale;
     
     for(float x = timelineBox.right; x >= timelineBox.left; x-=spacing) {
-        rend->quad(x,timelineBox.top,1, -timelineBox.height*.1f, line_color);
+        render_rect(rend, x,timelineBox.top,1, -timelineBox.height*.1f, line_color);
 
     }
     
@@ -183,11 +191,63 @@ void draw_timeline() {
         if( x < timelineBox.left ) continue;
         float h = -timelineBox.height/4 * (last_events[j].type*.3f+1);
 //        if(last_events[j].type == ngi_redraw_event) h=-h;
-        rend->quad(x,timelineBox.top,1, h, col);
+        render_rect(rend, x,timelineBox.top,1, h, col);
  
-        rend->quad(x,timelineBox.top+h,latency, 4, col);
+        render_rect(rend, x,timelineBox.top+h,latency, 4, col);
 
     }
+
+    
+}
+
+
+void draw_tachometer() {
+    
+//    render_box(rend, &tachoBox, white);
+
+    const unsigned char col1[] = { 180,180,255,255};
+
+    float innerRadius = tachoBox.width * .3f;
+    float outerRadius = tachoBox.width * .35f;
+    float centerx = tachoBox.left + tachoBox.width/2;
+    float centery = tachoBox.bottom + tachoBox.height/2;
+
+
+    float spf = 1/60.0f;
+    
+    double offset = frametimes[max_frametimes/2] ; //fmod(,spf);
+
+    const int tachoframes = 12;
+
+    for(size_t i = 0; i < tachoframes; ++i)
+    {
+        float angle = i * 3.14159f * 2.0f / tachoframes ;
+        float ax = cosf(angle);
+        float ay = sinf(angle);
+        render_line(rend, centerx + ax * innerRadius, centery + ay * innerRadius,
+                          centerx + ax * outerRadius, centery + ay * outerRadius, 5, col1);
+    }
+
+    for(int i = 0; i < max_frametimes; ++i)
+    {
+        int j = (i + cur_frametime) % max_frametimes;
+        double t = frametimes[ j ] - offset;
+
+        int lum = i*255/max_frametimes;
+        float r = i/(float)max_frametimes * 10.0f;
+        if( j <= last_frametime && j > (last_frametime-tachoframes+max_frametimes)%max_frametimes) r=20.0f;
+        if(j != last_frametime) lum = lum >> 1;
+        unsigned char col[]= { lum, lum, lum, 255};
+
+        float angle = fmod(t, spf * tachoframes ) / (spf*tachoframes) * 3.14159f * 2.0f;
+        float ax = cosf(angle);
+        float ay = sinf(angle);
+        render_line(rend, centerx + ax * (outerRadius+r), centery + ay * (outerRadius+r),
+                          centerx + ax * (outerRadius+5+r), centery + ay * (outerRadius+5+r), 5, col);
+        
+    }
+
+
 
 
     
@@ -209,6 +269,8 @@ void draw(int w, int h) {
     rend->clear();
 
     draw_timeline();
+
+    draw_tachometer();
 
     drawCorners(w,h);
 
@@ -273,7 +335,11 @@ int event(ngi_event* ev) {
         case ngi_redraw_event:
         draw(ev->common.window->width, ev->common.window->height);
         check( ngi_context_swap(ev->common.window->context) );
-        last_swap = ngi_get_time();
+
+        frametimes[cur_frametime] = ngi_get_time();
+        last_frametime = cur_frametime;
+        cur_frametime = (cur_frametime+1)%max_frametimes;
+        
         break;
         
         default: break;
@@ -339,7 +405,7 @@ int main() {
 
     done = 0;
     while(!done) {
-        ngi_application_wait_event(&app,1);
+        ngi_application_wait_event(&app,0);
         ngi_window_redisplay(&win);
 
 //        draw(win.width, win.height);

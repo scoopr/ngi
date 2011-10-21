@@ -109,15 +109,22 @@ void render_glff_clear() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void render_glff_quad(float x, float y, float w, float h, const unsigned char color[4]) {
+void render_glff_quad(float coords[2*4], const unsigned char color[4]) {
     
     float verts[] = {
+        coords[0], coords[1],
+        coords[2], coords[3],
+        coords[4], coords[5],
+        coords[4], coords[5],
+        coords[6], coords[7],
+        coords[0], coords[1]
+/*
         x,y,
         x,y+h,
         x+w,y+h,
         x+w,y+h,
         x+w,y,
-        x,y
+        x,y*/
     };
     
     glColor4ub(color[0], color[1], color[2], color[3] );

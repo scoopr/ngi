@@ -8,7 +8,7 @@ int render_glsl_is_supported();
 void render_glsl_init();
 void render_glsl_resize(int w, int h);
 void render_glsl_clear();
-void render_glsl_quad(float x, float y, float w, float h, const unsigned char color[4]);
+void render_glsl_quad(float coords[2*4], const unsigned char color[4]);
 void render_glsl_text(float x, float y, const char* str, ...);
 
 
