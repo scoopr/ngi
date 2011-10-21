@@ -78,10 +78,8 @@ void ngi_application_cocoa_handle_redisplay(ngi_application* app) {
     memset(&ev,0,sizeof(ngi_event));
     ngi_window* win = app->first_redisplay_window;
     app->first_redisplay_window = NULL;
-    printf("checking redisplay queue\n");
     while( win != NULL) {
         
-        printf("handling redisplay of %p  (%d)\n", (void*)win, win->redisplay);
         if(win->redisplay) {
             win->redisplay = 0;
             ev.type = ngi_redraw_event;

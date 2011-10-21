@@ -118,7 +118,7 @@ void ngi_window_redisplay(ngi_window *win) {
         ngi_application* app = win->app;
         win->next_redisplay_window = app->first_redisplay_window;
         app->first_redisplay_window = win;
-        printf("added %p window to redisplay queue\n", (void*)win);
+//        printf("added %p window to redisplay queue\n", (void*)win);
     }
 
 }
