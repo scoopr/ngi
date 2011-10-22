@@ -122,6 +122,8 @@ int ngi_context_egl_init(ngi_context* ctx, ngi_window* win) {
         printf("Unsupported EGL Graphics api 0x%x\n", api);
     }
 
+    eglSwapInterval(edpy,1);
+
     win->context = ctx;
 
     return 1;
