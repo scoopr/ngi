@@ -124,7 +124,9 @@ CPPFLAGS+= -DNGI_CONTEXT_GLX -I/usr/X11/include
 LDFLAGS+=-lGL
 endif
 
-
+ifeq ($(shell uname),Linux)
+LDFLAGS+=-lrt
+endif
 
 EXE=probe/probe$(VARIANT)
 
