@@ -179,12 +179,6 @@ endif
 run: $(EXE)
 	./$(EXE)
 
-.PHONY: lib
-lib: lib/libngi$(VARIANT).a
-lib/libngi$(VARIANT).a: $(OBJ)
-	$(MKDIR) lib
-	$(AR) rcs $@ $^
-
 
 BUILD_DIR=build/obj$(VARIANT)
 OBJ:=$(addprefix $(BUILD_DIR)/,$(OBJ))
@@ -237,8 +231,15 @@ $(BUILD_DIR)/%.o: %.m
 
 
 
+
 $(EXE): $(OBJ) $(OBJ_PROBE)
 	$(CC) $^ $(LDFLAGS) -o $@ 
+
+.PHONY: lib
+lib: lib/libngi$(VARIANT).a
+lib/libngi$(VARIANT).a: $(OBJ)
+	$(MKDIR) lib
+	$(AR) rcs $@ $^
 
 
 
