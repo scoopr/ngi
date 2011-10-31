@@ -117,6 +117,7 @@ void handle_X11Event(XEvent *xev, ngi_application *app) {
     memset(&ev,0,sizeof(ngi_event));
 
     /*int filtered =*/ XFilterEvent(xev, None);
+    const int buttonMask = Button1Mask | Button2Mask | Button3Mask;
 
     // ngi_window* win = find_window(app, xev.xany.window);
     ngi_window* win = NULL;
@@ -217,6 +218,73 @@ void handle_X11Event(XEvent *xev, ngi_application *app) {
         
         
         
+        break;
+        
+        case MotionNotify:
+        {
+            static float  mouseX = 0;
+            static float  mouseY = 0;
+        
+            ev.type = ngi_mouse_move_event;
+            ev.common.timestamp = timestamp;
+            ev.common.window = win;
+            ev.mouse_move.x = xev->xmotion.x;
+            ev.mouse_move.y = xev->xmotion.y;
+            ev.mouse_move.dx = ev.mouse_move.x - mouseX;
+            ev.mouse_move.dy = ev.mouse_move.y - mouseY;
+            mouseX = ev.mouse_move.x;
+            mouseY = ev.mouse_move.y;
+            ev.mouse_move.drag = !!(xev->xmotion.state & buttonMask);
+//            ev.mouse_move.drag_button = xev->xmotion.state & buttonMask;
+            ev.mouse_move.drag_button = 0;
+            ngi_post_event(app, &ev);
+
+        }
+        break;
+        case ButtonPress:
+        {
+            if( xev->xbutton.button == Button4 || xev->xbutton.button == Button5) {
+                int dir = 1;
+                if(xev->xbutton.button == Button5) dir = -1;
+                ev.common.timestamp = timestamp;
+                ev.common.window = win;
+                ev.type = ngi_scroll_event;
+                ev.scroll.dx = 0;
+                ev.scroll.dy = dir;
+                ev.scroll.dz = 0;
+                ngi_post_event(app, &ev);
+            } else {
+                ev.type = ngi_mouse_button_event;
+                ev.common.timestamp = timestamp;
+                ev.common.window = win;
+                ev.mouse_button.button = xev->xbutton.button;
+                ev.mouse_button.down = 1;
+                ev.mouse_button.repeats = 0;
+                ngi_post_event(app, &ev);
+            }
+        
+        }
+        break;
+        case ButtonRelease:
+        {
+/*            if( xev->xbutton.button & (Button4Mask | Button5Mask)) {
+                int dir = 1;
+                if(xev->xbutton.button & Button5Mask) dir = -1;
+                ev.type = ngi_scroll_event;
+                ev.scroll.dx = 0;
+                ev.scroll.dy = dir;
+                ev.scroll.dz = 0;
+                ngi_post_event(app, &ev);
+            } else {*/
+                ev.type = ngi_mouse_button_event;
+                ev.common.timestamp = timestamp;
+                ev.common.window = win;
+                ev.mouse_button.button = xev->xbutton.button;
+                ev.mouse_button.down = 0;
+                ev.mouse_button.repeats = 0;
+                ngi_post_event(app, &ev);
+/*            }*/
+        }
         break;
     }
 

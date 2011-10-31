@@ -77,7 +77,7 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
     #endif
     
     memset(&attrs, 0, sizeof(XSetWindowAttributes));
-    attrs.event_mask = KeyPressMask | KeyReleaseMask | ExposureMask | ButtonPressMask |
+    attrs.event_mask = KeyPressMask | KeyReleaseMask | ExposureMask | ButtonPressMask | PointerMotionMask |
                        VisibilityChangeMask | StructureNotifyMask ;
     XChangeWindowAttributes(app->plat.xlib.dpy, xwin, CWEventMask, &attrs);
     
