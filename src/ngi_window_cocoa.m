@@ -132,7 +132,7 @@ double ngi_get_time() {
     (void)replacementRange;
     (void)newSelection;
     activeIME = YES;
-    NSLog(@"setMarkedText:%@ selectedRange:replacementRange:",aString);
+//    NSLog(@"setMarkedText:%@ selectedRange:replacementRange:",aString);
 
 }
 
@@ -144,7 +144,7 @@ double ngi_get_time() {
     (void)aString;
     (void)replacementRange;
     
-    NSLog(@"insertText:%@ replacementRange:", aString);
+//    NSLog(@"insertText:%@ replacementRange:", aString);
 
     [self unmarkText];
     
