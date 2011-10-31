@@ -139,6 +139,7 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
         ev.mouse_button.button = [event buttonNumber];
         ev.mouse_button.down = 1;
         ev.mouse_button.repeats = [event clickCount];
+
         ngi_post_event(app, &ev);
         break;
         case NSLeftMouseUp        :
@@ -152,18 +153,35 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
         break;
 
         case NSMouseMoved         :
+        {
+            ev.type = ngi_mouse_move_event;
+            NSPoint p = [event locationInWindow];
+            ev.mouse_move.x = p.x;
+            ev.mouse_move.y = p.y;
+            ev.mouse_move.dx = [event deltaX];
+            ev.mouse_move.dy = [event deltaY];
+            ev.mouse_move.drag = 0;
+            ev.mouse_move.drag_button = 0;
+            ngi_post_event(app, &ev);
+            
+        }
+        
+        break;
         case NSLeftMouseDragged   :
         case NSRightMouseDragged  :
         case NSOtherMouseDragged  :
-        
-        ev.type = ngi_mouse_move_event;
-        NSPoint p = [event locationInWindow];
-        ev.mouse_move.x = p.x;
-        ev.mouse_move.y = p.y;
-        ev.mouse_move.dx = [event deltaX];
-        ev.mouse_move.dy = [event deltaY];
-        
-        ngi_post_event(app, &ev);
+        {
+            ev.type = ngi_mouse_move_event;
+            NSPoint p = [event locationInWindow];
+            ev.mouse_move.x = p.x;
+            ev.mouse_move.y = p.y;
+            ev.mouse_move.dx = [event deltaX];
+            ev.mouse_move.dy = [event deltaY];
+            ev.mouse_move.drag = 1;
+            ev.mouse_move.drag_button = [event buttonNumber];
+            ngi_post_event(app, &ev);
+            
+        }
         
         break;
 

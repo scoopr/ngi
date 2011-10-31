@@ -48,6 +48,10 @@ typedef struct ngi_mouse_move_t {
 
     float x,y;
     float dx,dy;
+    
+    int drag;
+    int drag_button;
+    
 } ngi_mouse_move;
 
 typedef struct ngi_mouse_button_t {
