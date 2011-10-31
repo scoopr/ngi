@@ -189,6 +189,7 @@ double ngi_get_time() {
         [self setContentView:view];
         [self makeFirstResponder:view];
         [self setDelegate:self];
+        [self setAcceptsMouseMovedEvents:YES];
         
         oglContext = nil;
     }
@@ -295,6 +296,8 @@ int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win) {
     [context makeCurrentContext];
     [context setView:w.view];
 //    [context setFullScreen];
+//    int swap = 0;
+//    [context setValues:&swap forParameter: NSOpenGLCPSwapInterval];
     [context update];
     ctx->platform.cocoa.ctx = context;
     [pool drain];

@@ -65,6 +65,13 @@ typedef struct ngi_resize_t {
     int width, height;
 } ngi_resize;
 
+typedef struct ngi_scroll_t {
+    ngi_common_event common;
+
+    float dx,dy,dz;
+} ngi_scroll;
+
+
 #if 0
 typedef struct ngi_touch_t {
     ngi_common_event common;
@@ -74,11 +81,6 @@ typedef struct ngi_touch_t {
     int tid;
 } ngi_touch;
 
-typedef struct ngi_scroll_t {
-    ngi_common_event common;
-
-    float dx,dy,dz;
-} ngi_scroll;
 
 
 typedef struct ngi_focus_t {
@@ -128,9 +130,9 @@ typedef union ngi_event_tag {
     ngi_mouse_move mouse_move;
     ngi_mouse_button mouse_button;
     ngi_resize resize;
+    ngi_scroll scroll;
 #if 0
     ngi_touch touch;
-    ngi_scroll scroll;
     ngi_focus focus;
     ngi_lifecycle lifecycle;
     ngi_orientation orientation;

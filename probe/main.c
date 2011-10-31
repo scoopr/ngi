@@ -230,7 +230,7 @@ void draw_tachometer() {
     double offset = frametimes[last_frametime] ; //fmod(,spf);
 //    double offset = frametimes[last_frametime]  - fmod(frametimes[last_frametime],spf);
 
-    const int tachoframes = 30;
+    const int tachoframes = 6;
 
     for(int i = 0; i < tachoframes; ++i)
     {
