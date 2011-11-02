@@ -343,20 +343,20 @@ int event(ngi_event* ev) {
     
 //    printf("[event %s  time:%f]\n", ngi_event_name(ev->type), ev->common.timestamp);
     switch(ev->type) {
-        case ngi_key_down_event:
-        case ngi_key_up_event:
+        case ngi_event_key_down:
+        case ngi_event_key_up:
 //        printf("<key: %f, %s, %d, %s>\n", ev->common.timestamp, ev->key.keycode, ev->key.down, codepointutf8(ev->key.codepoint));
         if(ev->key.codepoint==27) {
             done = 1;
         }
         break;
-        case ngi_text_event:
+        case ngi_event_text:
  //       printf("<text: %f %s \tU+%04X>\n", ev->common.timestamp, codepointutf8(ev->text.codepoint), ev->text.codepoint);
         
         
         break;
         
-        case ngi_redraw_event:
+        case ngi_event_redraw:
         draw(ev->common.window->width, ev->common.window->height);
         check( ngi_context_swap(ev->common.window->context) );
         frametimes[cur_frametime] = ngi_get_time();

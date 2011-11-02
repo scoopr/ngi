@@ -3,22 +3,34 @@
 
 
 
+extern const char* ngi_event_key_down_name;
+extern const char* ngi_event_key_up_name;
+extern const char* ngi_event_key_repeat_name;
+extern const char* ngi_event_quit_name;
+extern const char* ngi_event_redraw_name;
+extern const char* ngi_event_resize_name;
+
+
+
 typedef enum ngi_event_type_t {
-    ngi_key_down_event,
-    ngi_key_up_event,
-    ngi_text_event,
-    ngi_marked_text_event,
-    ngi_mouse_move_event,
-    ngi_mouse_button_event,
-    ngi_touch_event,
-    ngi_scroll_event,
-    ngi_resize_event,
-    ngi_focus_event,
-    ngi_redraw_event,
-    ngi_lifecycle_event,
-    ngi_orientation_event,
-    ngi_custom_event,
+    ngi_event_key_down,
+    ngi_event_key_up,
+    ngi_event_text,
+    ngi_event_marked_text,
+    ngi_event_mouse_move,
+    ngi_event_mouse_button,
+    ngi_event_touch,
+    ngi_event_scroll,
+    ngi_event_resize,
+    ngi_event_focus,
+    ngi_event_redraw,
+    ngi_event_lifecycle,
+    ngi_event_orientation,
+    ngi_event_custom,
 } ngi_event_type;
+
+
+
 
 typedef struct ngi_common_event_t {
     ngi_event_type type;
@@ -148,10 +160,10 @@ typedef union ngi_event_tag {
 
 static inline const char* ngi_event_name(ngi_event_type type) {
     switch(type) {
-        case ngi_key_down_event: return ngi_event_key_down;
-        case ngi_key_up_event: return ngi_event_key_up;
-        case ngi_redraw_event: return ngi_event_redraw;
-        case ngi_resize_event: return ngi_event_resize;
+        case ngi_event_key_down: return ngi_event_key_down_name;
+        case ngi_event_key_up: return ngi_event_key_up_name;
+        case ngi_event_redraw: return ngi_event_redraw_name;
+        case ngi_event_resize: return ngi_event_resize_name;
         default:
         return "unknown event type";
     }

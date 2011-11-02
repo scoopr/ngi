@@ -78,12 +78,21 @@ ngi_window* find_window(ngi_application* app, Window w) {
 }
 #endif
 double ngi_get_time() {
-    struct timespec tv;
-//    struct timeval tv;
-//    gettimeofday(&tv, NULL);
-    clock_gettime(CLOCK_MONOTONIC, &tv);
-    return tv.tv_sec + tv.tv_nsec/1000000000.0;
-//    return tv.tv_sec + tv.tv_usec/1000000.0;
+    
+    #if _POSIX_TIMERS > 0 && _POSIX_MONOTONIC_CLOCK > 0
+
+        struct timespec tv;
+        clock_gettime(CLOCK_MONOTONIC, &tv);
+        return tv.tv_sec + tv.tv_nsec/1000000000.0;
+
+    #else
+
+        struct timeval tv;
+        gettimeofday(&tv, NULL);
+        return tv.tv_sec + tv.tv_usec/1000000.0;
+    
+    #endif
+    
 }
 
 
@@ -97,7 +106,7 @@ void ngi_application_x11_handle_redisplay(ngi_application* app) {
         
         if(win->redisplay) {
             win->redisplay = 0;
-            ev.type = ngi_redraw_event;
+            ev.type = ngi_event_redraw;
             ev.common.window = win;
             ev.common.timestamp = ngi_get_time();
 
@@ -177,7 +186,7 @@ void handle_X11Event(XEvent *xev, ngi_application *app) {
             //     cb(&ev);
             // }
 
-            ev.type = xev->type == KeyPress ? ngi_key_down_event : ngi_key_up_event;
+            ev.type = xev->type == KeyPress ? ngi_event_key_down : ngi_event_key_up;
             ev.common.timestamp = timestamp;
             ev.common.window = win;
             ev.key.down = xev->type == KeyPress;
@@ -195,7 +204,7 @@ void handle_X11Event(XEvent *xev, ngi_application *app) {
         case Expose:
 
         if(xev->xexpose.count == 0) {
-            ev.type = ngi_redraw_event;
+            ev.type = ngi_event_redraw;
             ev.common.timestamp = timestamp;
             ev.common.window = win;
             cb(&ev);
@@ -207,7 +216,7 @@ void handle_X11Event(XEvent *xev, ngi_application *app) {
         break;
         case ConfigureNotify:
         if( win->width != xev->xconfigure.width || win->height != xev->xconfigure.height) {
-            ev.type = ngi_resize_event;
+            ev.type = ngi_event_resize;
             ev.common.timestamp = timestamp;
             ev.common.window = win;
             win->width = ev.resize.width = xev->xconfigure.width;
@@ -225,7 +234,7 @@ void handle_X11Event(XEvent *xev, ngi_application *app) {
             static float  mouseX = 0;
             static float  mouseY = 0;
         
-            ev.type = ngi_mouse_move_event;
+            ev.type = ngi_event_mouse_move;
             ev.common.timestamp = timestamp;
             ev.common.window = win;
             ev.mouse_move.x = xev->xmotion.x;
@@ -248,13 +257,13 @@ void handle_X11Event(XEvent *xev, ngi_application *app) {
                 if(xev->xbutton.button == Button5) dir = -1;
                 ev.common.timestamp = timestamp;
                 ev.common.window = win;
-                ev.type = ngi_scroll_event;
+                ev.type = ngi_event_scroll;
                 ev.scroll.dx = 0;
                 ev.scroll.dy = dir;
                 ev.scroll.dz = 0;
                 ngi_post_event(app, &ev);
             } else {
-                ev.type = ngi_mouse_button_event;
+                ev.type = ngi_event_mouse_button;
                 ev.common.timestamp = timestamp;
                 ev.common.window = win;
                 ev.mouse_button.button = xev->xbutton.button;
@@ -276,7 +285,7 @@ void handle_X11Event(XEvent *xev, ngi_application *app) {
                 ev.scroll.dz = 0;
                 ngi_post_event(app, &ev);
             } else {*/
-                ev.type = ngi_mouse_button_event;
+                ev.type = ngi_event_mouse_button;
                 ev.common.timestamp = timestamp;
                 ev.common.window = win;
                 ev.mouse_button.button = xev->xbutton.button;

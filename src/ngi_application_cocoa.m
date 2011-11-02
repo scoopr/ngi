@@ -82,7 +82,7 @@ void ngi_application_cocoa_handle_redisplay(ngi_application* app) {
         
         if(win->redisplay) {
             win->redisplay = 0;
-            ev.type = ngi_redraw_event;
+            ev.type = ngi_event_redraw;
             ev.common.window = win;
             ev.common.timestamp = ngi_get_time();
 
@@ -118,7 +118,7 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
         case NSKeyDown:
         case NSKeyUp:
         
-        ev.type = event.type == NSKeyDown ? ngi_key_down_event : ngi_key_up_event;
+        ev.type = event.type == NSKeyDown ? ngi_event_key_down : ngi_event_key_up;
         ev.key.down = event.type == NSKeyDown;
         ev.key.keycode = "todo"; // TODO
         ev.key.modifiers = 0; // TODO
@@ -135,7 +135,7 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
         case NSLeftMouseDown      :
         case NSRightMouseDown     :
         case NSOtherMouseDown     :
-        ev.type = ngi_mouse_button_event;
+        ev.type = ngi_event_mouse_button;
         ev.mouse_button.button = [event buttonNumber];
         ev.mouse_button.down = 1;
         ev.mouse_button.repeats = [event clickCount];
@@ -145,7 +145,7 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
         case NSLeftMouseUp        :
         case NSRightMouseUp       :
         case NSOtherMouseUp       :
-        ev.type = ngi_mouse_button_event;
+        ev.type = ngi_event_mouse_button;
         ev.mouse_button.button = [event buttonNumber];
         ev.mouse_button.down = 0;
         ev.mouse_button.repeats = [event clickCount];
@@ -154,7 +154,7 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
 
         case NSMouseMoved         :
         {
-            ev.type = ngi_mouse_move_event;
+            ev.type = ngi_event_mouse_move;
             NSPoint p = [event locationInWindow];
             ev.mouse_move.x = p.x;
             ev.mouse_move.y = p.y;
@@ -171,7 +171,7 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
         case NSRightMouseDragged  :
         case NSOtherMouseDragged  :
         {
-            ev.type = ngi_mouse_move_event;
+            ev.type = ngi_event_mouse_move;
             NSPoint p = [event locationInWindow];
             ev.mouse_move.x = p.x;
             ev.mouse_move.y = p.y;
@@ -190,7 +190,7 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
         break;
 
         case NSScrollWheel:
-        ev.type = ngi_scroll_event;
+        ev.type = ngi_event_scroll;
         ev.scroll.dx = [event deltaX];
         ev.scroll.dy = [event deltaY];
         ev.scroll.dz = [event deltaZ];

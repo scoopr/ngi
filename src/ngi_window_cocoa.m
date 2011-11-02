@@ -159,7 +159,7 @@ double ngi_get_time() {
     ngi_event ev;
     memset(&ev,0,sizeof(ngi_event));
 
-    ev.type = ngi_redraw_event;
+    ev.type = ngi_event_redraw;
     ev.common.window = win;
     ev.common.timestamp = ngi_get_time();
 

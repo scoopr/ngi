@@ -35,10 +35,10 @@ const char* ngi_config_depth_bits = "ngi_config_depth_bits";       /* int */
 const char* ngi_config_stencil_bits = "ngi_config_stencil_bits";   /* int */
 const char* ngi_config_multisamples = "ngi_config_multisamples";   /* int */
 
-const char* ngi_event_key_down = "ngi_event_key_down";
-const char* ngi_event_key_up = "ngi_event_key_up";
-const char* ngi_event_key_repeat = "ngi_event_key_repeat";
-const char* ngi_event_quit = "ngi_event_quit";
-const char* ngi_event_redraw = "ngi_event_redraw";
-const char* ngi_event_resize = "ngi_event_resize";
+const char* ngi_event_key_down_name = "ngi_event_key_down";
+const char* ngi_event_key_up_name = "ngi_event_key_up";
+const char* ngi_event_key_repeat_name = "ngi_event_key_repeat";
+const char* ngi_event_quit_name = "ngi_event_quit";
+const char* ngi_event_redraw_name = "ngi_event_redraw";
+const char* ngi_event_resize_name = "ngi_event_resize";
 
