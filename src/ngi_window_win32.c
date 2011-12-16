@@ -22,6 +22,11 @@ wchar_t* NGI_WINDOW_CLASS_NAME = L"ngi";
 ngi_event_cb current_event_cb;
 
 
+double ngi_get_time() {
+	return GetTickCount() / 1000.0;
+}
+
+
 #define bits(val,from,to) ( ((val) >> (from)) & ( (1 << (to) ) - 1 ) )
 
 LRESULT CALLBACK WndProc(   HWND    hWnd,
@@ -43,7 +48,7 @@ LRESULT CALLBACK WndProc(   HWND    hWnd,
             int prevstate = bits(lParam, 30, 30);
 
             ngi_event ev;
-            ev.type = uMsg == WM_KEYDOWN ? ngi_key_down_event : ngi_key_up_event;
+            ev.type = uMsg == WM_KEYDOWN ? ngi_event_key_down : ngi_event_key_up;
             ev.common.window = win;
             ev.common.timestamp = timestamp;
             ev.key.down = uMsg == WM_KEYDOWN;
@@ -114,9 +119,9 @@ LRESULT CALLBACK WndProc(   HWND    hWnd,
         case WM_PAINT:
         {
             ngi_event ev;
-            ev.type = ngi_redraw_event;
+            ev.type = ngi_event_redraw;
             ev.common.window = win;
-            ev.common.timestamp = GetTickCount()/1000.0;
+            ev.common.timestamp = ngi_get_time();
                         
             ValidateRect(hWnd, NULL);
 
@@ -194,14 +199,18 @@ int ngi_window_init_win32(ngi_application* app, ngi_window* win) {
     SetForegroundWindow(hWnd);
     SetFocus(hWnd);
     win->redisplay = 0;
-
+	win->next_redisplay_window = NULL;
 
     return 1;
 }
 
-void ngi_application_init_win32(ngi_application* app) {
+int ngi_application_init_win32(ngi_application* app) {
     WNDCLASSW    wc;
     HINSTANCE hInstance = GetModuleHandle(NULL);
+
+	app->type = ngi_wm_api_win32;
+    app->first_redisplay_window = NULL;
+
 
     wc.style        = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
     wc.lpfnWndProc      = (WNDPROC) WndProc;
@@ -217,20 +226,51 @@ void ngi_application_init_win32(ngi_application* app) {
 
 //    UINT oldcp = GetConsoleOutputCP();
 
-    app->redisplay = 0;
-    
-    SetConsoleOutputCP(CP_UTF8);
+
+	SetConsoleOutputCP(CP_UTF8);
 
     if (!RegisterClassW(&wc))
     {
 
     }
+	return 1;
 }
 
-void ngi_application_win32_runloop_iteration(ngi_application* app) {
+
+void ngi_application_win32_handle_redisplay(ngi_application* app) {
+
+    ngi_event ev;
+    ngi_window* win = app->first_redisplay_window;
+    memset(&ev,0,sizeof(ngi_event));
+    app->first_redisplay_window = NULL;
+    while( win != NULL) {
+        
+        if(win->redisplay) {
+            win->redisplay = 0;
+            ev.type = ngi_event_redraw;
+            ev.common.window = win;
+            ev.common.timestamp = ngi_get_time();
+
+            ngi_post_event(app, &ev);
+        }
+
+        win = win->next_redisplay_window;
+    }
+
+}
+
+
+
+void ngi_application_win32_runloop_iteration(ngi_application* app, int blocking) {
     MSG msg;
+	int has_message = 0;
     current_event_cb = app->event_callback;
-    if (GetMessageW(&msg,NULL,0,0))
+	if(blocking) {
+		has_message = GetMessageW(&msg, NULL, 0, 0);
+	} else {
+		has_message = PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE);
+	}
+    if (has_message)
     {
 
         if (msg.message==WM_QUIT)
@@ -243,6 +283,9 @@ void ngi_application_win32_runloop_iteration(ngi_application* app) {
             DispatchMessageW(&msg);
         }
     }
+
+
+	ngi_application_win32_handle_redisplay(app);
 
 }
 

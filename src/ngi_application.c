@@ -10,9 +10,7 @@ int ngi_application_init(ngi_application* app) {
     #endif
 
     #ifdef NGI_WINDOW_WIN32
-    app->type = ngi_wm_api_win32;
-    ngi_application_init_win32();
-    return 1;
+    return ngi_application_init_win32(app);
     #endif
     
     #ifdef NGI_WINDOW_XLIB

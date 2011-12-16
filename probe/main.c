@@ -123,12 +123,12 @@ double get_spf() {
 
 void layout(int w, int h) {
     
-    screenBox.top = h;
-    screenBox.bottom = 0;
-    screenBox.left = 0;
-    screenBox.right = w;
-    screenBox.width = w;
-    screenBox.height = h;
+    screenBox.top = (float)h;
+    screenBox.bottom = 0.0f;
+    screenBox.left = 0.0f;
+    screenBox.right = (float)w;
+    screenBox.width = (float)w;
+    screenBox.height = (float)h;
 
     box_inside(&screenBox, &timelineBox, 50);
     timelineBox.height = 30;
@@ -159,24 +159,27 @@ unsigned char timeline_bg_color[4] = { 32,32,64 };
 void draw_timeline() {
     int i;
     
-    render_rect(rend, timelineBox.left, timelineBox.bottom, 
+    const double scale = get_spf()*50000.0;
+    double spacing = get_spf() * scale;
+	double x;
+
+	//    double now = last_events[(cur_last_event-1+max_last_events)%max_last_events].common.timestamp;
+//    double now = frametimes[last_frametime];
+    double now = ngi_get_time();
+
+	render_rect(rend, timelineBox.left, timelineBox.bottom, 
                timelineBox.width, timelineBox.height, timeline_bg_color);
     render_rect(rend, timelineBox.left, timelineBox.top, timelineBox.width, 1, line_color);
     
     
 //    float scale = 1;
-    const double scale = get_spf()*50000.0;
-    double spacing = get_spf() * scale;
     
-    for(float x = timelineBox.right; x >= timelineBox.left; x-=spacing) {
-        render_rect(rend, x,timelineBox.top,1, -timelineBox.height*.1f, line_color);
+    for(x = timelineBox.right; x >= timelineBox.left; x-=spacing) {
+        render_rect(rend, (float)x, timelineBox.top, 1, -timelineBox.height*.1f, line_color);
 
     }
     
 
-//    double now = last_events[(cur_last_event-1+max_last_events)%max_last_events].common.timestamp;
-    double now = ngi_get_time();
-//    double now = frametimes[last_frametime];
 
 
     for(i=0; i < num_last_events; ++i)
@@ -188,18 +191,19 @@ void draw_timeline() {
         double age = now - last_events[j].common.timestamp;
         
         double latency = age - (now - last_events_time[j]);
-        latency*=scale;
+        float x = timelineBox.right - (float)(age*scale);
+        float h = -timelineBox.height/4 * (last_events[j].type*.3f+1);
+
+		latency*=scale;
         if(latency < 1) latency = 1;
 //        const char* str = ngi_event_name(last_events[j].type);
 //        rend->text(left, cy, "Event %4d: %s", event_serials[j], str);
 
-        float x = timelineBox.right - age*scale;
         if( x < timelineBox.left ) continue;
-        float h = -timelineBox.height/4 * (last_events[j].type*.3f+1);
 //        if(last_events[j].type == ngi_redraw_event) h=-h;
-        render_rect(rend, x,timelineBox.top,1, h, col);
+        render_rect(rend, x, timelineBox.top,1, h, col);
  
-        render_rect(rend, x,timelineBox.top+h,latency, 4, col);
+        render_rect(rend, x, timelineBox.top+h, (float)latency, 4, col);
 
     }
 
@@ -213,26 +217,31 @@ void draw_tachometer() {
     const unsigned char col1[] = { 180,180,255,255};
     const unsigned char colbg[] = { 16,16,20,255};
 
-    render_box(rend, &tachoBox, colbg);
 
     float innerRadius = tachoBox.width * .3f;
     float outerRadius = tachoBox.width * .35f;
     float centerx = tachoBox.left + tachoBox.width/2;
     float centery = tachoBox.bottom + tachoBox.height/2;
 
-
 //    double spf = 1.0/60.0;
 //    double spf = 1.0/51.56 ;
 //    double spf = 1.0/10.0;
 //    double spf = 1.0/60.0;
     double spf = get_spf();
+
+
     
     double offset = frametimes[last_frametime] ; //fmod(,spf);
 //    double offset = frametimes[last_frametime]  - fmod(frametimes[last_frametime],spf);
 
     const int tachoframes = 6;
+    double max_age = frametimes[last_frametime] - spf * (tachoframes-1);
 
-    for(int i = 0; i < tachoframes; ++i)
+	int i;
+
+	render_box(rend, &tachoBox, colbg);
+
+	for(i = 0; i < tachoframes; ++i)
     {
         float angle = -i * 3.14159f * 2.0f / tachoframes ;
         float ax = cosf(angle);
@@ -241,29 +250,28 @@ void draw_tachometer() {
                           centerx + ax * outerRadius, centery + ay * outerRadius, 2, col1);
     }
 
-    double max_age = frametimes[last_frametime] - spf * (tachoframes-1);
 
-    for(int i = 0; i < max_frametimes; ++i)
+    for(i = 0; i < max_frametimes; ++i)
     {
         int j = (i + cur_frametime) % max_frametimes;
         double t = frametimes[ j ] - offset;
 
         int lum = i*255/max_frametimes;
+        unsigned char col[]= { lum, lum>>1, lum>>1, 255};
         float r = -(1.0f-(i/(float)max_frametimes)) * 15 + 5;
 //        if( j <= last_frametime && j > (last_frametime-tachoframes+max_frametimes)%max_frametimes) {
+        float angle = (float)(-fmod(t, spf * tachoframes ) / (spf*tachoframes) * 3.14159 * 2.0);
+        float ax = cosf(angle);
+        float ay = sinf(angle);
 
         if( frametimes[j] > max_age ) {
             r=15.0f;
         } else {
             lum = lum >>1;
         }
-        unsigned char col[]= { lum, lum>>1, lum>>1, 255};
         if(j == last_frametime) memcpy(col, white ,4);;
 
 
-        float angle = -fmod(t, spf * tachoframes ) / (spf*tachoframes) * 3.14159 * 2.0;
-        float ax = cosf(angle);
-        float ay = sinf(angle);
         render_line(rend, centerx + ax * (outerRadius+r), centery + ay * (outerRadius+r),
                           centerx + ax * (outerRadius+5+r), centery + ay * (outerRadius+5+r), 3, col);
         

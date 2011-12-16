@@ -46,7 +46,7 @@ inline static void render_box(struct render_t* r, box_t* b, const unsigned char 
     
 }
 
-inline static void render_line(struct render_t* r, float x, float y, float x2, float y2, float width, const unsigned char color[4]) {
+inline static void render_line(struct render_t* r, float x, float y, float x2, float y2, float w, const unsigned char color[4]) {
 
     float dx = x2-x;
     float dy = y2-y;
@@ -58,7 +58,7 @@ inline static void render_line(struct render_t* r, float x, float y, float x2, f
     float rx = ny;
     float ry = -nx;
 
-    width*=.5f;
+    float width = w * .5f;
     
     float coords[] = {
         x - rx*width, y - ry*width,

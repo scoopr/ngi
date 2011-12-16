@@ -37,7 +37,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef _WIN32
+#else
 #include <alloca.h>
+#endif
 
 int render_glff_is_supported() {
     #ifdef RENDER_GLFF

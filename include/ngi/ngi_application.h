@@ -34,10 +34,10 @@ int ngi_application_deinit(ngi_application* app);
 int ngi_application_wait_event(ngi_application* app, int blocking);
 
 
-int ngi_application_init_cocoa();
+int ngi_application_init_cocoa(ngi_application* app);
 void ngi_application_cocoa_runloop_iteration(ngi_application* app, int blocking);
 
-void ngi_application_init_win32();
+int ngi_application_init_win32(ngi_application* app);
 void ngi_application_win32_runloop_iteration(ngi_application* app, int blocking);
 
 int ngi_application_init_xlib(ngi_application* app);
