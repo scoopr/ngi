@@ -136,25 +136,25 @@ ifeq ($(VARIANT),)
 VARIANT_LIST=
 
 ifeq ($(HAVE_OSX),1)
-VARIANT_LIST+= -osx
+VARIANT_LIST+= -osx-
 endif
 ifeq ($(HAVE_OSX)$(HAVE_GLX),11)
-VARIANT_LIST+= -xlib-glx-gl
+VARIANT_LIST+= -xlib-glx-gl-
 endif
 ifeq ($(HAVE_XLIB)$(HAVE_GLX)$(HAVE_OPENGL),111)
-VARIANT_LIST+= -xlib-glx-gl
+VARIANT_LIST+= -xlib-glx-gl-
 endif
 ifeq ($(HAVE_XLIB)$(HAVE_EGL)$(HAVE_OPENGL),111)
-VARIANT_LIST+= -xlib-egl-gl
+VARIANT_LIST+= -xlib-egl-gl-
 endif
 ifeq ($(HAVE_XLIB)$(HAVE_EGL)$(HAVE_GLES1),111)
-VARIANT_LIST+= -xlib-egl-gles1
+VARIANT_LIST+= -xlib-egl-gles1-
 endif
 ifeq ($(HAVE_XLIB)$(HAVE_EGL)$(HAVE_GLES2),111)
-VARIANT_LIST+= -xlib-egl-gles2
+VARIANT_LIST+= -xlib-egl-gles2-
 endif
 ifeq ($(HAVE_XLIB)$(HAVE_EGL)$(HAVE_GLES1)$(HAVE_GLES2),1111)
-VARIANT_LIST+= -xlib-egl-gles1-gles2
+VARIANT_LIST+= -xlib-egl-gles1-gles2-
 endif
 
 
