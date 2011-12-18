@@ -1,6 +1,8 @@
 
 #include "ngi/ngi.h"
 
+#include <assert.h>
+
 static inline const char* find_config_string(const char* name, ngi_config* config, const char* fallback) {
 
     int i;
@@ -112,7 +114,7 @@ int ngi_window_deinit(ngi_window* win) {
 #include <stdio.h>
 
 void ngi_window_redisplay(ngi_window *win) {
-
+    assert(win);
     if(!win->redisplay) {
         ngi_application* app = win->app;
         win->redisplay = 1;

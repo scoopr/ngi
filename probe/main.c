@@ -377,7 +377,7 @@ int event(ngi_event* ev) {
         default: break;
     }
 
-    ngi_window_redisplay(ev->common.window);
+    if(ev->common.window) ngi_window_redisplay(ev->common.window);
 
     return 0;
 }
