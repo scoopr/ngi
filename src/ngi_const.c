@@ -41,4 +41,6 @@ const char* ngi_event_key_repeat_name = "ngi_event_key_repeat";
 const char* ngi_event_quit_name = "ngi_event_quit";
 const char* ngi_event_redraw_name = "ngi_event_redraw";
 const char* ngi_event_resize_name = "ngi_event_resize";
+const char* ngi_event_mouse_move_name = "ngi_event_mouse_move";
+const char* ngi_event_mouse_button_name = "ngi_event_mouse_button";
 

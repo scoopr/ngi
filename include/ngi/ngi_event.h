@@ -9,6 +9,10 @@ extern const char* ngi_event_key_repeat_name;
 extern const char* ngi_event_quit_name;
 extern const char* ngi_event_redraw_name;
 extern const char* ngi_event_resize_name;
+extern const char* ngi_event_mouse_move_name;
+extern const char* ngi_event_mouse_button_name;
+
+
 
 
 
@@ -164,6 +168,8 @@ static inline const char* ngi_event_name(ngi_event_type type) {
         case ngi_event_key_up: return ngi_event_key_up_name;
         case ngi_event_redraw: return ngi_event_redraw_name;
         case ngi_event_resize: return ngi_event_resize_name;
+        case ngi_event_mouse_move: return ngi_event_mouse_move_name;
+        case ngi_event_mouse_button: return ngi_event_mouse_button_name;
         default:
         return "unknown event type";
     }
