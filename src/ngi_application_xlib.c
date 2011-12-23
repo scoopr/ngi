@@ -234,6 +234,7 @@ void handle_X11Event(XEvent *xev, ngi_application *app) {
         {
             static float  mouseX = 0;
             static float  mouseY = 0;
+            timestamp = xev->xmotion.time / 1000.0;
         
             ev.type = ngi_event_mouse_move;
             ev.common.timestamp = timestamp;
@@ -253,6 +254,7 @@ void handle_X11Event(XEvent *xev, ngi_application *app) {
         break;
         case ButtonPress:
         {
+            timestamp = xev->xbutton.time / 1000.0;
             if( xev->xbutton.button == Button4 || xev->xbutton.button == Button5) {
                 int dir = 1;
                 if(xev->xbutton.button == Button5) dir = -1;
@@ -277,6 +279,8 @@ void handle_X11Event(XEvent *xev, ngi_application *app) {
         break;
         case ButtonRelease:
         {
+              timestamp = xev->xbutton.time / 1000.0;
+
 /*            if( xev->xbutton.button & (Button4Mask | Button5Mask)) {
                 int dir = 1;
                 if(xev->xbutton.button & Button5Mask) dir = -1;
