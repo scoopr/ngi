@@ -79,7 +79,7 @@ ngi_window* find_window(ngi_application* app, Window w) {
 #endif
 double ngi_get_time() {
     
-    #if _POSIX_TIMERS > 0 && _POSIX_MONOTONIC_CLOCK > 0
+    #ifdef CLOCK_MONOTONIC
 
         struct timespec tv;
         clock_gettime(CLOCK_MONOTONIC, &tv);
@@ -87,9 +87,10 @@ double ngi_get_time() {
 
     #else
 
-        struct timeval tv;
-        gettimeofday(&tv, NULL);
-        return tv.tv_sec + tv.tv_usec/1000000.0;
+        #error No CLOCK_MONOTONIC, not sure what clock to use.
+        //struct timeval tv;
+        //gettimeofday(&tv, NULL);
+        //return tv.tv_sec + tv.tv_usec/1000000.0;
     
     #endif
     
