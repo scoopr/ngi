@@ -135,21 +135,31 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
         case NSLeftMouseDown      :
         case NSRightMouseDown     :
         case NSOtherMouseDown     :
-        ev.type = ngi_event_mouse_button;
-        ev.mouse_button.button = [event buttonNumber];
-        ev.mouse_button.down = 1;
-        ev.mouse_button.repeats = [event clickCount];
+        {
+            ev.type = ngi_event_mouse_button;
+            ev.mouse_button.button = [event buttonNumber];
+            NSPoint p = [event locationInWindow];
+            ev.mouse_button.x = p.x;
+            ev.mouse_button.y = p.y;
+            ev.mouse_button.down = 1;
+            ev.mouse_button.repeats = [event clickCount];
+        }
 
         ngi_post_event(app, &ev);
         break;
         case NSLeftMouseUp        :
         case NSRightMouseUp       :
         case NSOtherMouseUp       :
-        ev.type = ngi_event_mouse_button;
-        ev.mouse_button.button = [event buttonNumber];
-        ev.mouse_button.down = 0;
-        ev.mouse_button.repeats = [event clickCount];
-        ngi_post_event(app, &ev);
+        {
+            ev.type = ngi_event_mouse_button;
+            ev.mouse_button.button = [event buttonNumber];
+            NSPoint p = [event locationInWindow];
+            ev.mouse_button.x = p.x;
+            ev.mouse_button.y = p.y;
+            ev.mouse_button.down = 0;
+            ev.mouse_button.repeats = [event clickCount];
+            ngi_post_event(app, &ev);
+        }
         break;
 
         case NSMouseMoved         :
