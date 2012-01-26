@@ -393,6 +393,14 @@ struct render_t* guess_renderer(ngi_context* ctx) {
 
 }
 
+struct probe_window
+{
+    ngi_window win;
+    ngi_context ctx;
+};
+
+struct probe_window main_window;
+
 int event(ngi_event* ev) {
 
     double now = ngi_get_time();
@@ -407,6 +415,16 @@ int event(ngi_event* ev) {
     
 //    printf("[event %s  time:%f]\n", ngi_event_name(ev->type), ev->common.timestamp);
     switch(ev->type) {
+
+        case ngi_event_application_init:
+        {
+            check( ngi_window_init(ev->application_init.application, &main_window.win, NULL) );
+            check( ngi_context_init(&main_window.ctx, &main_window.win) );
+            rend = guess_renderer(&main_window.ctx);
+            rend->init();
+        }
+        break;
+
         case ngi_event_key_down:
         case ngi_event_key_up:
 //        printf("<key: %f, %s, %d, %s>\n", ev->common.timestamp, ev->key.keycode, ev->key.down, codepointutf8(ev->key.codepoint));
@@ -439,8 +457,13 @@ int event(ngi_event* ev) {
 }
 
 
+int ngi_run(int argc, char* argv[], ngi_event_cb cb);
 
+int main(int argc, char* argv[]) {
+    return ngi_run(argc, argv, event);
+}
 
+#if 0
 int main() {
 
     
@@ -513,3 +536,4 @@ int main() {
 }
 
 
+#endif
