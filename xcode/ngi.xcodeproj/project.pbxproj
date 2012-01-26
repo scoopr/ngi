@@ -1,0 +1,480 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BF46C2D014CF01BC00574284 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF46C2CF14CF01BC00574284 /* QuartzCore.framework */; };
+		BFC82F4814CF68F7000019F2 /* res in Resources */ = {isa = PBXBuildFile; fileRef = BFC82F4714CF68F7000019F2 /* res */; };
+		BFFFD39514C867F3000A736F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFFD39414C867F3000A736F /* Foundation.framework */; };
+		BFFFD3BC14C86AA6000A736F /* ngi_application.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3A314C86AA6000A736F /* ngi_application.c */; };
+		BFFFD3BE14C86AA6000A736F /* ngi_application_cocoa.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3A514C86AA6000A736F /* ngi_application_cocoa.m */; };
+		BFFFD3C014C86AA6000A736F /* ngi_application_xlib.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3A714C86AA6000A736F /* ngi_application_xlib.c */; };
+		BFFFD3C214C86AA6000A736F /* ngi_const.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3A914C86AA6000A736F /* ngi_const.c */; };
+		BFFFD3C414C86AA6000A736F /* ngi_context.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3AB14C86AA6000A736F /* ngi_context.c */; };
+		BFFFD3C614C86AA6000A736F /* ngi_context_egl.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3AD14C86AA6000A736F /* ngi_context_egl.c */; };
+		BFFFD3C814C86AA6000A736F /* ngi_context_glx.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3AF14C86AA6000A736F /* ngi_context_glx.c */; };
+		BFFFD3CA14C86AA6000A736F /* ngi_window.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3B114C86AA6000A736F /* ngi_window.c */; };
+		BFFFD3CD14C86AA6000A736F /* ngi_window_cocoa.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3B414C86AA6000A736F /* ngi_window_cocoa.m */; };
+		BFFFD3CF14C86AA6000A736F /* ngi_window_win32.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3B614C86AA6000A736F /* ngi_window_win32.c */; };
+		BFFFD3D114C86AA6000A736F /* ngi_window_xlib.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3B814C86AA6000A736F /* ngi_window_xlib.c */; };
+		BFFFD3F014C86AF7000A736F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFFD3EF14C86AF7000A736F /* UIKit.framework */; };
+		BFFFD3F114C86AF7000A736F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFFD39414C867F3000A736F /* Foundation.framework */; };
+		BFFFD3F314C86AF7000A736F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFFD3F214C86AF7000A736F /* CoreGraphics.framework */; };
+		BFFFD40514C86B06000A736F /* libngi-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFFD39114C867F3000A736F /* libngi-ios.a */; };
+		BFFFD40614C86B36000A736F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3D414C86ACF000A736F /* main.c */; };
+		BFFFD40814C86B36000A736F /* render_glff.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3D914C86ACF000A736F /* render_glff.c */; };
+		BFFFD40A14C86B36000A736F /* render_glsl.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3DB14C86ACF000A736F /* render_glsl.c */; };
+		BFFFD40D14C86B36000A736F /* typo.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3DE14C86ACF000A736F /* typo.c */; };
+		BFFFD43814C871B5000A736F /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFFD43714C871B5000A736F /* OpenGLES.framework */; };
+		BFFFD43C14C8C31D000A736F /* ngi_application_ios.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD43914C8C31D000A736F /* ngi_application_ios.m */; };
+		BFFFD43D14C8C31D000A736F /* ngi_context_ios.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD43A14C8C31D000A736F /* ngi_context_ios.m */; };
+		BFFFD43E14C8C31D000A736F /* ngi_window_ios.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD43B14C8C31D000A736F /* ngi_window_ios.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BFFFD40314C86B02000A736F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BF7A132814C8676900A30133 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BFFFD39014C867F3000A736F;
+			remoteInfo = "ngi-ios";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BF46C2CF14CF01BC00574284 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		BFC82F4714CF68F7000019F2 /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = res; path = ../res; sourceTree = "<group>"; };
+		BFFFD39114C867F3000A736F /* libngi-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libngi-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFFFD39414C867F3000A736F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		BFFFD3A314C86AA6000A736F /* ngi_application.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ngi_application.c; sourceTree = "<group>"; };
+		BFFFD3A514C86AA6000A736F /* ngi_application_cocoa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ngi_application_cocoa.m; sourceTree = "<group>"; };
+		BFFFD3A714C86AA6000A736F /* ngi_application_xlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ngi_application_xlib.c; sourceTree = "<group>"; };
+		BFFFD3A914C86AA6000A736F /* ngi_const.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ngi_const.c; sourceTree = "<group>"; };
+		BFFFD3AB14C86AA6000A736F /* ngi_context.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ngi_context.c; sourceTree = "<group>"; };
+		BFFFD3AD14C86AA6000A736F /* ngi_context_egl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ngi_context_egl.c; sourceTree = "<group>"; };
+		BFFFD3AF14C86AA6000A736F /* ngi_context_glx.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ngi_context_glx.c; sourceTree = "<group>"; };
+		BFFFD3B114C86AA6000A736F /* ngi_window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ngi_window.c; sourceTree = "<group>"; };
+		BFFFD3B314C86AA6000A736F /* ngi_window_cocoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ngi_window_cocoa.h; sourceTree = "<group>"; };
+		BFFFD3B414C86AA6000A736F /* ngi_window_cocoa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ngi_window_cocoa.m; sourceTree = "<group>"; };
+		BFFFD3B614C86AA6000A736F /* ngi_window_win32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ngi_window_win32.c; sourceTree = "<group>"; };
+		BFFFD3B814C86AA6000A736F /* ngi_window_xlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ngi_window_xlib.c; sourceTree = "<group>"; };
+		BFFFD3D414C86ACF000A736F /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		BFFFD3D814C86ACF000A736F /* render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render.h; sourceTree = "<group>"; };
+		BFFFD3D914C86ACF000A736F /* render_glff.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render_glff.c; sourceTree = "<group>"; };
+		BFFFD3DA14C86ACF000A736F /* render_glff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render_glff.h; sourceTree = "<group>"; };
+		BFFFD3DB14C86ACF000A736F /* render_glsl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render_glsl.c; sourceTree = "<group>"; };
+		BFFFD3DC14C86ACF000A736F /* render_glsl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render_glsl.h; sourceTree = "<group>"; };
+		BFFFD3DD14C86ACF000A736F /* stb_truetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_truetype.h; sourceTree = "<group>"; };
+		BFFFD3DE14C86ACF000A736F /* typo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = typo.c; sourceTree = "<group>"; };
+		BFFFD3DF14C86ACF000A736F /* typo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = typo.h; sourceTree = "<group>"; };
+		BFFFD3ED14C86AF7000A736F /* probe-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "probe-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFFFD3EF14C86AF7000A736F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		BFFFD3F214C86AF7000A736F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		BFFFD43514C86F87000A736F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BFFFD43714C871B5000A736F /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/OpenGLES.framework; sourceTree = DEVELOPER_DIR; };
+		BFFFD43914C8C31D000A736F /* ngi_application_ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ngi_application_ios.m; sourceTree = "<group>"; };
+		BFFFD43A14C8C31D000A736F /* ngi_context_ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ngi_context_ios.m; sourceTree = "<group>"; };
+		BFFFD43B14C8C31D000A736F /* ngi_window_ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ngi_window_ios.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BFFFD38E14C867F3000A736F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFFFD39514C867F3000A736F /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BFFFD3EA14C86AF7000A736F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF46C2D014CF01BC00574284 /* QuartzCore.framework in Frameworks */,
+				BFFFD43814C871B5000A736F /* OpenGLES.framework in Frameworks */,
+				BFFFD40514C86B06000A736F /* libngi-ios.a in Frameworks */,
+				BFFFD3F014C86AF7000A736F /* UIKit.framework in Frameworks */,
+				BFFFD3F114C86AF7000A736F /* Foundation.framework in Frameworks */,
+				BFFFD3F314C86AF7000A736F /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BF7A132614C8676900A30133 = {
+			isa = PBXGroup;
+			children = (
+				BFC82F4714CF68F7000019F2 /* res */,
+				BF46C2CF14CF01BC00574284 /* QuartzCore.framework */,
+				BFFFD43514C86F87000A736F /* Info.plist */,
+				BFFFD3D314C86ACF000A736F /* probe */,
+				BFFFD3A014C86AA6000A736F /* src */,
+				BFFFD39314C867F3000A736F /* Frameworks */,
+				BFFFD39214C867F3000A736F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BFFFD39214C867F3000A736F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BFFFD39114C867F3000A736F /* libngi-ios.a */,
+				BFFFD3ED14C86AF7000A736F /* probe-ios.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BFFFD39314C867F3000A736F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BFFFD43714C871B5000A736F /* OpenGLES.framework */,
+				BFFFD39414C867F3000A736F /* Foundation.framework */,
+				BFFFD3EF14C86AF7000A736F /* UIKit.framework */,
+				BFFFD3F214C86AF7000A736F /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BFFFD3A014C86AA6000A736F /* src */ = {
+			isa = PBXGroup;
+			children = (
+				BFFFD43914C8C31D000A736F /* ngi_application_ios.m */,
+				BFFFD43A14C8C31D000A736F /* ngi_context_ios.m */,
+				BFFFD43B14C8C31D000A736F /* ngi_window_ios.m */,
+				BFFFD3A314C86AA6000A736F /* ngi_application.c */,
+				BFFFD3A514C86AA6000A736F /* ngi_application_cocoa.m */,
+				BFFFD3A714C86AA6000A736F /* ngi_application_xlib.c */,
+				BFFFD3A914C86AA6000A736F /* ngi_const.c */,
+				BFFFD3AB14C86AA6000A736F /* ngi_context.c */,
+				BFFFD3AD14C86AA6000A736F /* ngi_context_egl.c */,
+				BFFFD3AF14C86AA6000A736F /* ngi_context_glx.c */,
+				BFFFD3B114C86AA6000A736F /* ngi_window.c */,
+				BFFFD3B314C86AA6000A736F /* ngi_window_cocoa.h */,
+				BFFFD3B414C86AA6000A736F /* ngi_window_cocoa.m */,
+				BFFFD3B614C86AA6000A736F /* ngi_window_win32.c */,
+				BFFFD3B814C86AA6000A736F /* ngi_window_xlib.c */,
+			);
+			name = src;
+			path = ../src;
+			sourceTree = "<group>";
+		};
+		BFFFD3D314C86ACF000A736F /* probe */ = {
+			isa = PBXGroup;
+			children = (
+				BFFFD3D414C86ACF000A736F /* main.c */,
+				BFFFD3D814C86ACF000A736F /* render.h */,
+				BFFFD3D914C86ACF000A736F /* render_glff.c */,
+				BFFFD3DA14C86ACF000A736F /* render_glff.h */,
+				BFFFD3DB14C86ACF000A736F /* render_glsl.c */,
+				BFFFD3DC14C86ACF000A736F /* render_glsl.h */,
+				BFFFD3DD14C86ACF000A736F /* stb_truetype.h */,
+				BFFFD3DE14C86ACF000A736F /* typo.c */,
+				BFFFD3DF14C86ACF000A736F /* typo.h */,
+			);
+			name = probe;
+			path = ../probe;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		BFFFD38F14C867F3000A736F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		BFFFD39014C867F3000A736F /* ngi-ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BFFFD39E14C867F3000A736F /* Build configuration list for PBXNativeTarget "ngi-ios" */;
+			buildPhases = (
+				BFFFD38D14C867F3000A736F /* Sources */,
+				BFFFD38E14C867F3000A736F /* Frameworks */,
+				BFFFD38F14C867F3000A736F /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ngi-ios";
+			productName = "ngi-ios";
+			productReference = BFFFD39114C867F3000A736F /* libngi-ios.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		BFFFD3EC14C86AF7000A736F /* probe-ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BFFFD40014C86AF7000A736F /* Build configuration list for PBXNativeTarget "probe-ios" */;
+			buildPhases = (
+				BFFFD3E914C86AF7000A736F /* Sources */,
+				BFFFD3EA14C86AF7000A736F /* Frameworks */,
+				BFFFD3EB14C86AF7000A736F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BFFFD40414C86B02000A736F /* PBXTargetDependency */,
+			);
+			name = "probe-ios";
+			productName = "probe-ios";
+			productReference = BFFFD3ED14C86AF7000A736F /* probe-ios.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BF7A132814C8676900A30133 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = Supercell;
+			};
+			buildConfigurationList = BF7A132B14C8676900A30133 /* Build configuration list for PBXProject "ngi" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = BF7A132614C8676900A30133;
+			productRefGroup = BFFFD39214C867F3000A736F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BFFFD39014C867F3000A736F /* ngi-ios */,
+				BFFFD3EC14C86AF7000A736F /* probe-ios */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BFFFD3EB14C86AF7000A736F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFC82F4814CF68F7000019F2 /* res in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BFFFD38D14C867F3000A736F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFFFD3BC14C86AA6000A736F /* ngi_application.c in Sources */,
+				BFFFD3BE14C86AA6000A736F /* ngi_application_cocoa.m in Sources */,
+				BFFFD3C014C86AA6000A736F /* ngi_application_xlib.c in Sources */,
+				BFFFD3C214C86AA6000A736F /* ngi_const.c in Sources */,
+				BFFFD3C414C86AA6000A736F /* ngi_context.c in Sources */,
+				BFFFD3C614C86AA6000A736F /* ngi_context_egl.c in Sources */,
+				BFFFD3C814C86AA6000A736F /* ngi_context_glx.c in Sources */,
+				BFFFD3CA14C86AA6000A736F /* ngi_window.c in Sources */,
+				BFFFD3CD14C86AA6000A736F /* ngi_window_cocoa.m in Sources */,
+				BFFFD3CF14C86AA6000A736F /* ngi_window_win32.c in Sources */,
+				BFFFD3D114C86AA6000A736F /* ngi_window_xlib.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BFFFD3E914C86AF7000A736F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFFFD40614C86B36000A736F /* main.c in Sources */,
+				BFFFD40814C86B36000A736F /* render_glff.c in Sources */,
+				BFFFD40A14C86B36000A736F /* render_glsl.c in Sources */,
+				BFFFD40D14C86B36000A736F /* typo.c in Sources */,
+				BFFFD43C14C8C31D000A736F /* ngi_application_ios.m in Sources */,
+				BFFFD43D14C8C31D000A736F /* ngi_context_ios.m in Sources */,
+				BFFFD43E14C8C31D000A736F /* ngi_window_ios.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BFFFD40414C86B02000A736F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BFFFD39014C867F3000A736F /* ngi-ios */;
+			targetProxy = BFFFD40314C86B02000A736F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		BF7A132D14C8676900A30133 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NGI_CONTEXT_IOS,
+					NGI_RENDER_API_GLES1,
+					NGI_RENDER_API_GLES2,
+					NGI_WINDOW_IOS,
+					NGI_APPLICATION_IOS,
+				);
+				USER_HEADER_SEARCH_PATHS = ../include;
+			};
+			name = Debug;
+		};
+		BF7A132E14C8676900A30133 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NGI_CONTEXT_IOS,
+					NGI_RENDER_API_GLES1,
+					NGI_RENDER_API_GLES2,
+					NGI_WINDOW_IOS,
+					NGI_APPLICATION_IOS,
+				);
+				USER_HEADER_SEARCH_PATHS = ../include;
+			};
+			name = Release;
+		};
+		BFFFD39C14C867F3000A736F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/ngi_ios.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		BFFFD39D14C867F3000A736F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DSTROOT = /tmp/ngi_ios.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BFFFD40114C86AF7000A736F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		BFFFD40214C86AF7000A736F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BF7A132B14C8676900A30133 /* Build configuration list for PBXProject "ngi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF7A132D14C8676900A30133 /* Debug */,
+				BF7A132E14C8676900A30133 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BFFFD39E14C867F3000A736F /* Build configuration list for PBXNativeTarget "ngi-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BFFFD39C14C867F3000A736F /* Debug */,
+				BFFFD39D14C867F3000A736F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BFFFD40014C86AF7000A736F /* Build configuration list for PBXNativeTarget "probe-ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BFFFD40114C86AF7000A736F /* Debug */,
+				BFFFD40214C86AF7000A736F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BF7A132814C8676900A30133 /* Project object */;
+}
