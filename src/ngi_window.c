@@ -77,12 +77,14 @@ int ngi_window_init(ngi_application* app, ngi_window* win, ngi_config* config) {
         #ifdef NGI_WINDOW_COCOA
         wmapi = ngi_wm_api_cocoa;
         #endif
+        #ifdef NGI_WINDOW_IOS
+        wmapi = ngi_wm_api_ios;
+        #endif
         
 
         if(wmapi == NULL) return 0;
         
     }
-    
     
     #ifdef NGI_WINDOW_XLIB
     if(ngi_config_match(wmapi, ngi_wm_api_xlib)) return ngi_window_init_xlib(app, win);
@@ -94,6 +96,10 @@ int ngi_window_init(ngi_application* app, ngi_window* win, ngi_config* config) {
 
     #ifdef NGI_WINDOW_COCOA
     if(ngi_config_match(wmapi, ngi_wm_api_cocoa)) return ngi_window_init_cocoa(app, win);
+    #endif
+
+    #ifdef NGI_WINDOW_IOS
+    if(ngi_config_match(wmapi, ngi_wm_api_ios)) return ngi_window_init_ios(app, win);
     #endif
 
     return 0;
@@ -111,7 +117,6 @@ int ngi_window_deinit(ngi_window* win) {
     return 0;
 }
 
-#include <stdio.h>
 
 void ngi_window_redisplay(ngi_window *win) {
     assert(win);
@@ -121,7 +126,6 @@ void ngi_window_redisplay(ngi_window *win) {
 
         win->next_redisplay_window = app->first_redisplay_window;
         app->first_redisplay_window = win;
-//        printf("added %p window to redisplay queue\n", (void*)win);
     }
 
 }

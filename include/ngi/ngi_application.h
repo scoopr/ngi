@@ -37,6 +37,9 @@ int ngi_application_wait_event(ngi_application* app, int blocking);
 int ngi_application_init_cocoa(ngi_application* app);
 void ngi_application_cocoa_runloop_iteration(ngi_application* app, int blocking);
 
+int ngi_application_init_ios(ngi_application* app);
+void ngi_application_ios_runloop_iteration(ngi_application* app, int blocking);
+
 int ngi_application_init_win32(ngi_application* app);
 void ngi_application_win32_runloop_iteration(ngi_application* app, int blocking);
 
@@ -46,6 +49,10 @@ int ngi_application_wait_event_xlib(ngi_application* app, int blocking);
 
 int ngi_post_event(ngi_application* app, ngi_event* ev);
 
+double ngi_get_time();
+
+//internal
+void ngi_application_handle_redisplay(ngi_application*);
 
 #ifdef __cplusplus
 }

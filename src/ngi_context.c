@@ -17,6 +17,11 @@ int ngi_context_init(ngi_context* ctx, ngi_window* win) {
     if(win->app->type == ngi_wm_api_cocoa)
         return ngi_context_cocoa_init(ctx, win);
     #endif
+
+    #ifdef NGI_CONTEXT_IOS
+    if(win->app->type == ngi_wm_api_ios)
+        return ngi_context_ios_init(ctx, win);
+    #endif
     
     #ifdef NGI_CONTEXT_WGL
     if(win->app->type == ngi_wm_api_win32)
@@ -47,6 +52,11 @@ int ngi_context_swap(ngi_context* ctx) {
     #ifdef NGI_CONTEXT_WGL
     if(ctx->type == ngi_context_api_wgl)
         return ngi_context_wgl_swap(ctx);
+    #endif
+
+    #ifdef NGI_CONTEXT_IOS
+    if(ctx->type == ngi_context_api_ios)
+        return ngi_context_ios_swap(ctx);
     #endif
     
     return 0;

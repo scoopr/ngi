@@ -4,11 +4,13 @@ const char* ngi_wm_api_egl = "ngi_wm_api_egl";
 const char* ngi_wm_api_win32 = "ngi_wm_api_win32";
 const char* ngi_wm_api_xlib = "ngi_wm_api_xlib";
 const char* ngi_wm_api_cocoa = "ngi_wm_api_cocoa";
+const char* ngi_wm_api_ios = "ngi_wm_api_ios";
 
 const char* ngi_context_api_egl = "ngi_context_api_egl";
 const char* ngi_context_api_wgl = "ngi_context_api_wgl";
 const char* ngi_context_api_glx = "ngi_context_api_glx";
 const char* ngi_context_api_cocoa = "ngi_context_api_cocoa";
+const char* ngi_context_api_ios = "ngi_context_api_ios";
 
 const char* ngi_graphics_api_opengl = "ngi_graphics_api_opengl";
 const char* ngi_graphics_api_opengl3_2 = "ngi_graphics_api_opengl3_2";

@@ -29,6 +29,12 @@ typedef struct ngi_context_tag {
             void *ctx;
             void* drawable;
         } glx;
+        struct {
+            void* ctx;
+            int fbo;
+            int rb_color;
+            int rb_depth;
+        } ios;
     } platform;
 } ngi_context;
 
@@ -40,6 +46,9 @@ int ngi_context_egl_swap(ngi_context* ctx);
 
 int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win);
 int ngi_context_cocoa_swap(ngi_context* ctx);
+
+int ngi_context_ios_init(ngi_context* ctx, ngi_window* win);
+int ngi_context_ios_swap(ngi_context* ctx);
 
 int ngi_context_wgl_init(ngi_context* ctx, ngi_window* win);
 int ngi_context_wgl_swap(ngi_context* ctx);

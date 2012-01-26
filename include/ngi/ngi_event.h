@@ -13,10 +13,8 @@ extern const char* ngi_event_mouse_move_name;
 extern const char* ngi_event_mouse_button_name;
 
 
-
-
-
 typedef enum ngi_event_type_t {
+    ngi_event_application_init,
     ngi_event_key_down,
     ngi_event_key_up,
     ngi_event_text,
@@ -41,6 +39,12 @@ typedef struct ngi_common_event_t {
     struct ngi_window_tag* window;
     double timestamp;
 } ngi_common_event;
+
+typedef struct ngi_application_init_event_t {
+    ngi_common_event common;
+
+    void* application;
+} ngi_application_init_event;
 
 typedef struct ngi_key_t {
     ngi_common_event common;
@@ -145,6 +149,7 @@ typedef union ngi_event_tag {
 
     ngi_common_event common;
     
+    ngi_application_init_event application_init;
     ngi_key key;
     ngi_text text;
     ngi_mouse_move mouse_move;

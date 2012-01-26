@@ -8,11 +8,13 @@ extern const char* ngi_wm_api_egl;
 extern const char* ngi_wm_api_win32;
 extern const char* ngi_wm_api_xlib;
 extern const char* ngi_wm_api_cocoa;
+extern const char* ngi_wm_api_ios;
 
 extern const char* ngi_context_api_egl;
 extern const char* ngi_context_api_wgl;
 extern const char* ngi_context_api_glx;
 extern const char* ngi_context_api_cocoa;
+extern const char* ngi_context_api_ios;
 
 extern const char* ngi_graphics_api_opengl;
 extern const char* ngi_graphics_api_opengl3_2;

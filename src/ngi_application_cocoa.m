@@ -72,29 +72,6 @@ int ngi_application_init_cocoa(ngi_application *app) {
 
 double ngi_get_time();
 
-void ngi_application_cocoa_handle_redisplay(ngi_application* app) {
-
-    ngi_event ev;
-    memset(&ev,0,sizeof(ngi_event));
-    ngi_window* win = app->first_redisplay_window;
-    app->first_redisplay_window = NULL;
-    while( win != NULL) {
-        
-        if(win->redisplay) {
-            win->redisplay = 0;
-            ev.type = ngi_event_redraw;
-            ev.common.window = win;
-            ev.common.timestamp = ngi_get_time();
-
-            ngi_post_event(app, &ev);
-        }
-
-        win = win->next_redisplay_window;
-    }
-
-
-
-}
 
 
 
