@@ -6,7 +6,11 @@
 
 #ifdef NGI_RENDER_API_GLES2
 #define RENDER_GLSL
+#ifdef __APPLE__
+#include <OpenGLES/ES2/gl.h>
+#else
 #include <GLES2/gl2.h>
+#endif
 #endif
 
 

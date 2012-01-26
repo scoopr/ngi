@@ -4,7 +4,11 @@
 */
 
 #ifdef NGI_RENDER_API_GLES1
+#ifdef __APPLE__
+#include <OpenGLES/ES1/gl.h>
+#else
 #include <GLES/gl.h>
+#endif
 #define RENDER_GLFF
 #endif
 
@@ -85,7 +89,11 @@ void render_glff_init()
 #endif
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+#ifdef NGI_RENDER_API_GLES2
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, font_width, font_height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, fontTex);
+#else
     glTexImage2D(GL_TEXTURE_2D, 0, GL_INTENSITY, font_width, font_height, 0, GL_RED, GL_UNSIGNED_BYTE, fontTex);
+#endif
 
     free(fontTex);
 
