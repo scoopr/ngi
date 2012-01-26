@@ -147,14 +147,69 @@ void layout(int w, int h) {
 double ngi_get_time();
 
 
-unsigned char event_colors[4][4] = {
+unsigned char event_colors[7][4] = {
     { 230, 128, 128, 255 },
     { 128, 230, 128, 255 },
+    { 230, 230, 128, 255 },
+    { 230, 128, 230, 255 },
     { 128, 128, 230, 255 },
-    { 230, 128, 230, 255 }
+    { 128, 230, 230, 255 },
+    { 230, 230, 230, 255 }
 };
 
 unsigned char timeline_bg_color[4] = { 32,32,64 };
+
+unsigned char* event_color(int type) {
+    return event_colors[ type % 7 ];
+}
+
+void draw_pointers() {
+    
+    int first = 1;
+    
+    float lx = 0, ly = 0;
+    int i;
+    
+    for(i=0; i < num_last_events; ++i)
+     {
+         int j = (cur_last_event-i-1 + max_last_events)%max_last_events;
+         float x,y;
+         int pointer = 0;
+         int type = last_events[j].type;
+         if( !last_events[j].common.window ) continue;
+         if( type == ngi_event_mouse_move ) {
+             pointer = 1;
+             x = last_events[j].mouse_move.x;
+             y = last_events[j].mouse_move.y;
+         }
+
+ /*        if( type == ngi_event_mouse_button ) {
+             x = last_events[j].mouse_button.x;
+             y = last_events[j].mouse_button.y;
+             render_rect(rend, x-3, y-3, 7, 7, event_color(type));
+         }
+*/
+         if(!pointer) continue;
+         
+         if(first) {
+             lx = x;
+             ly = y;
+             first = 0;
+             continue;
+         }
+
+
+         int w = 1 + 2*last_events[j].mouse_move.drag;
+         render_line(rend, lx, ly, x, y, w, event_color(type));
+//         render_rect(rend, x-(w), y-(w), w*2+1, w*2+1, event_color(type));
+         
+         
+         lx = x;
+         ly = y;
+         
+         
+     }
+}
 
 void draw_timeline() {
     int i;
@@ -187,7 +242,7 @@ void draw_timeline() {
 
         int j = (cur_last_event-i-1 + max_last_events)%max_last_events;
 
-        unsigned char *col = event_colors[ last_events[j].type % 4 ];
+        unsigned char *col = event_color(last_events[j].type);
         double age = now - last_events[j].common.timestamp;
         
         double latency = age - (now - last_events_time[j]);
@@ -298,6 +353,7 @@ void draw(int w, int h) {
     rend->resize(w,h);
     rend->clear();
 
+    draw_pointers();
     draw_timeline();
 
     draw_tachometer();
