@@ -301,6 +301,9 @@ int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win) {
     [context update];
     ctx->platform.cocoa.ctx = context;
     [pool drain];
+    
+    ngi_window_redisplay(win);
+    
     return 1;
 }
 

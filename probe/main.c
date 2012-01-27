@@ -429,7 +429,7 @@ int event(ngi_event* ev) {
         case ngi_event_key_up:
 //        printf("<key: %f, %s, %d, %s>\n", ev->common.timestamp, ev->key.keycode, ev->key.down, codepointutf8(ev->key.codepoint));
         if(ev->key.codepoint==27) {
-            done = 1;
+            ngi_application_quit();
         }
         break;
         case ngi_event_text:
@@ -461,78 +461,6 @@ int ngi_run(int argc, char* argv[], ngi_event_cb cb);
 
 int main(int argc, char* argv[]) {
     return ngi_run(argc, argv, event);
-}
-
-#if 0
-int main() {
-
-    
-    ngi_application app;
-    ngi_window win;
-    ngi_context ctx;
-    
-    
-    ngi_config config;
-    ngi_config_init(&config);
-//    ngi_config_set_string(&config, ngi_config_wm_api, ngi_wm_api_cocoa);
-    
-    memset(last_events,0,sizeof(ngi_event)*max_last_events);
-
-    
-
-    printf("[NGI TEST] start\n");
-
-
-    // check( ngi_application_init_xlib(&app) );
-    check( ngi_application_init(&app) );
-
-    app.event_callback = event;
-
-    printf("[NGI TEST] wm api: %s\n", app.type);
-    
-    check( ngi_window_init(&app, &win, &config) );
-    
-//    printf("[NGI TEST] ngi_window_init: %d\n", succ);
-
-
-
-
-    check( ngi_context_init(&ctx, &win) );
-
-    printf("[NGI TEST] ctx api: %s\n", ctx.type);
-    printf("[NGI TEST] gfx api: %s\n", ctx.graphics);
-
-
-    rend = guess_renderer(&ctx);
-    if(!rend) return 0;
-    
-    // printf("[NGI TEST] ngi_context_*_init: %d\n", succ);
-
-    rend->init();
-
-    draw(win.width, win.height);
-    check( ngi_context_swap(&ctx) );
-
-
-    done = 0;
-    while(!done) {
-        ngi_application_wait_event(&app,0);
-        ngi_window_redisplay(&win);
-
-//        draw(win.width, win.height);
-//        check( ngi_context_swap(&ctx) );
-
-    }
-
-
-//    check( ngi_application_run(&app) );
-    
-    printf("[NGI TEST] end\n");
-    
-    check( ngi_window_deinit(&win) );
-    check( ngi_application_deinit(&app) );
-
-    return 0;
 }
 
 

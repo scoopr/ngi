@@ -51,6 +51,10 @@ int ngi_post_event(ngi_application* app, ngi_event* ev);
 
 double ngi_get_time();
 
+
+void ngi_application_quit();
+
+
 //internal
 void ngi_application_handle_redisplay(ngi_application*);
 

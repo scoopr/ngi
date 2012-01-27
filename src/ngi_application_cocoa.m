@@ -223,7 +223,7 @@ void ngi_application_cocoa_runloop_iteration(ngi_application* app, int blocking)
     //     [NSApp terminate:nil];
     // }
 
-    ngi_application_cocoa_handle_redisplay(app);
+    ngi_application_handle_redisplay(app);
 
 
     [pool drain];

@@ -1,6 +1,12 @@
 
 #include "ngi/ngi.h"
 
+static int gApplicationQuit;
+
+void ngi_application_quit()
+{
+    gApplicationQuit = 1;
+}
 
 int ngi_application_init(ngi_application* app) {
 
@@ -100,6 +106,35 @@ void ngi_application_handle_redisplay(ngi_application* app) {
 
 }
 
+
+#ifndef NGI_APPLICATION_IOS
+void ngi_run(int argc, char* argv, ngi_event_cb cb)
+{
+    (void)argc;
+    (void)argv;
+    ngi_application app;
+    ngi_application_init(&app);
+    
+    app.event_callback = cb;
+    
+    ngi_event ev;
+    ev.type = ngi_event_application_init;
+    ev.common.timestamp = ngi_get_time();
+    ev.common.window = NULL;
+    ev.application_init.application = &app;
+    
+    gApplicationQuit = 0;
+    ngi_post_event(&app, &ev);
+    
+    while(!gApplicationQuit)
+    {
+        ngi_application_wait_event(&app, 1);
+    }
+
+
+    ngi_application_deinit(&app);
+}
+#endif
 
 // int ngi_application_run(ngi_application* app) {
 // }
