@@ -68,7 +68,7 @@ endif
 SRC_PROBE=$(wildcard probe/*.c)
 OBJ_PROBE=$(SRC_PROBE:.c=.o)
 
-CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic -ggdb -Werror
+CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic -g -Werror
 # -arch i386
 #LDFLAGS+=-arch i386
 CFLAGS+=-std=c99
