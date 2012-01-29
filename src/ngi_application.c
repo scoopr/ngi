@@ -132,7 +132,7 @@ void ngi_run(int argc, char* argv, ngi_event_cb cb)
     
     while(!gApplicationQuit)
     {
-        ngi_application_wait_event(&app, 1);
+        ngi_application_wait_event(&app, app.num_animating == 0);
     }
 
 

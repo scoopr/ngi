@@ -132,3 +132,18 @@ void ngi_window_redisplay(ngi_window *win) {
 
 
 
+void ngi_window_animate(ngi_window* win, int enabled)
+{
+    if(enabled && !win->animating)
+    {
+        win->animating=1;
+        win->app->num_animating++;
+    }
+
+    if(!enabled && win->animating)
+    {
+        win->animating=0;
+        win->app->num_animating--;
+    }
+}
+

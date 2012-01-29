@@ -24,6 +24,8 @@ typedef struct ngi_window_tag {
     
     int width, height;
     int redisplay;
+    
+    int animating;
 
     struct ngi_window_tag* next_redisplay_window;
 } ngi_window;
@@ -42,6 +44,9 @@ int ngi_window_init_ios(ngi_application *app, ngi_window* win);
 int ngi_window_deinit_xlib(ngi_window* win);
 
 void ngi_window_redisplay(ngi_window *win);
+
+void ngi_window_animate(ngi_window* win, int enable);
+
 
 #ifdef __cplusplus
 }
