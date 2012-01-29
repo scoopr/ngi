@@ -422,6 +422,8 @@ int event(ngi_event* ev) {
             check( ngi_context_init(&main_window.ctx, &main_window.win) );
             rend = guess_renderer(&main_window.ctx);
             rend->init();
+            ngi_window_animate(&main_window.win, 1);
+
         }
         break;
 
@@ -439,6 +441,7 @@ int event(ngi_event* ev) {
         break;
         
         case ngi_event_redraw:
+        if(!rend) return 0; 
         draw(ev->common.window->width, ev->common.window->height);
         check( ngi_context_swap(ev->common.window->context) );
         frametimes[cur_frametime] = ngi_get_time();
@@ -453,6 +456,7 @@ int event(ngi_event* ev) {
 
     if(ev->common.window) ngi_window_redisplay(ev->common.window);
 
+
     return 0;
 }
 
@@ -464,4 +468,3 @@ int main(int argc, char* argv[]) {
 }
 
 
-#endif
