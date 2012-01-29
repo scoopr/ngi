@@ -314,5 +314,14 @@ int ngi_context_cocoa_swap(ngi_context* ctx) {
     return 1;
 }
 
+int ngi_context_cocoa_set_active(ngi_context* ctx) {
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    
+    [(NSOpenGLContext*)ctx->platform.cocoa.ctx makeCurrentContext];
+
+    [pool drain];
+    return 1;
+}
+
 
 #endif

@@ -40,12 +40,14 @@ typedef struct ngi_context_tag {
 
 int ngi_context_init(ngi_context* ctx, ngi_window* win);
 int ngi_context_swap(ngi_context* ctx);
+int ngi_context_set_active(ngi_context* ctx);
 
 int ngi_context_egl_init(ngi_context* ctx, ngi_window* win);
 int ngi_context_egl_swap(ngi_context* ctx);
 
 int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win);
 int ngi_context_cocoa_swap(ngi_context* ctx);
+int ngi_context_cocoa_set_active(ngi_context* ctx);
 
 int ngi_context_ios_init(ngi_context* ctx, ngi_window* win);
 int ngi_context_ios_swap(ngi_context* ctx);

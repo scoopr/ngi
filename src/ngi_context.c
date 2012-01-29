@@ -63,3 +63,34 @@ int ngi_context_swap(ngi_context* ctx) {
     
 }
 
+int ngi_context_set_active(ngi_context* ctx) {
+
+    #ifdef NGI_CONTEXT_GLX
+    if(ctx->type == ngi_context_api_glx)
+        return ngi_context_glx_set_active(ctx);
+    #endif
+
+    #ifdef NGI_CONTEXT_EGL
+    if(ctx->type == ngi_context_api_egl)
+        return ngi_context_egl_set_active(ctx);
+    #endif
+
+    #ifdef NGI_CONTEXT_COCOA
+    if(ctx->type == ngi_context_api_cocoa)
+        return ngi_context_cocoa_set_active(ctx);
+    #endif
+    
+    #ifdef NGI_CONTEXT_WGL
+    if(ctx->type == ngi_context_api_wgl)
+        return ngi_context_wgl_set_active(ctx);
+    #endif
+
+    #ifdef NGI_CONTEXT_IOS
+    if(ctx->type == ngi_context_api_ios)
+        return ngi_context_ios_set_active(ctx);
+    #endif
+    
+    return 0;
+    
+}
+
