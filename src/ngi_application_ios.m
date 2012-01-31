@@ -19,6 +19,9 @@ int ngi_application_init_ios(ngi_application* app)
 
 void ngi_application_ios_runloop_iteration(ngi_application* app, int blocking)
 {
+    NSDate* date = [NSDate distantPast];
+    if(blocking) date = [NSDate distantFuture];
+    [[NSRunLoop currentRunLoop] runUntilDate:date];
     
 }
 
@@ -66,10 +69,29 @@ ngi_event_cb gEventCallback = NULL;
     app.event_callback(&ev);
     
     
-    ngi_application_handle_redisplay(&app);
+//    ngi_application_handle_redisplay(&app);
     
+    NSArray* modes = [NSArray arrayWithObject:NSDefaultRunLoopMode];
+    [[NSRunLoop currentRunLoop] performSelector:@selector(run) target:self argument:nil order:0 modes:modes];
     
     return YES;
+}
+
+-(void)run
+{
+    
+    
+    
+    while(true)
+    {
+        ngi_application_wait_event(&app, app.num_animating == 0);
+        ngi_application_handle_redisplay(&app);
+    }
+
+
+
+    
+    
 }
 
 @end

@@ -53,7 +53,7 @@ int ngi_context_ios_init(ngi_context* ctx, ngi_window* win)
 {
     
     ctx->graphics = ngi_graphics_api_gles2;
-    EAGLContext *context = nil;//[[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:nil];
+    EAGLContext *context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:nil];
     if(context == nil)
     {
         context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1 sharegroup:nil];
@@ -114,12 +114,19 @@ int ngi_context_ios_init(ngi_context* ctx, ngi_window* win)
 int ngi_context_ios_swap(ngi_context* ctx) 
 {
     EAGLContext* context = (EAGLContext*)ctx->platform.ios.ctx;
-    [EAGLContext setCurrentContext:context];
+//    [EAGLContext setCurrentContext:context];
     glBindRenderbuffer(GL_RENDERBUFFER_OES, ctx->platform.ios.rb_color);
     [context presentRenderbuffer:GL_RENDERBUFFER_OES];
-    NSLog(@"ngi_context_ios_swap %p",ctx);
     return 1;
 }
+
+void ngi_context_ios_set_active(ngi_context* ctx) 
+{
+    EAGLContext* context = (EAGLContext*)ctx->platform.ios.ctx;
+    [EAGLContext setCurrentContext:context];
+    glBindRenderbuffer(GL_RENDERBUFFER_OES, ctx->platform.ios.rb_color);
+}
+
 
 #endif
 
