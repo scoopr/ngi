@@ -80,7 +80,7 @@ ngi_event_cb gEventCallback = NULL;
 -(void)run
 {
     
-    
+ /*   
     
     while(true)
     {
@@ -88,7 +88,7 @@ ngi_event_cb gEventCallback = NULL;
         ngi_application_handle_redisplay(&app);
     }
 
-
+*/
 
     
     

@@ -3,6 +3,7 @@
 
 
 
+extern const char* ngi_event_application_init_name;
 extern const char* ngi_event_key_down_name;
 extern const char* ngi_event_key_up_name;
 extern const char* ngi_event_key_repeat_name;
@@ -11,6 +12,9 @@ extern const char* ngi_event_redraw_name;
 extern const char* ngi_event_resize_name;
 extern const char* ngi_event_mouse_move_name;
 extern const char* ngi_event_mouse_button_name;
+extern const char* ngi_event_touch_begin_name;
+extern const char* ngi_event_touch_move_name;
+extern const char* ngi_event_touch_end_name;
 
 
 typedef enum ngi_event_type_t {
@@ -21,7 +25,9 @@ typedef enum ngi_event_type_t {
     ngi_event_marked_text,
     ngi_event_mouse_move,
     ngi_event_mouse_button,
-    ngi_event_touch,
+    ngi_event_touch_begin,
+    ngi_event_touch_move,
+    ngi_event_touch_end,
     ngi_event_scroll,
     ngi_event_resize,
     ngi_event_focus,
@@ -96,7 +102,6 @@ typedef struct ngi_scroll_t {
 } ngi_scroll;
 
 
-#if 0
 typedef struct ngi_touch_t {
     ngi_common_event common;
 
@@ -105,6 +110,7 @@ typedef struct ngi_touch_t {
     int tid;
 } ngi_touch;
 
+#if 0
 
 
 typedef struct ngi_focus_t {
@@ -156,8 +162,8 @@ typedef union ngi_event_tag {
     ngi_mouse_button mouse_button;
     ngi_resize resize;
     ngi_scroll scroll;
-#if 0
     ngi_touch touch;
+#if 0
     ngi_focus focus;
     ngi_lifecycle lifecycle;
     ngi_orientation orientation;
@@ -169,12 +175,16 @@ typedef union ngi_event_tag {
 
 static inline const char* ngi_event_name(ngi_event_type type) {
     switch(type) {
+        case ngi_event_application_init: return ngi_event_application_init_name;
         case ngi_event_key_down: return ngi_event_key_down_name;
         case ngi_event_key_up: return ngi_event_key_up_name;
         case ngi_event_redraw: return ngi_event_redraw_name;
         case ngi_event_resize: return ngi_event_resize_name;
         case ngi_event_mouse_move: return ngi_event_mouse_move_name;
         case ngi_event_mouse_button: return ngi_event_mouse_button_name;
+        case ngi_event_touch_begin: return ngi_event_touch_begin_name;
+        case ngi_event_touch_move: return ngi_event_touch_move_name;
+        case ngi_event_touch_end: return ngi_event_touch_end_name;
         default:
         return "unknown event type";
     }

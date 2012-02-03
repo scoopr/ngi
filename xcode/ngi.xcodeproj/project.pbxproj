@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF27A96114D89D9E006565AF /* ngi_application_ios.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD43914C8C31D000A736F /* ngi_application_ios.m */; };
+		BF27A96214D89DA2006565AF /* ngi_context_ios.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD43A14C8C31D000A736F /* ngi_context_ios.m */; };
+		BF27A96314D89DA6006565AF /* ngi_window_ios.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD43B14C8C31D000A736F /* ngi_window_ios.m */; };
 		BF46C2D014CF01BC00574284 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF46C2CF14CF01BC00574284 /* QuartzCore.framework */; };
 		BFC82F4814CF68F7000019F2 /* res in Resources */ = {isa = PBXBuildFile; fileRef = BFC82F4714CF68F7000019F2 /* res */; };
 		BFFFD39514C867F3000A736F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFFD39414C867F3000A736F /* Foundation.framework */; };
@@ -30,9 +33,6 @@
 		BFFFD40A14C86B36000A736F /* render_glsl.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3DB14C86ACF000A736F /* render_glsl.c */; };
 		BFFFD40D14C86B36000A736F /* typo.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3DE14C86ACF000A736F /* typo.c */; };
 		BFFFD43814C871B5000A736F /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFFD43714C871B5000A736F /* OpenGLES.framework */; };
-		BFFFD43C14C8C31D000A736F /* ngi_application_ios.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD43914C8C31D000A736F /* ngi_application_ios.m */; };
-		BFFFD43D14C8C31D000A736F /* ngi_context_ios.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD43A14C8C31D000A736F /* ngi_context_ios.m */; };
-		BFFFD43E14C8C31D000A736F /* ngi_window_ios.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD43B14C8C31D000A736F /* ngi_window_ios.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -281,6 +281,9 @@
 				BFFFD3CD14C86AA6000A736F /* ngi_window_cocoa.m in Sources */,
 				BFFFD3CF14C86AA6000A736F /* ngi_window_win32.c in Sources */,
 				BFFFD3D114C86AA6000A736F /* ngi_window_xlib.c in Sources */,
+				BF27A96114D89D9E006565AF /* ngi_application_ios.m in Sources */,
+				BF27A96214D89DA2006565AF /* ngi_context_ios.m in Sources */,
+				BF27A96314D89DA6006565AF /* ngi_window_ios.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,9 +295,6 @@
 				BFFFD40814C86B36000A736F /* render_glff.c in Sources */,
 				BFFFD40A14C86B36000A736F /* render_glsl.c in Sources */,
 				BFFFD40D14C86B36000A736F /* typo.c in Sources */,
-				BFFFD43C14C8C31D000A736F /* ngi_application_ios.m in Sources */,
-				BFFFD43D14C8C31D000A736F /* ngi_context_ios.m in Sources */,
-				BFFFD43E14C8C31D000A736F /* ngi_window_ios.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

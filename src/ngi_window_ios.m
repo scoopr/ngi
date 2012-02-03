@@ -6,25 +6,35 @@
 #import <QuartzCore/QuartzCore.h>
 
 @implementation NGIView
+
+@synthesize win;
+
 - (id)initWithFrame:(CGRect)frame
 {
     if((self = [super initWithFrame:frame]))
     {
-        NSLog(@"NGIView -initWithFrame:(%fx%f)",frame.size.width, frame.size.height);
-        
+        UIScreen* screen = [UIScreen mainScreen];
+        displayLink = [screen displayLinkWithTarget:self selector:@selector(displayLinkEvent)];
+        [displayLink retain];
+        [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        displayLink.paused = YES;
+        self.multipleTouchEnabled = YES;
+        self.opaque = YES;
+        self.userInteractionEnabled = YES;
     }
     return self;
 }
 
 -(void)dealloc
 {
+    [displayLink invalidate];
+    [displayLink release];
     [super dealloc];
 }
 
 
 - (void)drawRect:(CGRect)rect
 {
-    NSLog(@"NGIView -drawRect:");
 }
 
 
@@ -32,6 +42,104 @@
 {
     return [CAEAGLLayer class];
 }
+
+-(void)enableDisplayLink
+{
+//    [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    displayLink.paused = NO;
+}
+
+-(void)disableDisplayLink
+{
+//    [displayLink invalidate];
+    displayLink.paused = YES;
+}
+
+-(void)displayLinkEvent
+{
+    
+    ngi_application_handle_redisplay(win->app);
+    
+}
+
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [touches enumerateObjectsUsingBlock:^(id obj, BOOL* stop) {
+        ngi_event ev;
+        ev.type = ngi_event_touch_begin;
+        ev.common.timestamp = event.timestamp;
+        ev.common.window = win;
+        UITouch* touch = (UITouch*)obj;
+        CGPoint pos = [touch locationInView:self];
+        CGPoint prev = [touch previousLocationInView:self];
+        ev.touch.x = pos.x;
+        ev.touch.y = pos.y;
+        ev.touch.dx = pos.x - prev.x;
+        ev.touch.dy = pos.x - prev.y;
+        ngi_post_event(win->app, &ev);
+    }];
+    
+}
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [touches enumerateObjectsUsingBlock:^(id obj, BOOL* stop) {
+        ngi_event ev;
+        ev.type = ngi_event_touch_end;
+        ev.common.timestamp = event.timestamp;
+        ev.common.window = win;
+        UITouch* touch = (UITouch*)obj;
+        CGPoint pos = [touch locationInView:self];
+        CGPoint prev = [touch previousLocationInView:self];
+        ev.touch.x = pos.x;
+        ev.touch.y = pos.y;
+        ev.touch.dx = pos.x - prev.x;
+        ev.touch.dy = pos.x - prev.y;
+        ngi_post_event(win->app, &ev);
+    }];
+}
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [touches enumerateObjectsUsingBlock:^(id obj, BOOL* stop) {
+        ngi_event ev;
+        ev.type = ngi_event_touch_end;
+        ev.common.timestamp = event.timestamp;
+        ev.common.window = win;
+        UITouch* touch = (UITouch*)obj;
+        CGPoint pos = [touch locationInView:self];
+        CGPoint prev = [touch previousLocationInView:self];
+        ev.touch.x = pos.x;
+        ev.touch.y = pos.y;
+        ev.touch.dx = pos.x - prev.x;
+        ev.touch.dy = pos.x - prev.y;
+        ngi_post_event(win->app, &ev);
+    }];
+    
+}
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [touches enumerateObjectsUsingBlock:^(id obj, BOOL* stop) {
+        ngi_event ev;
+        ev.type = ngi_event_touch_move;
+        ev.common.timestamp = event.timestamp;
+        ev.common.window = win;
+        UITouch* touch = (UITouch*)obj;
+        CGPoint pos = [touch locationInView:self];
+        CGPoint prev = [touch previousLocationInView:self];
+        ev.touch.x = pos.x;
+        ev.touch.y = pos.y;
+        ev.touch.dx = pos.x - prev.x;
+        ev.touch.dy = pos.x - prev.y;
+        ngi_post_event(win->app, &ev);
+    }];
+    
+}
+
+
 @end
 
 
@@ -42,9 +150,7 @@
 {
     if((self = [super init]))
     {
-        NSLog(@"NGIViewController -init");
         self.wantsFullScreenLayout = YES;
-        
     }
     return self;
 }
@@ -52,8 +158,6 @@
 
 -(void)loadView
 {
-    NSLog(@"NGIViewController -loadView");
-    
     UIScreen* screen = [UIScreen mainScreen];//[[UIScreen screens] objectAtIndex:1];
     self.view = [[NGIView alloc] initWithFrame:screen.bounds];
 }
@@ -64,16 +168,20 @@
 
 int ngi_window_init_ios(ngi_application *app, ngi_window* win) {
 //    win->plat.pwnd = [[NGIWindow alloc] initWithRect:rect];
-    NSLog(@"ngi_window_init_ios");
     win->app = app;
     // win->width = window.view.frame.size.width;
     // win->height = window.view.frame.size.height;
     win->redisplay = 0;
     win->next_redisplay_window = NULL;
     
-    UIWindow* window = [[UIWindow alloc] init];
+    UIWindow* window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
 //    window.screen = [[UIScreen screens] objectAtIndex:1];
     window.rootViewController = [[NGIViewController alloc] init];
+
+    NGIView* view = (NGIView*)window.rootViewController.view;
+
+    view.win = win;
+    
         
     win->plat.pwnd = window.rootViewController;
 
@@ -82,7 +190,23 @@ int ngi_window_init_ios(ngi_application *app, ngi_window* win) {
     return 1;
 }
 
+void ngi_window_animate_ios(ngi_window* win, int enabled)
+{
+    NGIViewController* viewController = (NGIViewController*)win->plat.pwnd;
+    
+//    UIScreen* screen = viewController.view.window.screen;
 
+    if(enabled)
+    {
+        [(NGIView*)viewController.view enableDisplayLink];
+    }
+    else
+    {
+        [(NGIView*)viewController.view disableDisplayLink];
+    }
+
+    
+}
 
 
 #endif

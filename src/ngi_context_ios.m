@@ -124,7 +124,8 @@ void ngi_context_ios_set_active(ngi_context* ctx)
 {
     EAGLContext* context = (EAGLContext*)ctx->platform.ios.ctx;
     [EAGLContext setCurrentContext:context];
-    glBindRenderbuffer(GL_RENDERBUFFER_OES, ctx->platform.ios.rb_color);
+    glBindFramebuffer(GL_FRAMEBUFFER, ctx->platform.ios.fbo);
+//    glBindRenderbuffer(GL_RENDERBUFFER_OES, ctx->platform.ios.rb_color);
 }
 
 

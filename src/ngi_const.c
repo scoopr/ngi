@@ -37,6 +37,7 @@ const char* ngi_config_depth_bits = "ngi_config_depth_bits";       /* int */
 const char* ngi_config_stencil_bits = "ngi_config_stencil_bits";   /* int */
 const char* ngi_config_multisamples = "ngi_config_multisamples";   /* int */
 
+const char* ngi_event_application_init_name = "ngi_event_application_init";
 const char* ngi_event_key_down_name = "ngi_event_key_down";
 const char* ngi_event_key_up_name = "ngi_event_key_up";
 const char* ngi_event_key_repeat_name = "ngi_event_key_repeat";
@@ -45,4 +46,7 @@ const char* ngi_event_redraw_name = "ngi_event_redraw";
 const char* ngi_event_resize_name = "ngi_event_resize";
 const char* ngi_event_mouse_move_name = "ngi_event_mouse_move";
 const char* ngi_event_mouse_button_name = "ngi_event_mouse_button";
+const char* ngi_event_touch_begin_name = "ngi_event_touch_begin";
+const char* ngi_event_touch_move_name = "ngi_event_touch_move";
+const char* ngi_event_touch_end_name = "ngi_event_touch_end";
 
