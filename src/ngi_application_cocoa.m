@@ -37,6 +37,7 @@
 
 int ngi_application_init_cocoa(ngi_application *app) {
     
+    memset(app, 0, sizeof(ngi_application));
     app->type = ngi_wm_api_cocoa;
 
     NSAutoreleasePool *pool = [NSAutoreleasePool new];

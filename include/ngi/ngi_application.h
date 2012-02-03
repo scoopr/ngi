@@ -24,6 +24,7 @@ typedef struct ngi_application_tag {
     struct ngi_window_tag *first_redisplay_window;
 
     int num_animating;
+    int backgrounded;
     
 } ngi_application;
 

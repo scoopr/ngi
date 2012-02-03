@@ -12,8 +12,10 @@
 
 int ngi_application_init_ios(ngi_application* app)
 {
+    memset(app, 0, sizeof(ngi_application));
     app->type = ngi_wm_api_ios;
     app->first_redisplay_window = NULL;
+    app->backgrounded = 0;
     return 1;
 }
 
@@ -52,8 +54,6 @@ ngi_event_cb gEventCallback = NULL;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    NSLog(@"[ngi] application:didFinishLaunchingWithOptions:");
-
     
     NSString* bundlePath = [[NSBundle mainBundle] bundlePath];
     [[NSFileManager defaultManager] changeCurrentDirectoryPath:bundlePath];
@@ -92,6 +92,15 @@ ngi_event_cb gEventCallback = NULL;
 
     
     
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    app.backgrounded = 1;
+}
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    app.backgrounded = 0;
 }
 
 @end
