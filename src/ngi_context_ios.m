@@ -23,7 +23,7 @@ static void create_fbo(EAGLContext* context, CAEAGLLayer* layer, int* fbo_, int 
     glGenRenderbuffers(1, &colorRenderbuffer);
     glBindRenderbuffer(GL_RENDERBUFFER_OES, colorRenderbuffer);
     BOOL succ = [context renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:layer];
-    NSLog(@"succ %d",succ);
+
     if(!succ) { fbo=0; return; }
     glFramebufferRenderbuffer(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, colorRenderbuffer);
 
@@ -72,8 +72,6 @@ int ngi_context_ios_init(ngi_context* ctx, ngi_window* win)
     NGIView *view = (NGIView*)viewController.view;
 
     CAEAGLLayer* layer = (CAEAGLLayer*)view.layer;
-
-    NSLog(@"view %fx%f", view.frame.size.width, view.frame.size.height);
 
 //    NSDictionary* properties = [NSDictionary dictionaryWithObject:kEAGLColorFormatRGBA8 forKey:kEAGLDrawablePropertyColorFormat];
 //    layer.drawableProperties = properties;

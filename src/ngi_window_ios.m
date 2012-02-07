@@ -3,6 +3,7 @@
 
 #include "ngi/ngi.h"
 #import "ngi_window_ios.h"
+#import "ngi_application_ios.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation NGIView
@@ -58,14 +59,24 @@
 -(void)displayLinkEvent
 {
     
-    ngi_application_handle_redisplay(win->app);
+    ngi_event ev;
+    ev.type = ngi_event_redraw;
+    ev.common.window = win;
+    ev.common.timestamp = displayLink.timestamp;
+
+    if(win->context) ngi_context_set_active(win->context);
+
+    ngi_post_event(win->app, &ev);
+    
     
 }
 
+#if 0
 - (BOOL)canBecomeFirstResponder
 {
     return YES;
 }
+#endif
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
@@ -207,6 +218,19 @@ void ngi_window_animate_ios(ngi_window* win, int enabled)
 
     
 }
+
+void ngi_window_redisplay_ios(ngi_window *win)
+{
+    
+    if(!win->animating)
+    {
+        NSArray* modes = [NSArray arrayWithObject:NSDefaultRunLoopMode];
+        NGIApplicationDelegate* delegate = (NGIApplicationDelegate*)[UIApplication sharedApplication].delegate;
+        [[NSRunLoop currentRunLoop] performSelector:@selector(handleRedisplay) target:delegate argument:nil order:0 modes:modes];
+    }
+    
+}
+
 
 
 #endif

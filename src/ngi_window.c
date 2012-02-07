@@ -118,22 +118,25 @@ int ngi_window_deinit(ngi_window* win) {
 }
 
 
+
 void ngi_window_redisplay(ngi_window *win) {
     assert(win);
-    if(!win->redisplay) {
+    if(!win->redisplay && !win->animating) {
         ngi_application* app = win->app;
         win->redisplay = 1;
 
         win->next_redisplay_window = app->first_redisplay_window;
         app->first_redisplay_window = win;
+        
+        #ifdef NGI_WINDOW_IOS
+        ngi_window_redisplay_ios(win);
+        #endif
+        
     }
 
 }
 
 
-#ifdef NGI_WINDOW_IOS
-void ngi_window_animate_ios(ngi_window* win, int enabled);
-#endif
 
 void ngi_window_animate(ngi_window* win, int enabled)
 {

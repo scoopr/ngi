@@ -8,6 +8,7 @@
 
 #include "ngi/ngi.h"
 #import "ngi_window_ios.h"
+#import "ngi_application_ios.h"
 
 
 int ngi_application_init_ios(ngi_application* app)
@@ -24,6 +25,7 @@ void ngi_application_ios_runloop_iteration(ngi_application* app, int blocking)
     NSDate* date = [NSDate distantPast];
     if(blocking) date = [NSDate distantFuture];
     [[NSRunLoop currentRunLoop] runUntilDate:date];
+    ngi_application_handle_redisplay(app);
     
 }
 
@@ -40,13 +42,6 @@ double ngi_get_time() {
     return (double)t * sTimebaseInfo.numer / sTimebaseInfo.denom / 1000000000.0;
 }
 
-
-@interface NGIApplicationDelegate : NSObject <UIApplicationDelegate>
-{
-    NGIViewController* viewController;
-    ngi_application app;
-}
-@end
 
 ngi_event_cb gEventCallback = NULL;
 
@@ -80,18 +75,21 @@ ngi_event_cb gEventCallback = NULL;
 -(void)run
 {
     
- /*   
-    
+
+    /*
     while(true)
     {
-        ngi_application_wait_event(&app, app.num_animating == 0);
-        ngi_application_handle_redisplay(&app);
+        ngi_application_wait_event(&app, app.num_animating == 0 || app.backgrounded);
     }
-
 */
 
     
     
+}
+
+-(void)handleRedisplay
+{
+    ngi_application_handle_redisplay(&app);
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application

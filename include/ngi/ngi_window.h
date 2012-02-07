@@ -47,6 +47,10 @@ void ngi_window_redisplay(ngi_window *win);
 
 void ngi_window_animate(ngi_window* win, int enable);
 
+void ngi_window_redisplay_ios(ngi_window *win);
+void ngi_window_animate_ios(ngi_window* win, int enabled);
+
+
 
 #ifdef __cplusplus
 }
