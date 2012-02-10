@@ -81,12 +81,11 @@ int ngi_post_event(ngi_application* app, ngi_event* ev) {
 }
 
 
-void ngi_application_handle_redisplay(ngi_application* app);
-void ngi_application_handle_redisplay(ngi_application* app) {
+int ngi_application_handle_redisplay(ngi_application* app) {
 
     ngi_event ev;
     
-    if(app->backgrounded) return;
+    if(app->backgrounded) return 0;
     
     memset(&ev,0,sizeof(ngi_event));
     ngi_window* first = app->first_redisplay_window;
@@ -110,6 +109,8 @@ void ngi_application_handle_redisplay(ngi_application* app) {
 
         win = nextwin;
     }
+    
+    return !!app->first_redisplay_window;
 
 }
 
@@ -135,7 +136,7 @@ void ngi_run(int argc, char* argv, ngi_event_cb cb)
     
     while(!gApplicationQuit)
     {
-        ngi_application_wait_event(&app, app.num_animating == 0 || app->backgrounded);
+        ngi_application_wait_event(&app, app.num_animating == 0 || app.backgrounded);
     }
 
 

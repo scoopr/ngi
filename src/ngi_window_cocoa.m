@@ -27,9 +27,57 @@ double ngi_get_time() {
 }
 
 
+CVReturn displayLinkCB(
+   CVDisplayLinkRef displayLink,
+   const CVTimeStamp *inNow,
+   const CVTimeStamp *inOutputTime,
+   CVOptionFlags flagsIn,
+   CVOptionFlags *flagsOut,
+   void *displayLinkContext
+   )
+{
+    (void)displayLink;
+    (void)inNow;
+    (void)inOutputTime;
+    (void)flagsIn;
+    (void)flagsOut;
+    (void)flagsOut;
+    
+    
+    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    ngi_window* win = (ngi_window*)displayLinkContext;
+    
+    NGIWindow* window = win->plat.pwnd;
+//    [window.view setNeedsDisplay:YES];
 
+    NSArray* modes = [NSArray arrayWithObject:NSDefaultRunLoopMode];
+    [[NSRunLoop mainRunLoop] performSelector:@selector(displayLinkEvent) target:window.view argument:nil order:0 modes:modes];
+
+
+    [pool drain];
+    
+    (void)win;
+    #if 0
+    
+
+    
+    ngi_event ev;
+    ev.type = ngi_event_redraw;
+    ev.common.window = win;
+//    ev.common.timestamp = inNow->videoTime / (double)inNow->videoTimeScale;
+    ev.common.timestamp = ngi_get_time();
+
+    if(win->context) ngi_context_set_active(win->context);
+
+    ngi_post_event(win->app, &ev);
+#endif    
+    return kCVReturnSuccess;
+}
+   
+   
 @implementation NGIView
 @synthesize win;
+@synthesize oglContext;
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -38,6 +86,10 @@ double ngi_get_time() {
         inputContext = [[NSTextInputContext alloc] initWithClient:self];
         inputContext.acceptsGlyphInfo = NO;
         inputContext.allowedInputSourceLocales = [NSArray arrayWithObject:NSAllRomanInputSourcesLocaleIdentifier];
+        oglContext = nil;
+
+        CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
+
 
         activeIME = NO;
         
@@ -45,6 +97,31 @@ double ngi_get_time() {
     return self;
 }
 
+-(void)startDisplayLink
+{
+    CVDisplayLinkStart(displayLink);
+}
+
+-(void)stopDisplayLink
+{
+    CVDisplayLinkStop(displayLink);
+}
+
+-(void)updateDisplayLink
+{
+    CGLContextObj* cglContext = [oglContext CGLContextObj];
+    CGLPixelFormatObj pixelFormat = CGLGetPixelFormat(*cglContext);
+    CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, *cglContext, pixelFormat);
+//    CVDisplayLinkSetCurrentCGDisplay(displayLink, CGMainDisplayID());
+    
+    CVDisplayLinkSetOutputCallback(displayLink, displayLinkCB, win);
+}
+
+-(void)dealloc {
+    CVDisplayLinkRelease(displayLink);
+    [inputContext release];
+    [super dealloc];
+}
 
 - (BOOL)acceptsFirstResponder {
     return YES;
@@ -58,12 +135,11 @@ double ngi_get_time() {
     return YES;
 }
 
--(void)dealloc {
-    [inputContext release];
-    [super dealloc];
+
+- (BOOL)isOpaque
+{
+    return YES;
 }
-
-
 - (void)keyDown:(NSEvent *)theEvent {
     /*BOOL handled = */[inputContext handleEvent:theEvent];
 }
@@ -151,6 +227,17 @@ double ngi_get_time() {
         
 }
 
+-(void)displayLinkEvent
+{
+    
+    [[NSRunLoop currentRunLoop] cancelPerformSelector:@selector(displayLinkEvent) 
+                                               target:self 
+                                             argument:nil];
+    
+    [self drawRect:self.frame];
+    
+}
+
 - (void)drawRect:(NSRect)dirtyRect {
     (void)dirtyRect;
 
@@ -163,10 +250,16 @@ double ngi_get_time() {
     ev.common.window = win;
     ev.common.timestamp = ngi_get_time();
 
+    if(win->context) ngi_context_set_active(win->context);
+
     NGIWindow *w = win->plat.pwnd;
     [w update];
 
+//    CGLLockContext( win->context->platform.cocoa.ctx );
+
     ngi_post_event(win->app, &ev);
+
+//    CGLUnlockContext( win->context->platform.cocoa.ctx );
 }
 
 
@@ -177,7 +270,6 @@ double ngi_get_time() {
 
 @implementation NGIWindow
 @synthesize view;
-@synthesize oglContext;
 
 - (id)initWithRect:(NSRect)rect
 {
@@ -191,7 +283,7 @@ double ngi_get_time() {
         [self setDelegate:self];
         [self setAcceptsMouseMovedEvents:YES];
         
-        oglContext = nil;
+        
     }
     return self;
 }
@@ -201,7 +293,7 @@ double ngi_get_time() {
 }
 
 -(void)update {
-    [oglContext update];
+    [view.oglContext update];
 }
 
 -(void)dealloc {
@@ -273,6 +365,21 @@ int ngi_window_init_cocoa(ngi_application *app, ngi_window* win) {
 
 
 
+void ngi_window_animate_cocoa(ngi_window* win, int enabled)
+{
+    NGIWindow* w = (NGIWindow*)win->plat.pwnd;
+    NGIView* view = w.view;
+    if(enabled)
+    {
+        [view startDisplayLink];
+    } else
+    {
+        [view stopDisplayLink];
+    }
+}
+
+
+
 int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win) {
     (void)win;
     NSOpenGLPixelFormatAttribute attribs[] = {
@@ -290,9 +397,19 @@ int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win) {
     NSOpenGLPixelFormat* pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
     NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pixelFormat shareContext:nil];
 
+
+    
+//    CGLEnable(*cglContext, kCGLCEMPEngine);
+  
+    // GLint val = 0;
+    // CGLSetParameter( *cglContext, kCGLCPMPSwapsInFlight, &val);
+
+
+
     NGIWindow *w = win->plat.pwnd;
     win->context = ctx;
-    w.oglContext = context;
+    w.view.oglContext = context;
+    [w.view updateDisplayLink];
     [context makeCurrentContext];
     [context setView:w.view];
 //    [context setFullScreen];

@@ -155,5 +155,10 @@ void ngi_window_animate(ngi_window* win, int enabled)
     #ifdef NGI_WINDOW_IOS
     ngi_window_animate_ios(win, enabled);
     #endif
+
+    #ifdef NGI_WINDOW_COCOA
+    ngi_window_animate_cocoa(win, enabled);
+    #endif
+
 }
 

@@ -58,7 +58,7 @@ void ngi_application_quit();
 
 
 //internal
-void ngi_application_handle_redisplay(ngi_application*);
+int ngi_application_handle_redisplay(ngi_application*);
 
 #ifdef __cplusplus
 }

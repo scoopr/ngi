@@ -192,42 +192,47 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
 void ngi_application_cocoa_runloop_iteration(ngi_application* app, int blocking) {
     (void)app;
 
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    int redraw_again = 0;
+    do
+    {
+    
+        NSAutoreleasePool *pool = [NSAutoreleasePool new];
 
 
-//    int blocking=1;
-    NSDate* limitDate = nil;
-    if(blocking) limitDate = [NSDate distantFuture];
-    else limitDate = [NSDate distantPast];
+        //    int blocking=1;
+        NSDate* limitDate = nil;
+        if(blocking) limitDate = [NSDate distantFuture];
+        else limitDate = [NSDate distantPast];
 
-    NSUInteger mask = UINT_MAX; //NSAnyEventMask;
-    NSEvent* event = [NSApp nextEventMatchingMask: mask
-                           untilDate: limitDate
-                           inMode: NSDefaultRunLoopMode
-                           dequeue: YES];
-
-
-    handle_NSEvent(event, app);
-
-    limitDate = [NSDate distantPast];
-    while((event = [NSApp nextEventMatchingMask: mask
+        NSUInteger mask = UINT_MAX; //NSAnyEventMask;
+        NSEvent* event = [NSApp nextEventMatchingMask: mask
                                untilDate: limitDate
                                inMode: NSDefaultRunLoopMode
-                               dequeue: YES]) != nil) {
+                               dequeue: YES];
+
+
         handle_NSEvent(event, app);
-    }
+
+        limitDate = [NSDate distantPast];
+        while((event = [NSApp nextEventMatchingMask: mask
+                                   untilDate: limitDate
+                                   inMode: NSDefaultRunLoopMode
+                                   dequeue: YES]) != nil) {
+            handle_NSEvent(event, app);
+        }
 
 
-//    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate distantPast]];
+        //    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate distantPast]];
 
-    // if(event.type == NSKeyDown && [event.characters length]>0 && [event.characters characterAtIndex:0] == 27) {
-    //     [NSApp terminate:nil];
-    // }
+        // if(event.type == NSKeyDown && [event.characters length]>0 && [event.characters characterAtIndex:0] == 27) {
+        //     [NSApp terminate:nil];
+        // }
 
-    ngi_application_handle_redisplay(app);
+        redraw_again = ngi_application_handle_redisplay(app);
+        blocking = 0;
+        [pool drain];
+    } while(redraw_again);
 
-
-    [pool drain];
 
 
 }

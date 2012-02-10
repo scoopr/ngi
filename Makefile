@@ -107,7 +107,7 @@ CPPFLAGS+= -DNGI_RENDER_API_GLES2
 endif
 
 ifneq ($(findstring -osx-,$(VARIANT)),)
-LDFLAGS+= -framework Cocoa -framework OpenGL -liconv
+LDFLAGS+= -framework Cocoa -framework OpenGL -liconv -framework CoreVideo
 CPPFLAGS+= -DNGI_RENDER_API_OPENGL -DNGI_CONTEXT_COCOA -DNGI_WINDOW_COCOA
 .PHONY: resources
 resources: ngi.nib

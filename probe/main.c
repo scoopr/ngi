@@ -420,6 +420,8 @@ int event(ngi_event* ev) {
         {
             check( ngi_window_init(ev->application_init.application, &main_window.win, NULL) );
             check( ngi_context_init(&main_window.ctx, &main_window.win) );
+
+            ngi_context_set_active(&main_window.ctx);
             rend = guess_renderer(&main_window.ctx);
             rend->init();
             ngi_window_animate(&main_window.win, 1);
