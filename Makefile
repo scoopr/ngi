@@ -120,7 +120,7 @@ OBJ+=  $(SRC_M:.m=.o)
 endif
 
 ifneq ($(findstring -glx-,$(VARIANT)),)
-CPPFLAGS+= -DNGI_CONTEXT_GLX -I/usr/X11/include
+CPPFLAGS+= -DNGI_CONTEXT_GLX -DNGI_RENDER_API_OPENGL -I/usr/X11/include
 LDFLAGS+=-lGL
 endif
 
