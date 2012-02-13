@@ -129,6 +129,13 @@ int ngi_context_glx_swap(ngi_context* ctx) {
     return 1;
 }
 
+int ngi_context_glx_set_active(ngi_context* ctx) {
+    Display *dpy = ctx->app->plat.xlib.dpy;
+    GLXContext glxctx = ctx->platform.glx.ctx;
+    Window* xwin = ctx->platform.glx.drawable;
+    glXMakeCurrent(dpy, (GLXDrawable)xwin, glxctx);
+    return 1;
+}
 
 #endif
 

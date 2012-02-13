@@ -57,6 +57,7 @@ int ngi_context_wgl_swap(ngi_context* ctx);
 
 int ngi_context_glx_init(ngi_context* ctx, ngi_window* win);
 int ngi_context_glx_swap(ngi_context* ctx);
+int ngi_context_glx_set_active(ngi_context* ctx);
 
 #ifdef __cplusplus
 }
