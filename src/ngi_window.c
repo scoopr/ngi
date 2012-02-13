@@ -121,7 +121,7 @@ int ngi_window_deinit(ngi_window* win) {
 
 void ngi_window_redisplay(ngi_window *win) {
     assert(win);
-    if(!win->redisplay && !win->animating) {
+    if(!win->redisplay) {
         ngi_application* app = win->app;
         win->redisplay = 1;
 

@@ -90,13 +90,17 @@ int ngi_application_handle_redisplay(ngi_application* app) {
     memset(&ev,0,sizeof(ngi_event));
     ngi_window* first = app->first_redisplay_window;
     ngi_window* win = first;
+
+    
     app->first_redisplay_window = NULL;
     while( win != NULL) {
   
   
         ngi_window* nextwin = win->next_redisplay_window;
         if(win->redisplay) {
-            win->redisplay = 0;
+            if(!win->animating) {
+                win->redisplay = 0;
+            }
             win->next_redisplay_window = NULL;
             ev.type = ngi_event_redraw;
             ev.common.window = win;
@@ -105,10 +109,18 @@ int ngi_application_handle_redisplay(ngi_application* app) {
             if(win->context) ngi_context_set_active(win->context);
 
             ngi_post_event(app, &ev);
+            
+            if(win->animating) {
+                win->next_redisplay_window = app->first_redisplay_window;
+                app->first_redisplay_window = win;
+
+            }
         }
 
         win = nextwin;
     }
+    
+
     
     return !!app->first_redisplay_window;
 
