@@ -32,9 +32,6 @@
 
 
 
-
-
-
 int ngi_application_init_cocoa(ngi_application *app) {
     
     memset(app, 0, sizeof(ngi_application));
@@ -237,6 +234,10 @@ void ngi_application_cocoa_runloop_iteration(ngi_application* app, int blocking)
 
 }
 
+void ngi_application_quit_cocoa()
+{
+    [NSApp terminate:nil];
+}
 
 
 #endif

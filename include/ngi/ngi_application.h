@@ -55,6 +55,7 @@ double ngi_get_time();
 
 
 void ngi_application_quit();
+void ngi_application_quit_cocoa();
 
 
 //internal

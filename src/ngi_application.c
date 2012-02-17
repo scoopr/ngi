@@ -6,6 +6,11 @@ static int gApplicationQuit;
 void ngi_application_quit()
 {
     gApplicationQuit = 1;
+    
+    #ifdef NGI_WINDOW_COCOA
+    ngi_application_quit_cocoa();
+    #endif
+    
 }
 
 int ngi_application_init(ngi_application* app) {
