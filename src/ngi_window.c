@@ -152,6 +152,8 @@ void ngi_window_animate(ngi_window* win, int enabled)
         win->app->num_animating--;
     }
     
+    ngi_window_redisplay(win);
+    
     #ifdef NGI_WINDOW_IOS
     ngi_window_animate_ios(win, enabled);
     #endif
