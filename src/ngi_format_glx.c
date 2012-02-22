@@ -1,3 +1,5 @@
+
+#ifdef NGI_CONTEXT_GLX
 #include "ngi/ngi.h"
 #include <GL/glx.h>
 
@@ -39,3 +41,4 @@ int ngi_format_init_glx(ngi_application* app, ngi_format* format, ngi_config *co
     
 }
 
+#endif
