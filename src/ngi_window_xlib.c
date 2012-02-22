@@ -31,7 +31,7 @@ void ngi_window_add_window_xlib(ngi_application* app, ngi_window * win) {
 }
 #endif
 
-int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
+int ngi_window_init_xlib(ngi_application *app, ngi_window* win, ngi_format* format) {
    
 
     int w, h; 
@@ -54,6 +54,7 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
     win->height = h;
 
     win->app = app;
+#if 0
     win->plat.xlib.win = (void*)XCreateSimpleWindow((Display*)app->plat.xlib.dpy,
                                       DefaultRootWindow(app->plat.xlib.dpy),
                                       0,
@@ -64,7 +65,31 @@ int ngi_window_init_xlib(ngi_application *app, ngi_window* win) {
                                       0,
                                       0
                                       ); 
-    
+#endif
+
+    Display* dpy = app->plat.xlib.dpy;
+    XVisualInfo* xvi = format->platform.xlib.visual;
+    XSetWindowAttributes swa;
+    int swaMask = CWBorderPixel | CWColormap;
+    swa.border_pixel = 0;
+    swa.colormap = XCreateColormap(dpy, RootWindow(dpy,xvi->screen),
+                                   xvi->visual, AllocNone);
+                                   
+    win->plat.xlib.win = (void*)XCreateWindow(dpy,
+                                      DefaultRootWindow(dpy),
+                                      0,
+                                      0,
+                                      w,
+                                      h,
+                                      0,
+                                      xvi->depth,
+                                      InputOutput,
+                                      xvi->visual,
+                                      swaMask, &swa
+                                      ); 
+
+
+
     xwin = (Window)win->plat.xlib.win;
 
     XSaveContext(app->plat.xlib.dpy, xwin, app->plat.xlib.context, (XPointer)win);

@@ -10,10 +10,10 @@
 #include <stdio.h>
 
 
-int ngi_context_glx_init_1_3(ngi_context* ctx, ngi_window* win) {
+int ngi_context_glx_init_1_3(ngi_context* ctx, ngi_window* win, ngi_format* format) {
     Display* dpy = win->app->plat.xlib.dpy;
  
-    int attr[]= {
+/*    int attr[]= {
 
         GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,
         GLX_RENDER_TYPE,   GLX_RGBA_BIT,
@@ -27,14 +27,17 @@ int ngi_context_glx_init_1_3(ngi_context* ctx, ngi_window* win) {
 
         None
     };
-
+*/
     
     Window* xwin = win->plat.xlib.win;
     
-    int nconfig = 0;
-    GLXFBConfig* config = glXChooseFBConfig(dpy, DefaultScreen(dpy), attr, &nconfig);    
+//    int nconfig = 0;
+//    GLXFBConfig* config = glXChooseFBConfig(dpy, DefaultScreen(dpy), attr, &nconfig);    
 
-    GLXFBConfig fbc = config[0];
+//    GLXFBConfig fbc = config[0];
+
+
+    GLXFBConfig fbc = format->platform.xlib.fbc;
 
     GLXContext glxctx = glXCreateNewContext(dpy, fbc, GLX_RGBA_TYPE, NULL, True);
     if(glxctx == NULL) return 0;
@@ -50,7 +53,7 @@ int ngi_context_glx_init_1_3(ngi_context* ctx, ngi_window* win) {
     return 1;
 }
 
-int ngi_context_glx_init_1_0(ngi_context* ctx, ngi_window* win) {
+int ngi_context_glx_init_1_0(ngi_context* ctx, ngi_window* win, ngi_format* format) {
     Display* dpy = win->app->plat.xlib.dpy;
     XVisualInfo* xvi;
     GLXContext glxctx;
@@ -66,7 +69,8 @@ int ngi_context_glx_init_1_0(ngi_context* ctx, ngi_window* win) {
         GLX_DEPTH_SIZE, 24,
         None    
     };
-    
+
+    (void)format;    
     xvi = glXChooseVisual( dpy, DefaultScreen(dpy), attr );
 
     if(xvi == NULL) return 0;
@@ -84,7 +88,7 @@ int ngi_context_glx_init_1_0(ngi_context* ctx, ngi_window* win) {
     return 1;
 }
 
-int ngi_context_glx_init(ngi_context* ctx, ngi_window* win) {
+int ngi_context_glx_init(ngi_context* ctx, ngi_window* win, ngi_format* format) {
 
     int minorVersion = 0, majorVersion = 0;
     int ret; 
@@ -94,7 +98,7 @@ int ngi_context_glx_init(ngi_context* ctx, ngi_window* win) {
     
     ret = glXQueryVersion(dpy, &majorVersion, &minorVersion);
 
-    printf("glx version %d.%d\n",majorVersion, minorVersion);
+//    printf("glx version %d.%d\n",majorVersion, minorVersion);
 
     if(ret == False) return 0;
     if(win->app->type != ngi_wm_api_xlib) return 0;
@@ -105,9 +109,9 @@ int ngi_context_glx_init(ngi_context* ctx, ngi_window* win) {
     
 
     if(majorVersion == 1 && minorVersion >= 3)
-        ret = ngi_context_glx_init_1_3(ctx, win);
+        ret = ngi_context_glx_init_1_3(ctx, win, format);
     else 
-        ret = ngi_context_glx_init_1_0(ctx, win);
+        ret = ngi_context_glx_init_1_0(ctx, win, format);
 
     if(ret == 0) return 0;
 

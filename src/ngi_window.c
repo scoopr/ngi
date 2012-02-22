@@ -87,7 +87,7 @@ int ngi_window_init(ngi_application* app, ngi_window* win, ngi_format* format, n
     }
     
     #ifdef NGI_WINDOW_XLIB
-    if(ngi_config_match(wmapi, ngi_wm_api_xlib)) return ngi_window_init_xlib(app, win);
+    if(ngi_config_match(wmapi, ngi_wm_api_xlib)) return ngi_window_init_xlib(app, win, format);
     #endif
     
     #ifdef NGI_WINDOW_WIN32

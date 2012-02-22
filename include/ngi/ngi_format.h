@@ -9,6 +9,10 @@ typedef struct ngi_format_tag {
         struct {
             void* format;
         } cocoa;
+        struct {
+            void* fbc;
+            void* visual;
+        } xlib;
     } platform;
     
     
@@ -21,6 +25,7 @@ int ngi_format_init(ngi_application* app, ngi_format* format, ngi_config *config
 
 int ngi_format_init_cocoa(ngi_application* app, ngi_format* format, ngi_config *config);
 
+int ngi_format_init_glx(ngi_application* app, ngi_format* format, ngi_config *config);
 
 
 
