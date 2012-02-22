@@ -32,13 +32,13 @@ typedef struct ngi_window_tag {
 
 
 
-int ngi_window_init(ngi_application* app, ngi_window* win, ngi_config* config);
+int ngi_window_init(ngi_application* app, ngi_window* win, ngi_format* format, ngi_config* config);
 int ngi_window_deinit(ngi_window* win);
 
 
 int ngi_window_init_win32(ngi_application *app, ngi_window* win);
 int ngi_window_init_xlib(ngi_application *app, ngi_window* win);
-int ngi_window_init_cocoa(ngi_application *app, ngi_window* win);
+int ngi_window_init_cocoa(ngi_application *app, ngi_window* win, ngi_format* format);
 int ngi_window_init_ios(ngi_application *app, ngi_window* win);
 
 int ngi_window_deinit_xlib(ngi_window* win);

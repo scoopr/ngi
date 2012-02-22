@@ -397,6 +397,7 @@ struct probe_window
 {
     ngi_window win;
     ngi_context ctx;
+    ngi_format fmt;
 };
 
 struct probe_window main_window;
@@ -418,8 +419,9 @@ int event(ngi_event* ev) {
 
         case ngi_event_application_init:
         {
-            check( ngi_window_init(ev->application_init.application, &main_window.win, NULL) );
-            check( ngi_context_init(&main_window.ctx, &main_window.win) );
+            check( ngi_format_init(ev->application_init.application, &main_window.fmt, NULL) );
+            check( ngi_window_init(ev->application_init.application, &main_window.win, &main_window.fmt, NULL) );
+            check( ngi_context_init(&main_window.ctx, &main_window.win, &main_window.fmt) );
 
             ngi_context_set_active(&main_window.ctx);
             rend = guess_renderer(&main_window.ctx);

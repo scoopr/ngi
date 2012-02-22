@@ -331,7 +331,8 @@ CVReturn displayLinkCB(
 
 
 
-int ngi_window_init_cocoa(ngi_application *app, ngi_window* win) {
+int ngi_window_init_cocoa(ngi_application *app, ngi_window* win, ngi_format* format) {
+    (void)format;
 
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
 
@@ -380,21 +381,23 @@ void ngi_window_animate_cocoa(ngi_window* win, int enabled)
 
 
 
-int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win) {
+int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win, ngi_format* format) {
     (void)win;
-    NSOpenGLPixelFormatAttribute attribs[] = {
-        NSOpenGLPFADoubleBuffer,
-        NSOpenGLPFADepthSize, 32,
-  //      NSOpenGLPFAFullScreen,
-        0
-    };
+  //   NSOpenGLPixelFormatAttribute attribs[] = {
+  //       NSOpenGLPFADoubleBuffer,
+  //       NSOpenGLPFADepthSize, 32,
+  // //      NSOpenGLPFAFullScreen,
+  //       0
+  //   };
     
     ctx->type = ngi_context_api_cocoa;
     ctx->graphics = ngi_graphics_api_opengl;
 
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
 
-    NSOpenGLPixelFormat* pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
+    NSOpenGLPixelFormat* pixelFormat = (NSOpenGLPixelFormat*)format->platform.cocoa.format;
+
+    // NSOpenGLPixelFormat* pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attribs];
     NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pixelFormat shareContext:nil];
 
 
