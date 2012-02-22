@@ -18,6 +18,17 @@
 #include <sys/time.h>
 
 unsigned int KeySymToUcs4(KeySym keysym);
+#include <assert.h>
+
+int error_handler(Display *dpy, XErrorEvent *err)
+{
+    printf("X ERROR");
+    char buf[255];
+    XGetErrorText(dpy, err->error_code, buf, 255); 
+    printf(" %s\n", buf);
+    assert(0);
+    return 0;
+}
 
 
 
@@ -31,6 +42,7 @@ int ngi_application_init_xlib(ngi_application* app) {
 
     if(app->plat.xlib.dpy == NULL) return 0;
 
+    XSetErrorHandler(error_handler);
 
     XSetLocaleModifiers("");
 
@@ -317,7 +329,6 @@ int ngi_application_wait_event_xlib(ngi_application* app, int blocking) {
     }
     
     while(XPending(dpy) > 0) {
-//    while(XEventsQueued(dpy, QueuedAfterReading) > 0) {
         XNextEvent(dpy, &xev);
         handle_X11Event(&xev, app);
     }
