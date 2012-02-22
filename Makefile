@@ -73,6 +73,7 @@ CPPFLAGS+=-Iinclude -Wall -Wextra -pedantic -g -Werror
 #LDFLAGS+=-arch i386
 CFLAGS+=-std=c99
 
+LDFLAGS+=-lm
 
 ifneq ($(findstring -gl-,$(VARIANT)),)
 LDFLAGS+= -lGL
