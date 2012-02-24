@@ -180,7 +180,7 @@ void draw_pointers() {
          if( type == ngi_event_mouse_move ) {
              pointer = 1;
              x = last_events[j].mouse_move.x;
-             y = last_events[j].mouse_move.y;
+             y = screenBox.top-last_events[j].mouse_move.y;
          }
 
  /*        if( type == ngi_event_mouse_button ) {
