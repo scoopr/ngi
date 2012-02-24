@@ -56,6 +56,8 @@ int ngi_application_init_cocoa(ngi_application *app) {
     [NSApp finishLaunching];
     [NSApp setRunning];
 
+    [NSEvent setMouseCoalescingEnabled:NO];
+
     BOOL success = [NSBundle loadNibNamed:@"ngi" owner:NSApp];
     if(!success) {
     }
@@ -79,11 +81,14 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
     [NSApp sendEvent:event];
 
     NSWindow* nswin = event.window;
+
+
     ngi_window* win = NULL;
     if([nswin isKindOfClass:[NGIWindow class]]) {
         NGIWindow* ngiwin = (NGIWindow*)nswin;
         win = ngiwin.view.win;
     }
+    NSView* contentView = nswin.contentView;
 
     ev.common.window = win;
     ev.common.timestamp = event.timestamp;
@@ -114,6 +119,10 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
             ev.type = ngi_event_mouse_button;
             ev.mouse_button.button = [event buttonNumber];
             NSPoint p = [event locationInWindow];
+            if(nswin) {
+                p = [[nswin contentView] convertPoint:p fromView:nil];
+                p.y = [nswin.contentView frame].size.height - p.y;
+            }
             ev.mouse_button.x = p.x;
             ev.mouse_button.y = p.y;
             ev.mouse_button.down = 1;
@@ -129,6 +138,12 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
             ev.type = ngi_event_mouse_button;
             ev.mouse_button.button = [event buttonNumber];
             NSPoint p = [event locationInWindow];
+            
+            if(nswin) {
+                p = [contentView convertPoint:p fromView:nil];
+                p.y = [contentView frame].size.height - p.y;
+            }
+            
             ev.mouse_button.x = p.x;
             ev.mouse_button.y = p.y;
             ev.mouse_button.down = 0;
@@ -141,6 +156,10 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
         {
             ev.type = ngi_event_mouse_move;
             NSPoint p = [event locationInWindow];
+            if(nswin) {
+                p = [contentView convertPoint:p fromView:nil];
+                p.y = [contentView frame].size.height - p.y;
+            }
             ev.mouse_move.x = p.x;
             ev.mouse_move.y = p.y;
             ev.mouse_move.dx = [event deltaX];
@@ -158,6 +177,10 @@ void handle_NSEvent(NSEvent* event, ngi_application* app) {
         {
             ev.type = ngi_event_mouse_move;
             NSPoint p = [event locationInWindow];
+            if(nswin) {
+                p = [contentView convertPoint:p fromView:nil];
+                p.y = [contentView frame].size.height - p.y;
+            }
             ev.mouse_move.x = p.x;
             ev.mouse_move.y = p.y;
             ev.mouse_move.dx = [event deltaX];
