@@ -51,11 +51,14 @@ int ngi_application_wait_event_xlib(ngi_application* app, int blocking);
 
 int ngi_post_event(ngi_application* app, ngi_event* ev);
 
-double ngi_get_time();
+double ngi_get_time(void);
 
 
-void ngi_application_quit();
-void ngi_application_quit_cocoa();
+void ngi_application_quit(void);
+void ngi_application_quit_cocoa(void);
+
+int ngi_run(int argc, char* argv[], ngi_event_cb cb);
+
 
 
 //internal

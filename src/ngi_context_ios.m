@@ -118,12 +118,13 @@ int ngi_context_ios_swap(ngi_context* ctx)
     return 1;
 }
 
-void ngi_context_ios_set_active(ngi_context* ctx) 
+int ngi_context_ios_set_active(ngi_context* ctx) 
 {
     EAGLContext* context = (EAGLContext*)ctx->platform.ios.ctx;
     [EAGLContext setCurrentContext:context];
     glBindFramebuffer(GL_FRAMEBUFFER, ctx->platform.ios.fbo);
 //    glBindRenderbuffer(GL_RENDERBUFFER_OES, ctx->platform.ios.rb_color);
+    return 1;
 }
 
 

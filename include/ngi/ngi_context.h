@@ -51,6 +51,7 @@ int ngi_context_cocoa_set_active(ngi_context* ctx);
 
 int ngi_context_ios_init(ngi_context* ctx, ngi_window* win);
 int ngi_context_ios_swap(ngi_context* ctx);
+int ngi_context_ios_set_active(ngi_context* ctx);
 
 int ngi_context_wgl_init(ngi_context* ctx, ngi_window* win);
 int ngi_context_wgl_swap(ngi_context* ctx);

@@ -465,7 +465,6 @@ int event(ngi_event* ev) {
 }
 
 
-int ngi_run(int argc, char* argv[], ngi_event_cb cb);
 
 int main(int argc, char* argv[]) {
     return ngi_run(argc, argv, event);
