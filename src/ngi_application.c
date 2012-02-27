@@ -133,7 +133,7 @@ int ngi_application_handle_redisplay(ngi_application* app) {
 
 
 #ifndef NGI_APPLICATION_IOS
-void ngi_run(int argc, char* argv, ngi_event_cb cb)
+int ngi_run(int argc, char** argv, ngi_event_cb cb)
 {
     (void)argc;
     (void)argv;
@@ -158,6 +158,7 @@ void ngi_run(int argc, char* argv, ngi_event_cb cb)
 
 
     ngi_application_deinit(&app);
+	return 0;
 }
 #endif
 
