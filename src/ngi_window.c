@@ -91,7 +91,7 @@ int ngi_window_init(ngi_application* app, ngi_window* win, ngi_format* format, n
     #endif
     
     #ifdef NGI_WINDOW_WIN32
-    if(ngi_config_match(wmapi, ngi_wm_api_win32)) return ngi_window_init_win32(app, win);
+    if(ngi_config_match(wmapi, ngi_wm_api_win32)) return ngi_window_init_win32(app, win, format);
     #endif
 
     #ifdef NGI_WINDOW_COCOA

@@ -176,6 +176,8 @@ void draw_pointers() {
          float x,y;
          int pointer = 0;
          int type = last_events[j].type;
+		 float w;
+
          if( !last_events[j].common.window ) continue;
          if( type == ngi_event_mouse_move ) {
              pointer = 1;
@@ -199,7 +201,7 @@ void draw_pointers() {
          }
 
 
-         int w = 1 + 2*last_events[j].mouse_move.drag;
+         w = 1.0f + 2*last_events[j].mouse_move.drag;
          render_line(rend, lx, ly, x, y, w, event_color(type));
 //         render_rect(rend, x-(w), y-(w), w*2+1, w*2+1, event_color(type));
          

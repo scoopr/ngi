@@ -72,14 +72,19 @@
     <ClCompile Include="..\src\ngi_const.c" />
     <ClCompile Include="..\src\ngi_context.c" />
     <ClCompile Include="..\src\ngi_context_egl.c" />
+    <ClCompile Include="..\src\ngi_format.c" />
+    <ClCompile Include="..\src\ngi_format_win32.c" />
     <ClCompile Include="..\src\ngi_window.c" />
     <ClCompile Include="..\src\ngi_window_win32.c" />
     <ClCompile Include="..\src\ngi_window_xlib.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\ngi\ngi.h" />
     <ClInclude Include="..\include\ngi\ngi_application.h" />
     <ClInclude Include="..\include\ngi\ngi_config.h" />
     <ClInclude Include="..\include\ngi\ngi_context.h" />
+    <ClInclude Include="..\include\ngi\ngi_event.h" />
+    <ClInclude Include="..\include\ngi\ngi_format.h" />
     <ClInclude Include="..\include\ngi\ngi_window.h" />
     <ClInclude Include="..\probe\render_glff.h" />
     <ClInclude Include="..\probe\render_glsl.h" />

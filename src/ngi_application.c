@@ -89,12 +89,12 @@ int ngi_post_event(ngi_application* app, ngi_event* ev) {
 int ngi_application_handle_redisplay(ngi_application* app) {
 
     ngi_event ev;
+    ngi_window* first = app->first_redisplay_window;
+    ngi_window* win = first;
     
     if(app->backgrounded) return 0;
     
     memset(&ev,0,sizeof(ngi_event));
-    ngi_window* first = app->first_redisplay_window;
-    ngi_window* win = first;
 
     
     app->first_redisplay_window = NULL;
@@ -135,14 +135,12 @@ int ngi_application_handle_redisplay(ngi_application* app) {
 #ifndef NGI_APPLICATION_IOS
 int ngi_run(int argc, char** argv, ngi_event_cb cb)
 {
-    (void)argc;
-    (void)argv;
     ngi_application app;
+    ngi_event ev;
     ngi_application_init(&app);
     
     app.event_callback = cb;
     
-    ngi_event ev;
     ev.type = ngi_event_application_init;
     ev.common.timestamp = ngi_get_time();
     ev.common.window = NULL;
@@ -159,6 +157,8 @@ int ngi_run(int argc, char** argv, ngi_event_cb cb)
 
     ngi_application_deinit(&app);
 	return 0;
+    (void)argc;
+    (void)argv;
 }
 #endif
 

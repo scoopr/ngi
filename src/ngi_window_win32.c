@@ -142,7 +142,7 @@ LRESULT CALLBACK WndProc(   HWND    hWnd,
 }
 
 
-int ngi_window_init_win32(ngi_application* app, ngi_window* win) {
+int ngi_window_init_win32(ngi_application* app, ngi_window* win, ngi_format* format) {
 
     HWND hWnd;
 
@@ -291,46 +291,23 @@ void ngi_application_win32_runloop_iteration(ngi_application* app, int blocking)
 
 
 
-int ngi_context_wgl_init(ngi_context* ctx, ngi_window* win) {
+int ngi_context_wgl_init(ngi_context* ctx, ngi_window* win, ngi_format* format) {
 
     HGLRC hRC=NULL;
     HDC hDC=NULL;
 
     HWND hWnd = (HWND)win->plat.iwnd;
-    unsigned int PixelFormat;
 
-    static  PIXELFORMATDESCRIPTOR pfd=
-    {
-        sizeof(PIXELFORMATDESCRIPTOR),
-        1,
-        PFD_DRAW_TO_WINDOW | //PFD_SUPPORT_COMPOSITION |
-        PFD_SUPPORT_OPENGL |
-        PFD_DOUBLEBUFFER,
-        PFD_TYPE_RGBA,
-        32,
-        0, 0, 0, 0, 0, 0,
-        0,
-        0,
-        0,
-        0, 0, 0, 0,
-        16,
-        0,
-        0,
-        PFD_MAIN_PLANE,
-        0,
-        0, 0, 0
-    };
+	unsigned int PixelFormat = format->platform.wgl.pixelformat;
+    PIXELFORMATDESCRIPTOR pfd;
+	memcpy(&pfd, format->platform.wgl.pfd, sizeof(PIXELFORMATDESCRIPTOR));
+
 
     ctx->type = ngi_context_api_wgl;
     ctx->graphics = ngi_graphics_api_opengl;
     win->context = ctx;
 
     if (!(hDC=GetDC(hWnd))) {
-        return 0;
-    }
-
-    if (!(PixelFormat=ChoosePixelFormat(hDC,&pfd)))
-    {
         return 0;
     }
 
@@ -348,6 +325,7 @@ int ngi_context_wgl_init(ngi_context* ctx, ngi_window* win) {
 		return 0;
 	}
     ctx->platform.wgl.hdc = hDC;
+    ctx->platform.wgl.hrc = hRC;
     return 1;
 }
 
@@ -356,6 +334,14 @@ int ngi_context_wgl_swap(ngi_context* ctx) {
     return 1;
 }
 
+int ngi_context_wgl_set_active(ngi_context* ctx)
+{
+    if(!wglMakeCurrent(ctx->platform.wgl.hdc, ctx->platform.wgl.hrc))
+	{
+		return 0;
+	}
+	return 1;
+}
 
 
 
