@@ -21,7 +21,9 @@ const char* ngi_graphics_api_d3d9 = "ngi_graphics_api_d3d9";
 const char* ngi_pixelformat_rgb565 = "ngi_pixelformat_rgb565";
 const char* ngi_pixelformat_rgb8 = "ngi_pixelformat_rgb8";
 const char* ngi_pixelformat_rgba8 = "ngi_pixelformat_rgba8";
+const char* ngi_pixelformat_rgb16f = "ngi_pixelformat_rgb16f";
 const char* ngi_pixelformat_rgba16f = "ngi_pixelformat_rgba16f";
+const char* ngi_pixelformat_rgb32f = "ngi_pixelformat_rgb32f";
 const char* ngi_pixelformat_rgba32f = "ngi_pixelformat_rgba32f";
 
 const char* ngi_config_wm_api = "ngi_config_wm_api";     /* ngi_wm_api */

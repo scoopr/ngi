@@ -3,35 +3,6 @@
 
 #include <assert.h>
 
-static inline const char* find_config_string(const char* name, ngi_config* config, const char* fallback) {
-
-    int i;
-    
-    if(config == 0) return 0;
-
-    for(i = 0; i < config->num_entries; ++i)
-    {
-        if(config->config[i].name == name) return config->config[i].value.s;
-    }
-
-    return fallback;
-
-}
-
-static inline int find_config_int(const char* name, ngi_config* config, int fallback) {
-
-    int i;
-    
-    if(config == 0) return 0;
-
-    for(i = 0; i < config->num_entries; ++i)
-    {
-        if(config->config[i].name == name) return config->config[i].value.i;
-    }
-
-    return fallback;
-
-}
 
 int ngi_window_init(ngi_application* app, ngi_window* win, ngi_format* format, ngi_config* config) {
     

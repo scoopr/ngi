@@ -421,8 +421,14 @@ int event(ngi_event* ev) {
 
         case ngi_event_application_init:
         {
-            check( ngi_format_init(ev->application_init.application, &main_window.fmt, NULL) );
-            check( ngi_window_init(ev->application_init.application, &main_window.win, &main_window.fmt, NULL) );
+            
+            ngi_config cfg;
+            ngi_config_init(&cfg);
+//            ngi_config_set_string(&cfg, ngi_config_pixelformat, ngi_pixelformat_rgba32f);
+//            ngi_config_set_string(&cfg, ngi_config_graphics_api, ngi_graphics_api_opengl3_2);
+            
+            check( ngi_format_init(ev->application_init.application, &main_window.fmt, &cfg) );
+            check( ngi_window_init(ev->application_init.application, &main_window.win, &main_window.fmt, &cfg) );
             check( ngi_context_init(&main_window.ctx, &main_window.win, &main_window.fmt) );
 
             ngi_context_set_active(&main_window.ctx);
