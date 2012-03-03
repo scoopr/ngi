@@ -1,5 +1,4 @@
 
-#include "ngi/ngi_config.h"
 
 #ifdef NGI_CONTEXT_EGL
 #include "ngi/ngi.h"

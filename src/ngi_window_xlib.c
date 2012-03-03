@@ -1,6 +1,4 @@
 
-#include "ngi/ngi_config.h"
-
 #ifdef NGI_WINDOW_XLIB
 
 #include "ngi/ngi.h"
