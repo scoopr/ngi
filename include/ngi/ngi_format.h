@@ -1,6 +1,9 @@
 #ifndef NGI_FORMAT_H
 #define NGI_FORMAT_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 typedef struct ngi_format_tag {
@@ -26,6 +29,11 @@ int ngi_format_init(ngi_application* app, ngi_format* format, ngi_config *config
 int ngi_format_init_cocoa(ngi_application* app, ngi_format* format, ngi_config *config);
 
 int ngi_format_init_glx(ngi_application* app, ngi_format* format, ngi_config *config);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 
 
