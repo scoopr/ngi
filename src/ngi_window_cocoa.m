@@ -242,7 +242,9 @@ CVReturn displayLinkCB(
     (void)dirtyRect;
 
     if(!win) return;
-
+    
+    ngi_window_redisplay(win);
+#if 0
     ngi_event ev;
     memset(&ev,0,sizeof(ngi_event));
 
@@ -258,8 +260,8 @@ CVReturn displayLinkCB(
 //    CGLLockContext( win->context->platform.cocoa.ctx );
 
     ngi_post_event(win->app, &ev);
-
 //    CGLUnlockContext( win->context->platform.cocoa.ctx );
+#endif
 }
 
 
