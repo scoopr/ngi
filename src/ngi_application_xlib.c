@@ -109,30 +109,6 @@ double ngi_get_time() {
 }
 
 
-void ngi_application_x11_handle_redisplay(ngi_application* app) {
-
-    ngi_event ev;
-    memset(&ev,0,sizeof(ngi_event));
-    ngi_window* win = app->first_redisplay_window;
-    app->first_redisplay_window = NULL;
-    while( win != NULL) {
-        
-        if(win->redisplay) {
-            win->redisplay = 0;
-            ev.type = ngi_event_redraw;
-            ev.common.window = win;
-            ev.common.timestamp = ngi_get_time();
-
-            ngi_post_event(app, &ev);
-        }
-
-        win = win->next_redisplay_window;
-    }
-
-
-
-}
-
 void handle_X11Event(XEvent *xev, ngi_application *app) {
     double timestamp = ngi_get_time();
     ngi_event ev;
@@ -333,7 +309,7 @@ int ngi_application_wait_event_xlib(ngi_application* app, int blocking) {
         handle_X11Event(&xev, app);
     }
 
-    ngi_application_x11_handle_redisplay(app);
+    ngi_application_handle_redisplay(app);
     
     return 1;
 }
