@@ -36,6 +36,8 @@ int ngi_format_init_glx(ngi_application* app, ngi_format* format, ngi_config *co
 
 int ngi_format_init_win32(ngi_application* app, ngi_format* format, ngi_config *config);
 
+int ngi_format_init_ios(ngi_application* app, ngi_format* format, ngi_config *config);
+
 #ifdef __cplusplus
 }
 #endif

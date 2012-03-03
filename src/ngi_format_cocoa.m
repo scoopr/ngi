@@ -1,4 +1,5 @@
 
+#ifdef NGI_CONTEXT_COCOA
 #import <Cocoa/Cocoa.h>
 #include "ngi/ngi.h"
 
@@ -11,13 +12,13 @@ int ngi_format_init_cocoa(ngi_application* app, ngi_format* format, ngi_config *
     {
         NSOpenGLPFADoubleBuffer,
         // NSOpenGLPFAFullScreen
-        // NSOpenGLPFAColorFloat
+        // NSOpenGLPFAColorFloat,
         // NSOpenGLPFAMultisample,
         // NSOpenGLPFASampleBuffers, (NSOpenGLPixelFormatAttribute)1
         // NSOpenGLPFASamples,       (NSOpenGLPixelFormatAttribute)4,
-        NSOpenGLPFAColorSize,     (NSOpenGLPixelFormatAttribute)24,
+        NSOpenGLPFAColorSize,     (NSOpenGLPixelFormatAttribute)32,
         // NSOpenGLPFAAlphaSize,     (NSOpenGLPixelFormatAttribute)0,
-        // NSOpenGLPFADepthSize,     (NSOpenGLPixelFormatAttribute)24,
+        NSOpenGLPFADepthSize,     (NSOpenGLPixelFormatAttribute)16,
         // NSOpenGLPFAStencilSize,   (NSOpenGLPixelFormatAttribute)8,
         0
     };
@@ -32,3 +33,4 @@ int ngi_format_init_cocoa(ngi_application* app, ngi_format* format, ngi_config *
     return 1;
     
 }
+#endif

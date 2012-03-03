@@ -49,7 +49,7 @@ static void create_fbo(EAGLContext* context, CAEAGLLayer* layer, int* fbo_, int 
     
 }
 
-int ngi_context_ios_init(ngi_context* ctx, ngi_window* win) 
+int ngi_context_ios_init(ngi_context* ctx, ngi_window* win, ngi_format* format) 
 {
     
     ctx->graphics = ngi_graphics_api_gles2;

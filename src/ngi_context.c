@@ -20,7 +20,7 @@ int ngi_context_init(ngi_context* ctx, ngi_window* win, ngi_format* format) {
 
     #ifdef NGI_CONTEXT_IOS
     if(win->app->type == ngi_wm_api_ios)
-        return ngi_context_ios_init(ctx, win);
+        return ngi_context_ios_init(ctx, win, format);
     #endif
     
     #ifdef NGI_CONTEXT_WGL

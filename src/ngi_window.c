@@ -99,7 +99,7 @@ int ngi_window_init(ngi_application* app, ngi_window* win, ngi_format* format, n
     #endif
 
     #ifdef NGI_WINDOW_IOS
-    if(ngi_config_match(wmapi, ngi_wm_api_ios)) return ngi_window_init_ios(app, win);
+    if(ngi_config_match(wmapi, ngi_wm_api_ios)) return ngi_window_init_ios(app, win, format);
     #endif
 
     return 0;

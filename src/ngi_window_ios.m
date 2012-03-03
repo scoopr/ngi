@@ -177,7 +177,7 @@
 
 @end
 
-int ngi_window_init_ios(ngi_application *app, ngi_window* win) {
+int ngi_window_init_ios(ngi_application *app, ngi_window* win, ngi_format* format) {
 //    win->plat.pwnd = [[NGIWindow alloc] initWithRect:rect];
     win->app = app;
     // win->width = window.view.frame.size.width;

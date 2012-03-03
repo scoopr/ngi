@@ -12,6 +12,19 @@
 		BF27A96314D89DA6006565AF /* ngi_window_ios.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD43B14C8C31D000A736F /* ngi_window_ios.m */; };
 		BF46C2D014CF01BC00574284 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF46C2CF14CF01BC00574284 /* QuartzCore.framework */; };
 		BFC82F4814CF68F7000019F2 /* res in Resources */ = {isa = PBXBuildFile; fileRef = BFC82F4714CF68F7000019F2 /* res */; };
+		BFFD3AC91502CD3C0077A0C5 /* ngi_application_ios.h in Headers */ = {isa = PBXBuildFile; fileRef = BFFD3AC41502CD3C0077A0C5 /* ngi_application_ios.h */; };
+		BFFD3ACA1502CD3C0077A0C5 /* ngi_format_cocoa.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFD3AC51502CD3C0077A0C5 /* ngi_format_cocoa.m */; };
+		BFFD3ACB1502CD3C0077A0C5 /* ngi_format_glx.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFD3AC61502CD3C0077A0C5 /* ngi_format_glx.c */; };
+		BFFD3ACC1502CD3C0077A0C5 /* ngi_format.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFD3AC71502CD3C0077A0C5 /* ngi_format.c */; };
+		BFFD3ACD1502CD3C0077A0C5 /* ngi_window_ios.h in Headers */ = {isa = PBXBuildFile; fileRef = BFFD3AC81502CD3C0077A0C5 /* ngi_window_ios.h */; };
+		BFFD3AD81502CD960077A0C5 /* ngi.h in Headers */ = {isa = PBXBuildFile; fileRef = BFFD3AD11502CD960077A0C5 /* ngi.h */; };
+		BFFD3AD91502CD960077A0C5 /* ngi_application.h in Headers */ = {isa = PBXBuildFile; fileRef = BFFD3AD21502CD960077A0C5 /* ngi_application.h */; };
+		BFFD3ADA1502CD960077A0C5 /* ngi_config.h in Headers */ = {isa = PBXBuildFile; fileRef = BFFD3AD31502CD960077A0C5 /* ngi_config.h */; };
+		BFFD3ADB1502CD960077A0C5 /* ngi_context.h in Headers */ = {isa = PBXBuildFile; fileRef = BFFD3AD41502CD960077A0C5 /* ngi_context.h */; };
+		BFFD3ADC1502CD960077A0C5 /* ngi_event.h in Headers */ = {isa = PBXBuildFile; fileRef = BFFD3AD51502CD960077A0C5 /* ngi_event.h */; };
+		BFFD3ADD1502CD960077A0C5 /* ngi_format.h in Headers */ = {isa = PBXBuildFile; fileRef = BFFD3AD61502CD960077A0C5 /* ngi_format.h */; };
+		BFFD3ADE1502CD960077A0C5 /* ngi_window.h in Headers */ = {isa = PBXBuildFile; fileRef = BFFD3AD71502CD960077A0C5 /* ngi_window.h */; };
+		BFFD3AE01502CDDA0077A0C5 /* ngi_format_ios.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFD3ADF1502CDDA0077A0C5 /* ngi_format_ios.m */; };
 		BFFFD39514C867F3000A736F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFFFD39414C867F3000A736F /* Foundation.framework */; };
 		BFFFD3BC14C86AA6000A736F /* ngi_application.c in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3A314C86AA6000A736F /* ngi_application.c */; };
 		BFFFD3BE14C86AA6000A736F /* ngi_application_cocoa.m in Sources */ = {isa = PBXBuildFile; fileRef = BFFFD3A514C86AA6000A736F /* ngi_application_cocoa.m */; };
@@ -48,6 +61,19 @@
 /* Begin PBXFileReference section */
 		BF46C2CF14CF01BC00574284 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		BFC82F4714CF68F7000019F2 /* res */ = {isa = PBXFileReference; lastKnownFileType = folder; name = res; path = ../res; sourceTree = "<group>"; };
+		BFFD3AC41502CD3C0077A0C5 /* ngi_application_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ngi_application_ios.h; sourceTree = "<group>"; };
+		BFFD3AC51502CD3C0077A0C5 /* ngi_format_cocoa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ngi_format_cocoa.m; sourceTree = "<group>"; };
+		BFFD3AC61502CD3C0077A0C5 /* ngi_format_glx.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ngi_format_glx.c; sourceTree = "<group>"; };
+		BFFD3AC71502CD3C0077A0C5 /* ngi_format.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ngi_format.c; sourceTree = "<group>"; };
+		BFFD3AC81502CD3C0077A0C5 /* ngi_window_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ngi_window_ios.h; sourceTree = "<group>"; };
+		BFFD3AD11502CD960077A0C5 /* ngi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ngi.h; sourceTree = "<group>"; };
+		BFFD3AD21502CD960077A0C5 /* ngi_application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ngi_application.h; sourceTree = "<group>"; };
+		BFFD3AD31502CD960077A0C5 /* ngi_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ngi_config.h; sourceTree = "<group>"; };
+		BFFD3AD41502CD960077A0C5 /* ngi_context.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ngi_context.h; sourceTree = "<group>"; };
+		BFFD3AD51502CD960077A0C5 /* ngi_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ngi_event.h; sourceTree = "<group>"; };
+		BFFD3AD61502CD960077A0C5 /* ngi_format.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ngi_format.h; sourceTree = "<group>"; };
+		BFFD3AD71502CD960077A0C5 /* ngi_window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ngi_window.h; sourceTree = "<group>"; };
+		BFFD3ADF1502CDDA0077A0C5 /* ngi_format_ios.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ngi_format_ios.m; sourceTree = "<group>"; };
 		BFFFD39114C867F3000A736F /* libngi-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libngi-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFFFD39414C867F3000A736F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BFFFD3A314C86AA6000A736F /* ngi_application.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ngi_application.c; sourceTree = "<group>"; };
@@ -109,6 +135,7 @@
 		BF7A132614C8676900A30133 = {
 			isa = PBXGroup;
 			children = (
+				BFFD3ACF1502CD960077A0C5 /* include */,
 				BFC82F4714CF68F7000019F2 /* res */,
 				BF46C2CF14CF01BC00574284 /* QuartzCore.framework */,
 				BFFFD43514C86F87000A736F /* Info.plist */,
@@ -117,6 +144,29 @@
 				BFFFD39314C867F3000A736F /* Frameworks */,
 				BFFFD39214C867F3000A736F /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		BFFD3ACF1502CD960077A0C5 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				BFFD3AD01502CD960077A0C5 /* ngi */,
+			);
+			name = include;
+			path = ../include;
+			sourceTree = "<group>";
+		};
+		BFFD3AD01502CD960077A0C5 /* ngi */ = {
+			isa = PBXGroup;
+			children = (
+				BFFD3AD11502CD960077A0C5 /* ngi.h */,
+				BFFD3AD21502CD960077A0C5 /* ngi_application.h */,
+				BFFD3AD31502CD960077A0C5 /* ngi_config.h */,
+				BFFD3AD41502CD960077A0C5 /* ngi_context.h */,
+				BFFD3AD51502CD960077A0C5 /* ngi_event.h */,
+				BFFD3AD61502CD960077A0C5 /* ngi_format.h */,
+				BFFD3AD71502CD960077A0C5 /* ngi_window.h */,
+			);
+			path = ngi;
 			sourceTree = "<group>";
 		};
 		BFFFD39214C867F3000A736F /* Products */ = {
@@ -142,19 +192,25 @@
 		BFFFD3A014C86AA6000A736F /* src */ = {
 			isa = PBXGroup;
 			children = (
-				BFFFD43914C8C31D000A736F /* ngi_application_ios.m */,
-				BFFFD43A14C8C31D000A736F /* ngi_context_ios.m */,
-				BFFFD43B14C8C31D000A736F /* ngi_window_ios.m */,
 				BFFFD3A314C86AA6000A736F /* ngi_application.c */,
 				BFFFD3A514C86AA6000A736F /* ngi_application_cocoa.m */,
+				BFFD3AC41502CD3C0077A0C5 /* ngi_application_ios.h */,
+				BFFFD43914C8C31D000A736F /* ngi_application_ios.m */,
 				BFFFD3A714C86AA6000A736F /* ngi_application_xlib.c */,
 				BFFFD3A914C86AA6000A736F /* ngi_const.c */,
 				BFFFD3AB14C86AA6000A736F /* ngi_context.c */,
 				BFFFD3AD14C86AA6000A736F /* ngi_context_egl.c */,
 				BFFFD3AF14C86AA6000A736F /* ngi_context_glx.c */,
+				BFFFD43A14C8C31D000A736F /* ngi_context_ios.m */,
+				BFFD3AC71502CD3C0077A0C5 /* ngi_format.c */,
+				BFFD3AC51502CD3C0077A0C5 /* ngi_format_cocoa.m */,
+				BFFD3AC61502CD3C0077A0C5 /* ngi_format_glx.c */,
+				BFFD3ADF1502CDDA0077A0C5 /* ngi_format_ios.m */,
 				BFFFD3B114C86AA6000A736F /* ngi_window.c */,
 				BFFFD3B314C86AA6000A736F /* ngi_window_cocoa.h */,
 				BFFFD3B414C86AA6000A736F /* ngi_window_cocoa.m */,
+				BFFD3AC81502CD3C0077A0C5 /* ngi_window_ios.h */,
+				BFFFD43B14C8C31D000A736F /* ngi_window_ios.m */,
 				BFFFD3B614C86AA6000A736F /* ngi_window_win32.c */,
 				BFFFD3B814C86AA6000A736F /* ngi_window_xlib.c */,
 			);
@@ -186,6 +242,15 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFFD3AC91502CD3C0077A0C5 /* ngi_application_ios.h in Headers */,
+				BFFD3ACD1502CD3C0077A0C5 /* ngi_window_ios.h in Headers */,
+				BFFD3AD81502CD960077A0C5 /* ngi.h in Headers */,
+				BFFD3AD91502CD960077A0C5 /* ngi_application.h in Headers */,
+				BFFD3ADA1502CD960077A0C5 /* ngi_config.h in Headers */,
+				BFFD3ADB1502CD960077A0C5 /* ngi_context.h in Headers */,
+				BFFD3ADC1502CD960077A0C5 /* ngi_event.h in Headers */,
+				BFFD3ADD1502CD960077A0C5 /* ngi_format.h in Headers */,
+				BFFD3ADE1502CD960077A0C5 /* ngi_window.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,7 +298,7 @@
 		BF7A132814C8676900A30133 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = Supercell;
 			};
 			buildConfigurationList = BF7A132B14C8676900A30133 /* Build configuration list for PBXProject "ngi" */;
@@ -284,6 +349,10 @@
 				BF27A96114D89D9E006565AF /* ngi_application_ios.m in Sources */,
 				BF27A96214D89DA2006565AF /* ngi_context_ios.m in Sources */,
 				BF27A96314D89DA6006565AF /* ngi_window_ios.m in Sources */,
+				BFFD3ACA1502CD3C0077A0C5 /* ngi_format_cocoa.m in Sources */,
+				BFFD3ACB1502CD3C0077A0C5 /* ngi_format_glx.c in Sources */,
+				BFFD3ACC1502CD3C0077A0C5 /* ngi_format.c in Sources */,
+				BFFD3AE01502CDDA0077A0C5 /* ngi_format_ios.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
