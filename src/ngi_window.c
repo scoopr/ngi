@@ -114,13 +114,16 @@ void ngi_window_redisplay(ngi_window *win) {
 }
 
 void ngi_window_remove_redisplay(ngi_window *win) {
+	ngi_window *next;
+	ngi_window *w;
+
     assert(win);
 
     win->redisplay = 0;
     
-    ngi_window *next = win->next_redisplay_window;
+    next = win->next_redisplay_window;
     win->next_redisplay_window = NULL;
-    ngi_window *w = win->app->first_redisplay_window;
+    w = win->app->first_redisplay_window;
 
     if(w == win)
     {

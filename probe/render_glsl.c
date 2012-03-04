@@ -339,6 +339,10 @@ void render_glsl_init()
 {
 }
 
+void render_glsl_deinit()
+{
+}
+
 void render_glsl_resize(int w, int h) {
     (void)w;
     (void)h;
