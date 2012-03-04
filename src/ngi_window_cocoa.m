@@ -109,9 +109,9 @@ CVReturn displayLinkCB(
 
 -(void)updateDisplayLink
 {
-    CGLContextObj* cglContext = [oglContext CGLContextObj];
-    CGLPixelFormatObj pixelFormat = CGLGetPixelFormat(*cglContext);
-    CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, *cglContext, pixelFormat);
+    CGLContextObj cglContext = [oglContext CGLContextObj];
+    CGLPixelFormatObj pixelFormat = CGLGetPixelFormat(cglContext);
+    CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, cglContext, pixelFormat);
 //    CVDisplayLinkSetCurrentCGDisplay(displayLink, CGMainDisplayID());
     
     CVDisplayLinkSetOutputCallback(displayLink, displayLinkCB, win);
