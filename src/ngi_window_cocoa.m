@@ -366,6 +366,15 @@ int ngi_window_init_cocoa(ngi_application *app, ngi_window* win, ngi_format* for
     return 1;
 }
 
+int ngi_window_deinit_cocoa(ngi_window* win) 
+{
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    ngi_window_remove_redisplay(win);
+    NGIWindow *ngiwin = win->plat.pwnd;
+    [ngiwin release];
+    [pool drain];
+    return 1;
+}
 
 
 void ngi_window_animate_cocoa(ngi_window* win, int enabled)
@@ -426,6 +435,14 @@ int ngi_context_cocoa_init(ngi_context* ctx, ngi_window* win, ngi_format* format
     
     ngi_window_redisplay(win);
     
+    return 1;
+}
+
+int ngi_context_cocoa_deinit(ngi_context* ctx) {
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    NSOpenGLContext* context = ctx->platform.cocoa.ctx;
+    [context release];
+    [pool drain];
     return 1;
 }
 

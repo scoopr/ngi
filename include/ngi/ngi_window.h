@@ -42,8 +42,10 @@ int ngi_window_init_cocoa(ngi_application *app, ngi_window* win, ngi_format* for
 int ngi_window_init_ios(ngi_application *app, ngi_window* win, ngi_format* format);
 
 int ngi_window_deinit_xlib(ngi_window* win);
+int ngi_window_deinit_cocoa(ngi_window* win);
 
 void ngi_window_redisplay(ngi_window *win);
+void ngi_window_remove_redisplay(ngi_window *win);
 
 void ngi_window_animate(ngi_window* win, int enable);
 

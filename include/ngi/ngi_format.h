@@ -16,10 +16,10 @@ typedef struct ngi_format_tag {
             void* fbc;
             void* visual;
         } xlib;
-		struct {
-			unsigned int pixelformat;
-			char pfd[40];
-		} wgl;
+        struct {
+            unsigned int pixelformat;
+            char pfd[40];
+        } wgl;
     } platform;
     
     
@@ -29,8 +29,10 @@ typedef struct ngi_format_tag {
 
 
 int ngi_format_init(ngi_application* app, ngi_format* format, ngi_config *config);
+int ngi_format_deinit(ngi_format* format);
 
 int ngi_format_init_cocoa(ngi_application* app, ngi_format* format, ngi_config *config);
+int ngi_format_deinit_cocoa(ngi_format* format);
 
 int ngi_format_init_glx(ngi_application* app, ngi_format* format, ngi_config *config);
 

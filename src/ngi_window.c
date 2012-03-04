@@ -84,6 +84,12 @@ int ngi_window_deinit(ngi_window* win) {
     }
     #endif
 
+    #ifdef NGI_WINDOW_COCOA
+    if(win->app->type == ngi_wm_api_cocoa) {
+        return ngi_window_deinit_cocoa(win);
+    }
+    #endif
+
     (void)win;
     return 0;
 }
@@ -104,6 +110,33 @@ void ngi_window_redisplay(ngi_window *win) {
         #endif
         
     }
+
+}
+
+void ngi_window_remove_redisplay(ngi_window *win) {
+    assert(win);
+
+    win->redisplay = 0;
+    
+    ngi_window *next = win->next_redisplay_window;
+    win->next_redisplay_window = NULL;
+    ngi_window *w = win->app->first_redisplay_window;
+
+    if(w == win)
+    {
+        win->app->first_redisplay_window = next;
+        return;
+    }
+
+    while(w)
+    {
+        if(w->next_redisplay_window == win)
+        {
+            w->next_redisplay_window = next;
+            return;
+        }
+    }
+
 
 }
 

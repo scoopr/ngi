@@ -4,10 +4,10 @@
 
 
 extern const char* ngi_event_application_init_name;
+extern const char* ngi_event_quit_name;
 extern const char* ngi_event_key_down_name;
 extern const char* ngi_event_key_up_name;
 extern const char* ngi_event_key_repeat_name;
-extern const char* ngi_event_quit_name;
 extern const char* ngi_event_redraw_name;
 extern const char* ngi_event_resize_name;
 extern const char* ngi_event_mouse_move_name;
@@ -19,6 +19,7 @@ extern const char* ngi_event_touch_end_name;
 
 typedef enum ngi_event_type_t {
     ngi_event_application_init,
+    ngi_event_quit,
     ngi_event_key_down,
     ngi_event_key_up,
     ngi_event_text,

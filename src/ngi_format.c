@@ -21,6 +21,15 @@ int ngi_format_init(ngi_application* app, ngi_format* format, ngi_config *config
 
 }
 
-
+int ngi_format_deinit(ngi_format* format)
+{
+    (void)format;
+    
+    #ifdef NGI_WINDOW_COCOA
+    return ngi_format_deinit_cocoa(format);
+    #endif
+    
+    return 1;
+}
 
 

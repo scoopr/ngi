@@ -10,17 +10,25 @@
 
 
 @interface NGIApplication : NSApplication {
-    int dummy;
+    ngi_application* app;
 }
-
+@property ngi_application* app;
 @end
 
 
 
 @implementation NGIApplication
+@synthesize app;
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     (void)aNotification;
+    
+    ngi_event ev;
+    ev.type = ngi_event_quit;
+    ev.common.timestamp = ngi_get_time();
+    ev.common.window = NULL;
+    ngi_post_event(app, &ev);
+    
 }
 
 
@@ -50,8 +58,8 @@ int ngi_application_init_cocoa(ngi_application *app) {
     TransformProcessType(&psn, kProcessTransformToForegroundApplication);
     SetFrontProcess(&psn);
 
-
-    NSApp = [NGIApplication sharedApplication];
+    NGIApplication* ngiApp = (NGIApplication*)[NGIApplication sharedApplication];
+    NSApp = ngiApp;
     [NSApp setDelegate:NSApp];
     [NSApp finishLaunching];
     [NSApp setRunning];
@@ -62,6 +70,7 @@ int ngi_application_init_cocoa(ngi_application *app) {
     if(!success) {
     }
 
+    ngiApp.app = app;
     app->first_redisplay_window = NULL;
 
     [pool drain];

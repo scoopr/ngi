@@ -419,6 +419,14 @@ int event(ngi_event* ev) {
 //    printf("[event %s  time:%f]\n", ngi_event_name(ev->type), ev->common.timestamp);
     switch(ev->type) {
 
+        case ngi_event_quit:
+        {
+            ngi_context_deinit(&main_window.ctx);
+            ngi_window_deinit(&main_window.win);
+            ngi_format_deinit(&main_window.fmt);
+        }
+        break;
+
         case ngi_event_application_init:
         {
             

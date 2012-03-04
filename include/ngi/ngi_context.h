@@ -40,6 +40,7 @@ typedef struct ngi_context_tag {
 } ngi_context;
 
 int ngi_context_init(ngi_context* ctx, ngi_window* win, ngi_format* format);
+int ngi_context_deinit(ngi_context* ctx);
 int ngi_context_swap(ngi_context* ctx);
 int ngi_context_set_active(ngi_context* ctx);
 

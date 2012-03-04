@@ -102,6 +102,12 @@ void render_glff_init()
     
 }
 
+void render_glff_deinit()
+{
+    glDeleteTextures(1, &font_tex);
+}
+
+
 void render_glff_resize(int w, int h) {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

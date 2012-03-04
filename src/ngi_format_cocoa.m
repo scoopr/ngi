@@ -58,4 +58,12 @@ int ngi_format_init_cocoa(ngi_application* app, ngi_format* format, ngi_config *
     return 1;
     
 }
+
+int ngi_format_deinit_cocoa(ngi_format* format)
+{
+    NSOpenGLPixelFormat* fmt = format->platform.cocoa.format;
+    [fmt release];
+    return 1;
+}
+
 #endif

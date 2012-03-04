@@ -32,6 +32,12 @@ int ngi_context_init(ngi_context* ctx, ngi_window* win, ngi_format* format) {
 
 }
 
+int ngi_context_deinit(ngi_context* ctx) 
+{
+    (void)ctx;
+    return 1;
+}
+
 int ngi_context_swap(ngi_context* ctx) {
 
     #ifdef NGI_CONTEXT_GLX

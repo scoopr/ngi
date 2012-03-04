@@ -187,6 +187,9 @@ void compile_shader(GLuint* program, const char* opts, const char* vs, const cha
     glValidateProgram(*program);
     glGetProgramInfoLog(*program, 1024, NULL, err);        
     if(err[0] != 0) printf("[link shader] %s\n", err);
+    
+    glDeleteShader(vsh);
+    glDeleteShader(fsh);
 
 }
 
@@ -223,6 +226,13 @@ void render_glsl_init()
 
     free(fontTex);
 
+}
+
+void render_glsl_deinit()
+{
+    glDeleteProgram(solid_program);
+    glDeleteProgram(tex_program);
+    glDeleteTextures(1, &font_tex);
 }
 
 void render_glsl_resize(int w, int h) {

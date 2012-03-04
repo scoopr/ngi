@@ -12,6 +12,7 @@ typedef struct box_tag {
 
 typedef int (*render_is_supported)();
 typedef void (*render_init)();
+typedef void (*render_deinit)();
 typedef void (*render_resize)(int w, int h);
 typedef void (*render_clear)();
 typedef void (*render_quad)(float coords[2*4], const unsigned char color[4]);
@@ -20,6 +21,7 @@ typedef void (*render_text)(float x, float y, const char* str, ...);
 struct render_t {
     render_is_supported is_supported;
     render_init init;
+    render_deinit deinit;
     render_resize resize;
     render_clear clear;
     render_quad quad;

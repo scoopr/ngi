@@ -40,10 +40,10 @@ const char* ngi_config_stencil_bits = "ngi_config_stencil_bits";   /* int */
 const char* ngi_config_multisamples = "ngi_config_multisamples";   /* int */
 
 const char* ngi_event_application_init_name = "ngi_event_application_init";
+const char* ngi_event_quit_name = "ngi_event_quit";
 const char* ngi_event_key_down_name = "ngi_event_key_down";
 const char* ngi_event_key_up_name = "ngi_event_key_up";
 const char* ngi_event_key_repeat_name = "ngi_event_key_repeat";
-const char* ngi_event_quit_name = "ngi_event_quit";
 const char* ngi_event_redraw_name = "ngi_event_redraw";
 const char* ngi_event_resize_name = "ngi_event_resize";
 const char* ngi_event_mouse_move_name = "ngi_event_mouse_move";
