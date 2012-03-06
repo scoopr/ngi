@@ -60,3 +60,6 @@ int ngi_format_init_win32(ngi_application* app, ngi_format* format, ngi_config *
 }
 
 #endif
+
+extern int dummy;
+
